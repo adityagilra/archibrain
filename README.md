@@ -17,7 +17,8 @@ Mini-goal 1 (Aditya):
 Understand and summarize various architectures. Explore current machine learning toolkits and figure out which one will be most suitable for our task.
 
 Mini-goal 2 (Marco):
-The Hierarchical Error Representation (HER) model by Alexander and Brown (2015, 2016), incorporating hierarchical predictive coding and gated working memory structures, is the most comparable to DeepMind's Differentiable Neural Computer (DNC). Thus, in this project, you will: (1) implement the DNC and the HER models using a standard machine learning toolkit (preferably python-based like Theano/Keras); (2) benchmark the two architectures on similar tasks; (3) incorporate the best features of the two models (and any others) into a hopefully better (faster learning / better performing / more biologically plausible) model.
+The Hierarchical Error Representation (HER) model by Alexander and Brown (2015, 2016), incorporating hierarchical predictive coding and gated working memory structures, is the most comparable to DeepMind's Differentiable Neural Computer (DNC).
+(1) implement the DNC and the HER models using a standard machine learning toolkit (python front-end, with Theano/Keras/TensorFlow/mxnet); (2) benchmark the two architectures on similar tasks; (3) incorporate the best features of the two models (and any others) into a hopefully better (faster learning / better performing / more biologically plausible) model.
 
 Mini-goal 3 (Vineet):
 To be determined.
