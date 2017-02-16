@@ -11,14 +11,16 @@ We will utilize a modular architecture to:
 
 We will also explore different memory interfacing schemes like content or list-based as in the DNC, or Eliasmith's HHR, address-value augmentation, etc.
 
-A larger goal will be to see if the synethesized 'network' can build models of the 'world' which generalize across tasks.
-
+A larger goal will be to see if the synthesized 'network' can build models of the 'world' which generalize across tasks.
+  
 Mini-goal 1 (Aditya):
-Understand and summarize various architectures. Explore current machine learning toolkits and figure out which one will be most suitable for our task.
-
+Understand and summarize various architectures. Explore current machine learning / deep learning toolkits and choose one most suitable for our work.  
+[Overview of architectures (work in progress)](https://github.com/adityagilra/archibrain/wiki/Brain-models---ML-architectures)  
+After my [brief survey of toolkits] (https://github.com/adityagilra/archibrain/wiki/Machine-Learning-library-comparisons-for-testing-brain-architectures), we have chosen [Keras](https://keras.io/). We will follow an [agile software development](https://en.wikipedia.org/wiki/Agile_software_development) process, and frequently re-factor code (might even change the framework).
+  
 Mini-goal 2 (Marco):
 The Hierarchical Error Representation (HER) model by Alexander and Brown (2015, 2016), incorporating hierarchical predictive coding and gated working memory structures, is the most comparable to DeepMind's Differentiable Neural Computer (DNC).
 (1) implement the DNC and the HER models using a standard machine learning toolkit (python front-end, with Theano/Keras/TensorFlow/mxnet); (2) benchmark the two architectures on similar tasks; (3) incorporate the best features of the two models (and any others) into a hopefully better (faster learning / better performing / more biologically plausible) model.
-
+  
 Mini-goal 3 (Vineet):
 To be determined.
