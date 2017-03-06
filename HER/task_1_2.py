@@ -1,8 +1,12 @@
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout
-from keras.regularizers import l2
+## TRIVIAL TASK FOR HER EXPERIMENTATION
+## The 1-2 task consists in the presentation to the subject of two stimuli '1' and '2', and two possible answers 'L' and 'R'.
+## Simply, stimulus '1' is associated to response 'L' and stimulus '2' to response 'R'. 
+## AUTHOR: Marco Martinolli
+## DATE: 24.02.2017
+
 import numpy as np
-from HER_level import HER_level, HER_base
+
+from HER_level import HER_level, HER_base 
 
 def preprocess_data(S,R):
 
@@ -27,7 +31,7 @@ def subset_data(S,O,training_perc=0.8):
 
 # construction of the dataset
 N1 = 800
-N2 = 500
+N2 = 200
 s_1 = np.full((N1,1),1,dtype=int)
 s_2 = np.full((N2,1),2,dtype=int)
 SS = np.concatenate((s_1,s_2),axis=0)
@@ -36,12 +40,14 @@ np.random.shuffle(SS)
 RR = np.where(SS==1,'L','R')
 [S, O] = preprocess_data(SS,RR)
 
-[S_tr,O_tr,S_test,O_test]=subset_data(S,O,0.7)
+[S_tr,O_tr,S_test,O_test]=subset_data(S,O,0.8)
 
-L = HER_base(np.shape(S_tr)[1], 10, np.shape(O_tr)[1], 10)
-
-L.training(S_tr, O_tr)
-L.test(S_test, O_test)
-
+L = HER_base(0,np.shape(S_tr)[1], 10, np.shape(O_tr)[1], 12, 12)
+print('TRAINING...')
+L.base_training(S_tr, O_tr)
+print(' DONE\n')
+print('TEST....\n')
+L.base_test_binary(S_test, O_test)
+print('DONE!\n')
 
 import gc; gc.collect()
