@@ -6,8 +6,6 @@
 
 import numpy as np
 
-from HER_level import HER_level, HER_base 
-
 def preprocess_data(S,R):
 
 	S_new=np.where(S==1,[1,0],[0,1])
@@ -30,24 +28,17 @@ def subset_data(S,O,training_perc=0.8):
 
 
 # construction of the dataset
-N1 = 800
-N2 = 200
-s_1 = np.full((N1,1),1,dtype=int)
-s_2 = np.full((N2,1),2,dtype=int)
-SS = np.concatenate((s_1,s_2),axis=0)
-np.random.shuffle(SS)
+def data_construction(N=1000, p1=0.7, p2=0.3, perc_training=0.8):
 
-RR = np.where(SS==1,'L','R')
-[S, O] = preprocess_data(SS,RR)
+	SS = np.random.choice(np.arange(3), (N,1), p=[0,p1,p2]) 
+	RR = np.where(SS==1,'L','R')
 
-[S_tr,O_tr,S_test,O_test]=subset_data(S,O,0.8)
+	[S, O] = preprocess_data(SS,RR)
 
-L = HER_base(0,np.shape(S_tr)[1], 10, np.shape(O_tr)[1], 12, 12)
-print('TRAINING...')
-L.base_training(S_tr, O_tr)
-print(' DONE\n')
-print('TEST....\n')
-L.base_test_binary(S_test, O_test)
-print('DONE!\n')
+	[S_tr,O_tr,S_test,O_test]=subset_data(S,O,perc_training)
 
-import gc; gc.collect()
+	dic_stim = {'array([[1, 0]])':'1', 'array([[0, 1]])':'2'}
+	dic_resp =  {'array([[1, 0, 0, 1]])':'L', 'array([[0, 1, 1, 0]])':'R',}			
+
+	return S_tr,O_tr,S_test,O_test,dic_stim,dic_resp
+

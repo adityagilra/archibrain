@@ -21,7 +21,7 @@ class HER_arch():
 	# H: 1-d array NLx1, list which contain every HER_level
 	# NL: int, number of levels of the hierarchical predictive coding
 
-	def __init__(self, NL, s_dim, M_dim, pred_dim, beta, gamma):
+	def __init__(self, NL, s_dim, M_dim, pred_dim, learn_rate_vec, beta_vec, gamma,reg_value=0.01,loss_fct='mse',pred_activ_fct='linear'):
 
 		self.NL = NL
 		self.s = s_dim
@@ -29,10 +29,10 @@ class HER_arch():
 		self.P = pred_dim
 		self.H = []
 
-		L0 = HER_base(0,s_dim, M_dim, pred_dim, beta, gamma)
+		L0 = HER_base(0,s_dim, M_dim, pred_dim, learn_rate_vec[0], beta_vec[0], gamma, reg_value,loss_fct,pred_activ_fct)
 		self.H.append(L0)
 		for i in np.arange(NL-1):	
-			L = HER_level(i+1,s_dim, M_dim, pred_dim*(M_dim**(i+1)), beta)
+			L = HER_level(i+1,s_dim, M_dim, pred_dim*(M_dim**(i+1)), learn_rate_vec[i+1], beta_vec[i+1],reg_value,loss_fct,pred_activ_fct)
 			self.H.append(L)
 
 	
@@ -44,10 +44,10 @@ class HER_arch():
 		m_l = [None]*(self.NL-1)
 		e_l = [None]*self.NL
 		o_l = [None]*self.NL
-		
+			
+		delete = ''
 		for i in np.arange(N_samples):
-					
-			print('TRAINING SAMPLE N.',i+1)
+	
 			s = S_train[i:(i+1),:]		
 			o = O_train[i:(i+1),:]	
 			o_l[0] = o			
@@ -84,10 +84,19 @@ class HER_arch():
 				
 					# BOTTOM-UP
 					if l!=(self.NL-1):
-						o_l[l+1]=np.reshape(self.H[l].bottom_up(e_l[l]),(1,-1))			
+						o_l[l+1]=np.reshape(self.H[l].bottom_up(e_l[l]),(1,-1))	
+
+			if (i==0):
+				print('TRAINING...',end="")
+				
+			
+			WIP = str(round(100*(i+1)/N_samples,2))
+			digits = len(WIP)			
+			print("{0}{1:{2}}".format(delete, WIP+'%', digits), end="",flush=True)
+			delete = "\b"*(digits+1)			
 		
 
-	def test(self, S_test, O_test):
+	def test(self, S_test, O_test, dic_stim, dic_resp, verbose=0):
 
 		N_samples = np.shape(S_test)[0]
 		r_l = [None]*self.NL
@@ -95,16 +104,15 @@ class HER_arch():
 		m_l = [None]*(self.NL-1)
 		
 		Feedback_table = np.zeros((2,2))
+		RESP_list = list(dic_resp.values())		
 
 		for l in np.arange(self.NL):
 			self.H[l].empty_memory()
 
 		for i in np.arange(N_samples):
 					
-			print('TEST SAMPLE N.',i+1)
 			s = S_test[i:(i+1),:]		
 			o = O_test[i:(i+1),:]	
-			
 			
 			for l in np.arange(self.NL):
 				r_l[l] = self.H[l].memory_gating(s)
@@ -120,16 +128,21 @@ class HER_arch():
 	
 			resp_ind = self.H[0].compute_response(m_l[0])
 
-			o_print = np.where( np.array_equiv(o,[[1,0,0,1]]), 'L', 'R')
-			r_print = np.where( resp_ind==0, 'L', 'R' ) 			
+			o_print = dic_resp[repr(o)]
+			r_print = np.where(resp_ind==0, RESP_list[0], RESP_list[1] ) 			
 			
-			if (o_print=='L' and o_print==r_print):
+			s = s.astype(int)
+
+			if (verbose):				
+				print('TEST SAMPLE N.',i+1,'\t',dic_stim[repr(s)],'\t',o_print,'\t',r_print,'\n')
+
+			if (o_print==RESP_list[0] and r_print==RESP_list[0]):
 				Feedback_table[0,0] +=1
-			elif (o_print=='L' and o_print!=r_print):
+			elif (o_print==RESP_list[0] and r_print==RESP_list[1]):
 				Feedback_table[0,1] +=1
-			elif (o_print=='R' and o_print==r_print):
-				Feedback_table[1,1] +=1
-			elif (o_print=='R' and o_print!=r_print):
+			elif (o_print==RESP_list[1] and r_print==RESP_list[0]):
 				Feedback_table[1,0] +=1
+			elif (o_print==RESP_list[1] and r_print==RESP_list[1]):
+				Feedback_table[1,1] +=1
 		
-		print('TEST: \n', Feedback_table)
+		print('\nFinal Table: \n', Feedback_table)

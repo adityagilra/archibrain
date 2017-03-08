@@ -8,14 +8,7 @@
 ## AUTHOR: Marco Martinolli
 ## DATE: 28.02.2017
 
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout
-from keras.regularizers import l2
 from keras.utils import np_utils
-
-from HER_level import HER_level, HER_base 
-from HER_model import HER_arch
-
 import numpy as np
 
 def preprocess_data(S,R):
@@ -41,36 +34,41 @@ def subset_data(S,O,training_perc=0.8):
 
 
 # construction of the dataset
-N = 500
-cue_type = ['1', '2', 'AX', 'AY','BX','BY']
+def data_construction(N=500,p_digit=0.05,p_wrong=0.225,p_correct=0.225,perc_training=0.8):
 
-SS = np.random.choice(np.arange(6), (N,1), p=[0.05,0.05,0.225,0.225,0.225,0.225]) 
+	cue_type = ['1', '2', 'AX', 'AY','BX','BY']
 
-digit = None
-RR = np.ones(np.shape(SS))
-for i,s in enumerate(SS):
+	SS = np.random.choice(np.arange(6), (N,1), p=[p_digit,p_digit,p_correct,p_wrong,p_wrong,p_correct]) 
 
-	if s==0 or s==1:
-		RR[i]=0
-		if s==0:		
-			digit='1'
+	digit = None
+	RR = np.ones(np.shape(SS))
+	for i,s in enumerate(SS):
+
+		if s==0 or s==1:
+			RR[i]=0
+			if s==0:		
+				digit='1'
+			else:
+				digit='2'
+
+		elif (digit=='1' and s==2) or (digit=='2' and s==5):
+			RR[i]=1
+
 		else:
-			digit='2'
+			RR[i]=0
+	
+	# preprocess data to have the right format	
+	[S, O] = preprocess_data(SS,RR)
 
-	elif (digit=='1' and s==2) or (digit=='2' and s==5):
-		RR[i]=1
+	# data division in training and test subsets
+	[S_tr, O_tr, S_test, O_test] = subset_data(S,O,0.8)
 
-	else:
-		RR[i]=0
+	dic_stim = {'array([[1, 0, 0, 0, 0, 0]])':'1',
+		    'array([[0, 1, 0, 0, 0, 0]])':'2',
+		    'array([[0, 0, 1, 0, 0, 0]])':'AX',
+		    'array([[0, 0, 0, 1, 0, 0]])':'AY',
+		    'array([[0, 0, 0, 0, 1, 0]])':'BX',
+		    'array([[0, 0, 0, 0, 0, 1]])':'BY'}
+	dic_resp =  {'array([[1, 0, 0, 1]])':'L', 'array([[0, 1, 1, 0]])':'R',}			
 
-[S, O] = preprocess_data(SS,RR)
-
-[S_tr,O_tr,S_test,O_test]=subset_data(S,O,0.8)
-
-HER = HER_arch(3,np.shape(S_tr)[1], 10, np.shape(O_tr)[1], 6, 12)
-
-HER.training(S_tr,O_tr,5)
-
-HER.test(S_test,O_test)
-
-import gc; gc.collect()
+	return S_tr,O_tr,S_test,O_test,dic_stim,dic_resp
