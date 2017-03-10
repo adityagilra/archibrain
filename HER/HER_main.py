@@ -8,7 +8,8 @@ from keras.layers import Dense, Activation, Dropout
 from keras.regularizers import l2
 from keras.utils import np_utils
 
-from HER_level import HER_level, HER_base 
+from HER_level import HER_level
+from HER_base import HER_base
 from HER_model import HER_arch
 
 import numpy as np
@@ -28,6 +29,7 @@ else:
 
 print("\nYou have selected: ", task_dic[task_selection],'\n\n')
 
+
 #########################################################################################################################################
 #######################   TASK 1-2 
 #########################################################################################################################################
@@ -39,23 +41,23 @@ if (task_selection=="0"):
 	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=1000, p1=0.7, p2=0.3, perc_training=0.8)
 
 	## CONSTRUCTION OF BASE LEVEL OF HER ARCHITECTURE
-	ss = np.shape(S_tr)[1]
-	M = ss
+	S = np.shape(S_tr)[1]
+	M = 10
 	P = np.shape(O_tr)[1]
 	alpha = 0.1
 	beta = 12
 	gamma = 12
 
-	verb = 1
+	verb = 0
  
-	L = HER_base(0,ss,M, P, alpha, beta, gamma)
+	L = HER_base(0,S,M, P, alpha, beta, gamma)
 
 	print('TRAINING...')
 	L.base_training(S_tr, O_tr)
 	print(' DONE!\n')
 
 	print('TEST....\n')
-	L.base_test_binary(S_test, O_test, dic_stim, dic_resp, verb)
+	L.base_test(S_test, O_test, dic_stim, dic_resp, verb)
 	print('DONE!\n')
 
 
@@ -67,28 +69,30 @@ elif (task_selection=="1"):
 	
 	from TASKS.task_1_2AX import data_construction
 
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=1000, p_digit=0.05, p_wrong=0.225, p_correct=0.225, perc_training=0.8)
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=2000, p_digit=0.05, p_wrong=0.2, p_correct=0.25, perc_training=0.8)
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
-	NL = 3
+	NL = 2
 	S = np.shape(S_tr)[1]
-	M = 20
+	M = S
 	P = np.shape(O_tr)[1]
 	learn_rate_vec = [0.1, 0.02, 0.02]
 	beta_vec = [12, 12, 12]
-	gamma = 2
+	gamma = 4
 
-	verb = 1
+	verb = 0
 
-	HER = HER_arch(NL,S,M,P,learn_rate_vec,beta_vec,gamma,reg_value=0.1)
-
+	HER = HER_arch(NL,S,M,P,learn_rate_vec,beta_vec,gamma,reg_value=0.1,pred_activ_fct='sigmoid',drop_perc=0)
 
 	## TRAINING
-	HER.training(S_tr,O_tr,5)
+	epoch_per_iter=5
+	modulation_iter=10
+	HER.training(S_tr,O_tr,modulation_iter,epoch_per_iter)
 
 
 	## TEST
 	HER.test(S_test,O_test,dic_stim,dic_resp,verb)
+
 
 #########################################################################################################################################
 #######################   TITANIC TASK
@@ -102,7 +106,7 @@ elif (task_selection=="2"):
 
 	## CONSTRUCTION OF BASE LEVEL OF HER ARCHITECTURE
 	ss = np.shape(S_tr)[1]
-	M = 10
+	M = 20
 	P = np.shape(O_tr)[1]
 	alpha = 0.1
 	beta = 12
@@ -117,7 +121,7 @@ elif (task_selection=="2"):
 	print(' DONE!\n')
 
 	print('TEST....\n')
-	L.base_test_binary(S_test, O_test, None, dic_resp, verb)
+	L.base_test(S_test, O_test, None, dic_resp, verb)
 	print('DONE!\n')	
 	
 #########################################################################################################################################
@@ -125,4 +129,3 @@ elif (task_selection=="2"):
 
 else:
 	print("No task identified. Please, retry.")
-
