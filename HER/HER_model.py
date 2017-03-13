@@ -51,9 +51,11 @@ class HER_arch():
 			s = S_train[i:(i+1),:]		
 			o = O_train[i:(i+1),:]	
 			o_l[0] = o			
-
+			
 			for l in np.arange(self.NL):
 				r_l[l] = self.H[l].memory_gating(s)
+				#print(r_l[l])
+
 						
 			for t in np.arange(N_iter):
 
@@ -72,8 +74,10 @@ class HER_arch():
 
 				for l in np.arange(self.NL):
 	
-					self.H[l].memory_branch.fit(s,r_l[l],nb_epoch=n_ep,batch_size=1,verbose=0)
-					self.H[l].prediction_branch.fit(r_l[l],o_l[l],nb_epoch=n_ep,batch_size=1,verbose=0)
+					self.H[l].combined_branch.fit(s,o_l[l],nb_epoch=n_ep,batch_size=1,verbose=0)
+					W_l = self.H[l].combined_branch.get_weights()
+					self.H[l].memory_branch.set_weights(W_l[:2])
+					self.H[l].prediction_branch.set_weights(W_l[2:4])
 
 					# prediction error computation
 					if l==0:

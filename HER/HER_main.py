@@ -69,7 +69,7 @@ elif (task_selection=="1"):
 	
 	from TASKS.task_1_2AX import data_construction
 
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=2000, p_digit=0.05, p_wrong=0.2, p_correct=0.25, perc_training=0.8)
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=1000, p_digit=0.05, p_wrong=0.2, p_correct=0.25, perc_training=0.8)
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 2
@@ -80,13 +80,13 @@ elif (task_selection=="1"):
 	beta_vec = [12, 12, 12]
 	gamma = 4
 
-	verb = 0
+	verb = 1
 
-	HER = HER_arch(NL,S,M,P,learn_rate_vec,beta_vec,gamma,reg_value=0.1,pred_activ_fct='sigmoid',drop_perc=0)
+	HER = HER_arch(NL,S,M,P,learn_rate_vec,beta_vec,gamma,reg_value=0,pred_activ_fct='relu',drop_perc=0)
 
 	## TRAINING
-	epoch_per_iter=5
-	modulation_iter=10
+	epoch_per_iter=1
+	modulation_iter=5
 	HER.training(S_tr,O_tr,modulation_iter,epoch_per_iter)
 
 

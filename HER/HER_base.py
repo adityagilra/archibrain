@@ -41,7 +41,7 @@ class HER_base(HER_level):
 		for i,u in enumerate(U):	
 			U[i] = (p[0,2*i]-p[0,2*i+1]) 
 
-		#print('Response Vector: ',np.transpose(U))
+		print('Response Vector: ',np.transpose(U))
 		# response probability p_U obtained with softmax 			
 		p_U = np.exp(self.gamma*U)
 		p_U = p_U/np.sum(p_U)	

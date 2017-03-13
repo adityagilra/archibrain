@@ -95,11 +95,12 @@ class HER_level():
 			self.r = self.memory_branch.predict(s)	
 		else:
 			v = self.memory_branch.predict(s)
-			p_storing = np.exp(self.beta*v)/(np.exp(self.beta*v)+np.exp(self.beta*self.r))
-			for i in np.arange(len(self.r)):
-				if np.random.random()<=p_storing[0,i]:
-					self.r[0,i] = v[0,i]                       # IS THIS CORRECT???	
-		return self.r
+			v_i = np.max(v)
+			v_j = np.max(self.r)
+			p_storing = np.exp(self.beta*v_i)/(np.exp(self.beta*v_i)+np.exp(self.beta*v_j))
+			if np.random.random()<=p_storing:
+					self.r = v 
+		return self.r                      
 
 	def compute_error(self, p,o):
 		
