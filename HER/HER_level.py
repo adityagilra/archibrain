@@ -1,9 +1,14 @@
 ## CLASS FOR SINGLE LAYER OF HER ARCHITECTURE
+##
 ## The structure of each level includes:
 ##	- a Working Memory (WM), which registers the stimulus according to specific gating rules 
 ##	- a prediction block, that provides an (error) prediction
 ##	- an error block, which computes the prediction error (prediction - output)
 ##	- the outcome block, that presents the output from feedback/error at lower level
+##
+## Memory dynamics, error computation top-down and bottom-up steps are implemented as described in the Supplementary Material of the paper "Frontal cortex function derives from hierarchical
+## predictive coding", W. Alexander, J. Brown, equations (2), (4), (7) and (8).
+##
 ## Version 2.0: each layer is customized to handle top-down and bottom-ups.
 ## AUTHOR: Marco Martinolli
 ## DATE: 27.02.2017
@@ -25,8 +30,7 @@ class HER_level():
 	## Inputs
 	# ------------
 	# l: int, id number of the level in the HER architecture 
-	# ss: int, dimension of the input stimulus
-	# M: int, number of neurons for the memory representation of the stimulus
+	# S: int, dimension of the input stimulus
 	# P: int, number of neurons for the prediction/output vector
 	# beta: real, gain parameter for the memory gating dynamics
 	
@@ -41,44 +45,35 @@ class HER_level():
 	# a: 1-d array Px1, activity filter based on the response
 
 
-	# M is the dimension of the stimulus vector, i.e. the number of stimuli to present 
+	# S is the dimension of the stimulus vector, i.e. the number of stimuli to present 
 	# P is equal to the double of the number of categories, i.e. for a binary classification 		
 	#   problem(C1,C2) the prediction/ouput will have the form 
 	#   [C1_corr, C1_wrong, C2_corr, C2_wrong]
 	
-	def __init__(self,l,S,M,P,alpha,beta,reg_value=0.01,loss_fct='mse',pred_activ_fct='linear',drop_perc=0.3):
+	def __init__(self,l,S,P,alpha,beta,elig_decay_const,reg_value=0.01,loss_fct='mse',mem_activ_fct='linear',pred_activ_fct='linear'):
 		
 		self.S = S
 		self.P = P
-		self.M = M
 		self.level = l
 		self.alpha = alpha
 		self.beta = beta
+		self.elig_decay_const = elig_decay_const
 
 		self.r = None
 		
-		# memory_branch = S --> WM 
-		# I need it to have the intermediate ouput r for the bottom-up step
+		# memory_branch = S --> V
 		self.memory_branch = Sequential()
-		self.memory_branch.add( WMBlock(output_dim=self.M, input_dim=self.S, activation='linear',W_regularizer=l2(reg_value)))
+		self.memory_branch.add( WMBlock(output_dim=self.S, input_dim=self.S, init='zero',activation=mem_activ_fct,W_regularizer=l2(reg_value)))
 		self.memory_branch.compile(loss= loss_fct, optimizer='sgd', metrics=['accuracy'])	
 		
 		# prediction_branch = WM --> PredBlock
 		self.prediction_branch = Sequential()
-		self.prediction_branch.add(PredBlock(output_dim=self.P,input_dim=self.M,activation=pred_activ_fct,W_regularizer=l2(reg_value)))
+		self.prediction_branch.add(PredBlock(output_dim=self.P,input_dim=self.S,init='zero',activation=pred_activ_fct,W_regularizer=l2(reg_value)))
 		self.prediction_branch.compile(loss= loss_fct, optimizer=SGD(lr=self.alpha), metrics=['accuracy'])
-
-		# combined_branch = S ---> WM --> PredBlock
-		self.combined_branch = Sequential()
-		self.combined_branch.add(WMBlock(output_dim=self.M, input_dim=self.S, activation='linear',W_regularizer=l2(reg_value)))
-		self.combined_branch.add(Dropout(drop_perc))
-		self.combined_branch.add(PredBlock(output_dim=self.P,activation=pred_activ_fct,W_regularizer=l2(reg_value)))
-		self.combined_branch.compile(loss = loss_fct, optimizer=SGD(lr=self.alpha), metrics=['accuracy'])	
-		#self.combined_branch.compile(loss = filtered_loss_function, optimizer='sgd', metrics=['accuracy'])
 
 		# modulator block WM ---> ModBlock
 		self.modulator_branch = Sequential()
-		self.modulator_branch.add(ModBlock(output_dim=self.P, input_dim=self.M, activation=pred_activ_fct, W_regularizer=l2(reg_value),trainable=None))
+		self.modulator_branch.add(ModBlock(output_dim=self.P, input_dim=self.S, activation=pred_activ_fct, W_regularizer=l2(reg_value),trainable=None))
 		self.modulator_branch.compile(loss= loss_fct, optimizer='sgd', metrics=['accuracy'])
 		
 		# modulated prediction = prediction + modulator
@@ -88,24 +83,37 @@ class HER_level():
 
 	def empty_memory(self):
 		self.r = None
+	
 			
-	def memory_gating(self,s):			
+	def memory_gating(self,s,bias=10,gate='softmax'):			
 		
 		if (self.r is None):
-			self.r = self.memory_branch.predict(s)	
+			self.r = s	
 		else:
 			v = self.memory_branch.predict(s)
-			v_i = np.max(v)
-			v_j = np.max(self.r)
-			p_storing = np.exp(self.beta*v_i)/(np.exp(self.beta*v_i)+np.exp(self.beta*v_j))
-			if np.random.random()<=p_storing:
-					self.r = v 
+			print(np.around(v,decimals=3))
+			v_i = v[np.where(s==1)]
+			v_j = v[np.where(self.r==1)]
+			if(gate=='softmax'):
+				p_storing = (np.exp(self.beta*v_i)+bias)/(np.exp(self.beta*v_i)+np.exp(self.beta*v_j)+bias)
+				print(np.around(v_i,decimals=3),'   ',np.around(v_j,decimals=3),'   ',np.around(p_storing,decimals=3))
+				if p_storing is not None and np.random.random()<=p_storing:
+					self.r = s
+				else:
+					if v_i>=v_j:
+						self.r = s 					
+			elif(gate=='max'):
+				if v_i>=v_j:
+					self.r = s 
 		return self.r                      
 
-	def compute_error(self, p,o):
+	def compute_error(self, p, o, resp_ind):
 		
-		a_prime = np.where(o==0,0,1)
-
+		len_tot = np.shape(o)[0]*np.shape(o)[1]
+		a_prime = np.zeros((1,len_tot))
+		action_ind = [ i for i in np.arange(len_tot) if i%(self.P/(self.level*self.S))==2*resp_ind or i%(self.P/(self.level*self.S))==2*resp_ind+1] 
+		a_prime[0,action_ind] = 1
+		#print('A_PRIME: (indeces :',action_ind,' on a total of ',len_tot,')\n', np.reshape(a_prime,(self.S,-1)))
 		return a_prime*(o-p)
 
 	def bottom_up(self, e):
@@ -118,44 +126,3 @@ class HER_level():
 		self.modulator_branch.set_weights(ww)
 
 
-
-################################################################################################## external functions for the loss definition
-
-
-
-def compute_response(p):
-
-	gam = 12
-	leng_resp = K.variable(np.shape(p)[1])/2
-
-	# response u computed as (p_corr - p_wrong) for each possibility
-	U = np.zeros((leng_resp,1))			
-	for i,u in enumerate(U):	
-		U[i] = (p[0,2*i]-p[0,2*i+1]) 
-
-	#print('Response Vector: ',U)
-	# response probability p_U obtained with softmax 			
-	p_U = np.exp(gam*U)
-	p_U = p_U/np.sum(p_U)	
-	#print('Response Probability Vector: ', p_U)
-
-	# response selection
-	p_cum = 0
-	for i,p_u in enumerate(p_U): 	
-		if (np.random.random() <= (p_u + p_cum)):		
-			resp_ind = i
-			break
-		else:		
-			p_cum += p_u
-	return (resp_ind)
-
-
-def filtered_loss_function(y_true,y_pred):
-
-	resp_ind = compute_response(y_pred)		
-	
-	a = np.zeros((np.shape(o)))			
-	a[0,2*self.resp_ind] = 1
-	a[0,2*selfresp_ind+1] = 1
-
-	return K.mean((a/2)*K.square(y_true-y_pred), axis=-1)

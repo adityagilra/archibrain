@@ -147,16 +147,11 @@ class PredBlock(Layer):
             del self.initial_weights
         self.built = True
 
-    def call(self, inputs, mask=None):
-        if type(inputs) is not list or len(inputs) <= 1:
-	        output = K.dot(inputs, self.W)
-        	if self.bias:
-            		output += self.b
-        	return self.activation(output)
-        else:
-        	output= K.dot(inputs[0], self.W + inputs[1])
-        	#print K.ndim(callback)
-        	return callback
+    def call(self, x, mask=None):
+        output = K.dot(x, self.W)
+        if self.bias:
+            output += self.b
+        return self.activation(output)
 
     def get_output_shape_for(self, input_shape):
         assert input_shape and len(input_shape) >= 2
