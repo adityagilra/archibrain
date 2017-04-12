@@ -18,7 +18,7 @@ def preprocess_data(S,R,dic):
 	for i in np.arange(leng-1):
 		S_new = np.concatenate((S_new, dic[S[i+1,0]]))
 	
-	R_new=np.where(R==0,[1,0,0,1],[0,1,1,0])		
+	R_new=np.where(R==0,[1,0],[0,1])		
 	
 	return S_new, R_new
 
@@ -35,7 +35,7 @@ def subset_data(S,O,training_perc=0.8):
 	O_test = O[idx:, :]
 
 	# the test subset must starts with the digit correspondent to the first positive answer
-	ind_R = np.where((O_test==[0,1,1,0]).all(1))	
+	ind_R = np.where((O_test==[0,1]).all(1))	
 	ind_first_R = ind_R[0][0]
 	
 	if(np.array_equiv(S_test[ind_first_R,:],[[0,0,1,0,0,0]])):
@@ -44,7 +44,7 @@ def subset_data(S,O,training_perc=0.8):
 	else:
 		# digit_to_insert = '2'
 		S_test = np.concatenate([ [[0,1,0,0,0,0]],S_test ])
-	O_test = np.concatenate([ [[1,0,0,1]],O_test ])
+	O_test = np.concatenate([ [[1,0]],O_test ])
 
 	return S_train,O_train,S_test,O_test
 
@@ -103,7 +103,7 @@ def data_construction(N=500,p_correct=0.25,perc_training=0.8):
 		    'array([[0, 0, 0, 1, 0, 0]])':'B',
 		    'array([[0, 0, 0, 0, 1, 0]])':'X',
 		    'array([[0, 0, 0, 0, 0, 1]])':'Y'}
-	dic_resp =  {'array([[1, 0, 0, 1]])':'L', 'array([[0, 1, 1, 0]])':'R',
+	dic_resp =  {'array([[1, 0]])':'L', 'array([[0, 1]])':'R',
 			'0':'L','1':'R'}			
 
 	return S_tr, O_tr, S_test, O_test, dic_stim, dic_resp

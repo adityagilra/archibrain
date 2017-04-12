@@ -1,0 +1,41 @@
+--------
+ README 
+--------
+
+Hierarchical Error Representation model (HER) - "Frontal cortex function derives from hierarchical predictive coding", W. Alexander, J. Brown. 
+
+
+The codes are organized in the following way:
+
+- HER_main.py is the file where the HER architecture is built, the parameters are set and the task is decided
+  The task is selected by the user during compilation time: after the program is run using python3 HER_main.py, the user has to select a task as requested.
+	1: 1-2 task
+	2: AX CPT task
+	3: 12-AX task
+	4: titanic task 
+  Enter the id of the task and then push enter to perform it.
+
+- HER_model.py implements all the dynamics of the multi-level system both for the training and the test.
+  Here is the operations it presents in order of execution:
+	1. initialization of the variables
+	2. presentation of the current stimulus
+	3. gating memory for each level
+	4. computation of prediction, top-down and modulated prediction (starting from the superior level and proceeding downwards)
+	5. computation of the error and of the modulated error
+	6. bottom-up
+	7. update weights. Here the user can select backpropagation (default) or the Reinforcement learning rule for the update of the weight matrix for the WM
+	8. update of the eligibility trace (if the flag is "post" as default, otherwise the update is at position 3)
+
+- HER_level.py implements the class for each level of the HER architecture. 
+  The key functions are:
+	-- gating-memory(s), 
+	-- compute_error(p,o),
+	-- bottom_up(e) 
+	-- top_dow(p_err)
+
+- HER_base.py inherits from HER_level to create the object for the bottom level. 
+  In addition to the general HER_level, HER_base presents also the dynamics for the response selection in compute_response(p). 
+  The function compute_error(p,o,resp_ind) takes the additional response index parameter to create the activity filter a. 
+  The class has also the functions base_training and base_test which can be used in case the HER architecture has only one level (and there is no modulation).
+
+- activations.py presents just some general activation functions to use in the network.

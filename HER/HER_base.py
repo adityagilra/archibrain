@@ -20,12 +20,12 @@ class HER_base(HER_level):
 	# ------------
 	# U: 1-d array Ux1, response vector	
 
-	def __init__(self,l,S,P,alpha,beta,gam,elig_decay_const,reg_value=0.01,loss_fct='mse',mem_activ_fct='linear',pred_activ_fct='linear'):
+	def __init__(self,l,S,P,alpha,beta,gam,elig_decay_const):
 		
 		if l!=0:
 			sys.exit("HER_base class called to level different than the first.")	
 		
-		super(HER_base,self).__init__(l,S,P,alpha,beta,elig_decay_const,reg_value,loss_fct,mem_activ_fct,pred_activ_fct)
+		super(HER_base,self).__init__(l,S,P,alpha,beta,elig_decay_const)
 		self.gamma = gam
 
 
@@ -34,7 +34,8 @@ class HER_base(HER_level):
 		a = np.zeros((np.shape(o)))			
 		a[0,(2*resp_ind):(2*resp_ind+2)] = 1
 
-		return a*(o-p)
+		err = a*(o-p)
+		return err, a
 
 
 	def compute_response(self, p):
@@ -59,7 +60,8 @@ class HER_base(HER_level):
 				break
 			else:		
 				p_cum += p_u
-		return resp_ind
+		
+		return resp_ind, p_U[resp_ind,0]
 
 
 
@@ -75,9 +77,6 @@ class HER_base(HER_level):
 			o = O_train[i:(i+1),:]				
 		
 			# eligibility trace dynamics
-			d = d*self.elig_decay_const
-			d[0,(np.where(s==1))[1]] = 1
-			print('Eligibility Trace: ',d)
 
 			# memory gating dynamics
 			r = self.memory_gating(s,gate='max')
@@ -85,25 +84,25 @@ class HER_base(HER_level):
 			if dic_stim is not None:			
 				print('TRAINING ITER:',i,'   s: ',dic_stim[repr(s.astype(int))],'   r0:', dic_stim[repr(r.astype(int))])
 						
-			p = self.prediction_branch.predict(r)
-
-			resp_i = self.compute_response(p)
+			p = act.linear(self.r,self.W)
+			resp_i,prob = self.compute_response(p)
 			e = self.compute_error(p, o, resp_i)
 
 
 			### TRAINING OF PREDICTION WEIGHTS
-			W_p = self.prediction_branch.get_weights()
-			W_p[0] = W_p[0] + self.alpha* np.dot(np.transpose(r), e)
-			self.prediction_branch.set_weights(W_p)					
-			W_m = self.memory_branch.get_weights()			
-			W_m[0] = W_m[0] + np.dot(np.dot(W_p[0], np.transpose(e))*np.transpose(r)  ,d)
-			self.memory_branch.set_weights(W_m)		
+			self.W += self.alpha* np.dot(np.transpose(self.r), e)		
+			self.X += np.dot(np.dot(W, np.transpose(e))*np.transpose(self.r)  ,d)	
+
+			d = d*self.elig_decay_const
+			d[0,(np.where(s==1))[1]] = 1
+			#print('Eligibility Trace: ',d)
 
 			print('Output: ', dic_resp[repr(o)]  ,'   Response: ', dic_resp[repr(resp_i)])
-			print('Prediction: ', p)
-			print('Prediction Error: ', e)
-			print('Memory Matrix:\n', W_m[0])
-			print('Prediction Matrix:\n', W_p[0])
+			#print('Prediction: ', p)
+			#print('Prediction Error: ', e)
+			if i==N_samples-1:			
+				print('Memory Matrix:\n', X)
+				print('Prediction Matrix:\n', W)
 
 
 
@@ -114,10 +113,11 @@ class HER_base(HER_level):
 
 		Feedback_table = np.zeros((2,2))
 		RESP_list = list(dic_resp.values())
+		RESP_list = np.unique(RESP_list)
 		RESP_list.sort()
 		#print(RESP_list)
 
-		binary = (len(RESP_list)/2==2)
+		binary = (len(RESP_list)==2)
 		
 		for t in np.arange(N):			
 			
@@ -125,9 +125,10 @@ class HER_base(HER_level):
 			o = O_test[t:(t+1),:]
 			o_print = dic_resp[repr(o)]
 
-			p=self.prediction_branch.predict(s)			
+			self.r = act.linear(s,self.X)
+			p = act.linear(self.r,self.W)			
 
-			resp_ind = self.compute_response(p)
+			resp_ind,prob = self.compute_response(p)
 			
 			r_print = np.where(resp_ind==0, RESP_list[0], RESP_list[2])			
 			
@@ -137,11 +138,11 @@ class HER_base(HER_level):
 			if (binary):
 				if (o_print==RESP_list[0] and r_print==RESP_list[0]):
 					Feedback_table[0,0] +=1
-				elif (o_print==RESP_list[0] and r_print==RESP_list[2]):
+				elif (o_print==RESP_list[0] and r_print==RESP_list[1]):
 					Feedback_table[0,1] +=1
-				elif (o_print==RESP_list[2] and r_print==RESP_list[0]):
+				elif (o_print==RESP_list[1] and r_print==RESP_list[0]):
 					Feedback_table[1,0] +=1
-				elif (o_print==RESP_list[2] and r_print==RESP_list[2]):
+				elif (o_print==RESP_list[1] and r_print==RESP_list[1]):
 					Feedback_table[1,1] +=1
 		
 		if (binary):	
