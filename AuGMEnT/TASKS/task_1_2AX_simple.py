@@ -10,16 +10,17 @@
 
 import numpy as np
 
-def preprocess_data(S,R,dic):
+def preprocess_data(S,R):
 
 	leng = np.shape(S)[0]
 	num_task = np.max(S)+1
-	S_new = np.zeros((leng,num_task.astype(int)))
-	for i in np.arange(leng):
-		S_new[i] = dic[S[i,0]]
+	S_new = np.zeros((leng,num_task))
+	R_new = np.zeros((leng,2))
+	seq = np.arange(leng)
 	
-	R_new=np.where(R==0,[1,0],[0,1])		
-	
+	S_new[seq,S] = 1
+	R_new[seq,R] = 1
+
 	return S_new, R_new
 
 def subset_data(S,O,training_perc=0.8):
@@ -50,39 +51,51 @@ def subset_data(S,O,training_perc=0.8):
 
 
 # construction of the dataset
-def data_construction(N=500,p_digit=0.05,p_wrong=0.225,p_correct=0.225,perc_training=0.8):
+def data_construction(N=500,p_correct=0.225,perc_training=0.8):
 
 	cue_type = ['1', '2', 'AX', 'AY','BX','BY']
 
-	SS = np.random.choice(np.arange(6), (N-1,1), p=[p_digit,p_digit,p_correct,p_wrong,p_wrong,p_correct]) 
-	SS = np.concatenate([np.random.choice(np.arange(2), (1,1), p=[0.5,0.5]), SS])	
-	
-	digit = None
-	RR = np.ones(np.shape(SS))
-	for i,s in enumerate(SS):
+	np.random.seed(1234)
 
-		if s==0 or s==1:
-			RR[i]=0
-			if s==0:		
-				digit='1'
-			else:
-				digit='2'
+	p_wrong = (1-p_correct)/3	
+	SS = []
+	RR = []
 
-		elif (digit=='1' and s==2) or (digit=='2' and s==5):
-			RR[i]=1
+	for n in np.arange(N):	
 
+		s_dig = np.random.choice(np.arange(2), (1,1))
+		random_inner_loops = np.random.choice(np.arange(4),(1,1)) +1
+
+		if s_dig==0:
+			SS.append(0)
+			RR.append(0)	
 		else:
-			RR[i]=0
+			SS.append(1)
+			RR.append(0)				
 
-	dic_building = {0:np.array([1, 0, 0, 0, 0, 0]),
-		    	1:np.array([0, 1, 0, 0, 0, 0]),
-		    	2:np.array([0, 0, 1, 0, 0, 0]),
-		    	3:np.array([0, 0, 0, 1, 0, 0]),
-			4:np.array([0, 0, 0, 0, 1, 0]),
-			5:np.array([0, 0, 0, 0, 0, 1])}
+		for i in np.arange(random_inner_loops):
+
+			if s_dig==0:
+	
+				rand_inner_pattern = np.random.choice(np.arange(4),(1,1), p=[p_correct,p_wrong,p_wrong,p_wrong]) + 2	
+				SS.append(rand_inner_pattern)
+
+				if rand_inner_pattern==2:			
+					RR.append(1)
+				else:		
+					RR.append(0)					
+			else:
+
+				rand_inner_pattern = np.random.choice(np.arange(4),(1,1), p=[p_wrong,p_wrong,p_wrong,p_correct]) + 2	
+				SS.append(rand_inner_pattern)
+
+				if rand_inner_pattern==5:			
+					RR.append(1)
+				else:		
+					RR.append(0)	
 	
 	# preprocess data to have the right format	
-	[S, O] = preprocess_data(SS,RR,dic_building)
+	[S, O] = preprocess_data(SS,RR)
 
 	# data division in training and test subsets
 	[S_tr, O_tr, S_test, O_test] = subset_data(S,O,0.8)

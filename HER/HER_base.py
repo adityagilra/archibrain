@@ -20,21 +20,27 @@ class HER_base(HER_level):
 	# ------------
 	# U: 1-d array Ux1, response vector	
 
-	def __init__(self,l,S,P,alpha,beta,gam,elig_decay_const):
+	def __init__(self,l,S,P,alpha,alpha_mem,beta,gam,elig_decay_const,init='zero',dic_resp=None):
+		
+		np.random.seed(1234)
 		
 		if l!=0:
 			sys.exit("HER_base class called to level different than the first.")	
 		
-		super(HER_base,self).__init__(l,S,P,alpha,beta,elig_decay_const)
+		super(HER_base,self).__init__(l,S,P,alpha,alpha_mem,beta,elig_decay_const,init)
 		self.gamma = gam
 
 
-	def compute_error(self,p,o,resp_ind):
-
+	def compute_error(self,p,o,resp_ind,feedback=None):
+		#print(resp_ind)
+		#print(o)
 		a = np.zeros((np.shape(o)))			
 		a[0,(2*resp_ind):(2*resp_ind+2)] = 1
-
+		#a[0,2*resp_ind+feedback] = 1
+		#a = np.ones((np.shape(o)))
+		
 		err = a*(o-p)
+
 		return err, a
 
 
@@ -49,11 +55,11 @@ class HER_base(HER_level):
 		# response probability p_U obtained with softmax 			
 		p_U = np.exp(self.gamma*U)
 		p_U = p_U/np.sum(p_U)	
-		#print('Response Probability Vector: ', np.transpose(p_U))
 
 		# response selection
 		p_cum = 0
 		random_value = np.random.random()
+		#print('Response Probability Vector: ', np.transpose(p_U),' (',random_value,')')
 		for i,p_u in enumerate(p_U): 	
 			if (random_value <= (p_u + p_cum)):		
 				resp_ind = i

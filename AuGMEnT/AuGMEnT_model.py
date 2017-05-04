@@ -49,6 +49,7 @@ class AuGMEnT():
 			self.W_m = np.zeros((self.M,self.A))
 			self.W_r_back = np.zeros((self.A,self.R))
 			self.W_m_back = np.zeros((self.A,self.M))
+
 		elif init=='random':
 			self.V_r = 0.5*np.random.random((self.S,self.R)) - 0.25
 			self.V_m = 0.5*np.random.random((2*self.S,self.M)) - 0.25
@@ -114,13 +115,14 @@ class AuGMEnT():
 
 		# UPDATE weights
 		self.W_r += self.beta*RPE*self.Tag_w_r
-		self.W_m += self.beta*RPE*self.Tag_w_m
-
 		self.W_r_back += self.beta*RPE*np.transpose(self.Tag_w_r)
-		self.W_m_back += self.beta*RPE*np.transpose(self.Tag_w_m)
-
 		self.V_r += self.beta*RPE*self.Tag_v_r
-		self.V_m += self.beta*RPE*self.Tag_v_m
+
+		if self.M!=0:
+			self.W_m += self.beta*RPE*self.Tag_w_m
+			self.W_m_back += self.beta*RPE*np.transpose(self.Tag_w_m)
+			self.V_m += self.beta*RPE*self.Tag_v_m
+		
 
 
 	def reset_memory(self):
@@ -142,26 +144,32 @@ class AuGMEnT():
 	def update_tags(self,s_inst,s_trans,y_r,y_m,z,resp_ind):
 
 		# synaptic trace for memory units
-		self.sTRACE += np.tile(np.transpose(s_trans), (1,self.M))
+		if y_m is not None:
+			self.sTRACE += np.tile(np.transpose(s_trans), (1,self.M))
 
 		# synaptic tags for W (and W')
 		self.Tag_w_r += -self.alpha*self.Tag_w_r + np.dot(np.transpose(y_r), z)
-		self.Tag_w_m += -self.alpha*self.Tag_w_m + np.dot(np.transpose(y_m), z)
+		if y_m is not None:
+			self.Tag_w_m += -self.alpha*self.Tag_w_m + np.dot(np.transpose(y_m), z)
 
 		# synaptic tags for V using feedback propagation and synaptic traces
 		self.Tag_v_r += -self.alpha*self.Tag_v_r + np.dot(np.transpose(s_inst), y_r*(1-y_r)*self.W_r_back[resp_ind,:] )
-		self.Tag_v_m += -self.alpha*self.Tag_v_m + self.sTRACE*y_m*(1-y_m)*self.W_m_back[resp_ind,:]
+		if y_m is not None:		
+			self.Tag_v_m += -self.alpha*self.Tag_v_m + self.sTRACE*y_m*(1-y_m)*self.W_m_back[resp_ind,:]
 
 
 	def feedforward(self,s_inst,s_trans):
 
 		y_r = act.sigmoid(s_inst, self.V_r)
 		#print('Cum = ',self.cumulative_memory)
-		y_m,self.cumulative_memory = act.sigmoid_acc(s_trans, self.V_m, self.cumulative_memory)
-
-		y_tot = np.concatenate((y_r, y_m),axis=1)
-		W_tot = np.concatenate((self.W_r, self.W_m),axis=0)
-		Q = act.linear(y_tot, W_tot)
+		if self.M!=0:
+			y_m,self.cumulative_memory = act.sigmoid_acc(s_trans, self.V_m, self.cumulative_memory)
+			y_tot = np.concatenate((y_r, y_m),axis=1)
+			W_tot = np.concatenate((self.W_r, self.W_m),axis=0)
+			Q = act.linear(y_tot, W_tot)
+		else:
+			y_m = None
+			Q = act.linear(y_r, self.W_r)
 
 		return y_r, y_m, Q
 
@@ -182,6 +190,10 @@ class AuGMEnT():
 		E = np.zeros((N_stimuli))
 		first = True
 		s_old = zero
+
+		correct = 0
+		convergence = False
+		conv_iter = np.array([0])	
 	
 		for n in np.arange(N_stimuli):
 
@@ -196,17 +208,20 @@ class AuGMEnT():
 				
 			s_inst = s
 			s_trans = self.define_transient(s_inst,s_old)
-			s_old = s			
+			s_old = s
+			s_print = self.dic_stim[repr(s.astype(int))]			
 			o = O_train[n:(n+1),:]
-
+			o_print = self.dic_resp[repr(o.astype(int))]
+ 
 			y_r,y_m,Q = self.feedforward(s_inst, s_trans)
 			resp_ind,P_vec = self.compute_response(Q)
 			q = Q[0,resp_ind]
+			r_print = self.dic_resp[repr(resp_ind)]
 	
 			z = np.zeros(np.shape(Q))
 			z[0,resp_ind] = 1
 
-			print('ITER: ',n+1,'\t STIM: ',self.dic_stim[repr(s.astype(int))],'\t OUT: ',self.dic_resp[repr(o)],'\t RESP: ', self.dic_resp[repr(resp_ind)],'\t\t Q: ',Q)
+			print('ITER: ',n+1,'\t STIM: ',s_print,'\t OUT: ',o_print,'\t RESP: ', r_print,'\t\t Q: ',Q)
 			if verbose:
 
 				print(s_inst, s_trans)
@@ -227,13 +242,19 @@ class AuGMEnT():
 				self.update_weights(r,q,q_old)
 			self.update_tags(s_inst,s_trans,y_r,y_m,z,resp_ind)
 			
-			if self.dic_resp[repr(resp_ind)]!=self.dic_resp[repr(o)]:
+			if r_print!=o_print:
 				r = self.rew_neg
 				E[n] = 1
+				correct = 0
 			else: 
-				r = self.rew_pos			
+				r = self.rew_pos
+				correct += 1			
 			q_old = q
 
+
+			if correct==1000 and convergence==False:
+				conv_iter = np.array([n]) 
+				convergence = True
 
 			# STEP OFF
 			s_inst = zero
@@ -242,7 +263,7 @@ class AuGMEnT():
 			s_old = s_inst
 
 			y_r, y_m, Q = self.feedforward(s_inst,s_trans)
-			resp_ind,P_vec = self.compute_response(Q,gain)
+			resp_ind,P_vec = self.compute_response(Q)
 			q = Q[0,resp_ind]
 			z = np.zeros(np.shape(Q))
 			z[0,resp_ind] = 1
@@ -272,7 +293,10 @@ class AuGMEnT():
 				r = self.rew_pos			
 			q_old = q
 
-		return E
+		if convergence == True:
+			print('SIMULATION MET CRITERION AT ITERATION', conv_iter)
+
+		return E,conv_iter
 
 
 	def try_again(self,s_i,s_t,o_print,r,q_old,phase):
@@ -283,6 +307,7 @@ class AuGMEnT():
 		z[0,resp_ind] = 1
 		r_print = self.dic_resp[repr(resp_ind)]
 
+		print(r)
 		self.update_weights(r,q,q_old)					
 		self.update_tags(s_i,s_t,y_r,y_m,z,resp_ind)
 		
@@ -291,7 +316,8 @@ class AuGMEnT():
 
 		if phase=='fix':
 			if o_print!=r_print:
-				print('Negative reward!')
+				if self.rew_neg!=0:
+					print('Negative reward!')
 				r = self.rew_neg
 				resp = False		# no fixation
 			else: 	
@@ -299,26 +325,33 @@ class AuGMEnT():
 				r = 0	
 
 		if phase=='go':
+			if r_print!='F':
+				resp = True	
 			if o_print!=r_print:
-				print('Negative reward!')
-				r = self.rew_neg
-				if r_print!='F':
-					resp = True		
+				if self.rew_neg!=0:
+					print('Negative reward!')
+				r = self.rew_neg	
 			else: 
-				print('Positive reward!')
-				r = self.rew_pos	
-				resp = True
+				if self.rew_pos!=0:
+					print('Positive reward!')
+				r = 1.5*self.rew_pos	
+
+		q_old = q
 
 		return r,q_old,resp	
 
 
 
-	def training_saccade(self,S_train,O_train,reset_case,verbose=False):
+	def training_saccade(self,N_trial,S_train,O_train,reset_case,verbose=False,shape_factor=0.2):
 
 		N_stimuli = np.shape(S_train)[0]
 		zero = np.zeros((1,self.S))
 		zerozero = np.concatenate((zero,zero),axis=1)
 		s_old = zero
+
+		E_fix = np.zeros(N_trial)
+		E_go = np.zeros(N_trial)
+		tr = -1
 
 		phase = 'start'
 		fix = 0
@@ -327,6 +360,26 @@ class AuGMEnT():
 		abort = False
 		resp = False
 	
+		cue_trial = None
+		convergence = False
+		conv_iter = np.array([0])
+
+
+		trial_PL = np.zeros(50)
+		trial_PR = np.zeros(50)
+		trial_AL = np.zeros(50)
+		trial_AR = np.zeros(50)	
+
+		num_PL = 0
+		num_PR = 0
+		num_AL = 0
+		num_AR = 0
+
+		prop_PL = 0
+		prop_PR = 0
+		prop_AL = 0
+		prop_AR = 0
+
 		for n in np.arange(N_stimuli):	
 			
 			if abort==True and jump!=0:
@@ -348,17 +401,22 @@ class AuGMEnT():
 					self.reset_memory()
 					self.reset_tags()
 					phase = 'start'
+					r = None
+					tr += 1
+					print('TRIAL N.',tr)
+
 				elif  phase=='start' and (s_print=='P' or s_print=='A'):   	# fixation mark appers
 					phase = 'fix'	
 					num_fix = 0
 					attempts = 0
 				elif (s_print=='AL' or s_print=='AR' or s_print=='PL' or s_print=='PR'): 	# location cue
+					cue_trial = s_print
 					phase = 'cue'
 				elif (s_print=='P' or s_print=='A') and phase=='cue':	   	# memory delay
 					phase = 'delay'
 				elif s_print=='empty' and phase=='delay':	 # go = solve task
 					phase = 'go'
-					num_attempts = 1
+					attempts = 0
 					resp = False
 
 				y_r,y_m,Q = self.feedforward(s_inst, s_trans)
@@ -396,30 +454,36 @@ class AuGMEnT():
 	
 				self.update_tags(s_inst,s_trans,y_r,y_m,z,resp_ind)
 
+				if phase=='cue' and phase!='delay':
+					r = 0
 				if phase=='fix':
 					attempts+=1
 					if o_print!=r_print:
-						print('Negative reward!')
+						if self.rew_neg!=0:
+							print('Negative reward!')
 						r = self.rew_neg
 						num_fix = 0    # no fixation	
 					else: 
-						num_fix+=1     # fixation
+						num_fix += 1     # fixation
 						if num_fix==2:
-							print('Positive reward!')
-							r = self.rew_pos		
+							if self.rew_pos!=0:
+								print('Positive reward!')
+							r = shape_factor*self.rew_pos		
 
-				if phase=='go':
+				elif phase=='go':
+					if r_print!='F':
+						resp = True
 					if o_print!=r_print:
-						print('Negative reward!')
-						r = self.rew_neg
-						if r_print!='F':
-							resp = True		
+						if self.rew_neg!=0:
+							print('Negative reward!')
+						r = self.rew_neg 		
 					else: 
-						print('Positive reward!')
-						r = self.rew_pos	
-						resp = True				
+						if self.rew_pos!=0:
+							print('Positive reward!')
+						r = 1.5*self.rew_pos					
 
 				q_old = q
+				
 				if phase=='fix' and num_fix<2 and attempts==2:
 					while num_fix<2 and attempts<10:
 						r,q_old,fix = self.try_again(s_inst,zerozero,o_print,r,q_old,phase)
@@ -429,20 +493,72 @@ class AuGMEnT():
 						else:
 							num_fix += 1
 							if num_fix==2:
-								print('Positive reward!')
-								r=self.rew_pos
-					if attempts==10 and r!=self.rew_pos:
-						print('No fixation. ABORT')
-						abort = True
-						jump = 4  
+								if self.rew_pos!=0:
+									print('Positive reward!')
+								r=shape_factor*self.rew_pos
+					if attempts==10:
+						E_fix[tr] = 1 	
+						E_go[tr] = 1		# automatically also go fails
+						if shape_factor!=0:
+							print('No fixation. ABORT')
+							abort = True
+							jump = 4  # four steps to skip before next trial
 
 				if phase=='go' and resp==False:
 					attempts = 1
 					while resp==False and attempts<8:
 						r,q_old,resp = self.try_again(s_inst,zerozero,o_print,r,q_old,phase)
 						attempts += 1
+						if attempts==8 and resp==False:
+							E_go[tr] = 1
+
 				if resp==True:
+					if r==self.rew_neg:
+						E_go[tr] = 1
 					r,q_old,resp = self.try_again(s_inst,zerozero,o_print,r,q_old,phase)
+					resp = False
+				
+				if phase=='go':
+
+					if cue_trial=='PL':
+						num_PL += 1
+						if r_print == o_print:
+							trial_PL[(num_PL-1) % 50] = 1
+						else:
+							trial_PL[(num_PL-1) % 50] = 0
+						prop_PL = np.mean(trial_PL)
+
+					if cue_trial=='PR':
+						num_PR += 1
+						if r_print == o_print:
+							trial_PR[(num_PR-1) % 50] = 1
+						else:
+							trial_PR[(num_PR-1) % 50] = 0
+						prop_PR = np.mean(trial_PR)
+
+					if cue_trial=='AL':
+						num_AL += 1
+						if r_print == o_print:
+							trial_AL[(num_AL-1) % 50] = 1
+						else:
+							trial_AL[(num_AL-1) % 50] = 0
+						prop_AL = np.mean(trial_AL)
+
+					if cue_trial=='AR':
+						num_AR += 1
+						if r_print == o_print:
+							trial_AR[(num_AR-1) % 50] = 1	
+						else:
+							trial_AR[(num_AR-1) % 50] = 0
+						prop_AR = np.mean(trial_AR)
+
+
+					if convergence==False and prop_PL>=0.9 and prop_PR>=0.9 and prop_AL>=0.9 and prop_AR>=0.9:
+						convergence = True
+						conv_iter = np.array([tr])
+						#gt = 'max'
+
+		return E_fix,E_go,conv_iter
 						
 				
 
@@ -463,6 +579,8 @@ class AuGMEnT():
 
 		self.reset_memory()
 
+		self.epsilon = 0
+
 		for n in np.arange(N_stimuli):
 
 			s = S_test[n:(n+1), :]
@@ -475,22 +593,23 @@ class AuGMEnT():
 			s_trans = self.define_transient(s_inst,s_old)
 			o = O_test[n:(n+1), :]
 			s_old = s
+			s_print = self.dic_stim[repr(s.astype(int))]
 
 			y_r, y_m, Q = self.feedforward(s_inst,s_trans)
 			resp_ind,P_vec = self.compute_response(Q)
 
-			o_print = self.dic_resp[repr(o)]
+			o_print = self.dic_resp[repr(o.astype(int))]
 			r_print = self.dic_resp[repr(resp_ind)]
 
 			if r_print==o_print:
 					corr+=1
 			else:
-				print('TEST SAMPLE N.',n+1,'\t',self.dic_stim[repr(s.astype(int))],'\t',o_print,'\t',r_print,'\tQ: ',Q,'\tP:',P_vec,'\n')
+				print('TEST SAMPLE N.',n+1,'\t',s_print,'\t',o_print,'\t',r_print,'\tQ: ',Q,'\tP:',P_vec,'\n')
 
 			if (binary):
 
 				if (verbose):
-					print('TEST SAMPLE N.',n+1,'\t',self.dic_stim[repr(s.astype(int))],'\t',o_print,'\t',r_print,'\n')
+					print('TEST SAMPLE N.',n+1,'\t',s_print,'\t',o_print,'\t',r_print,'\n')
 
 				if (o_print==RESP_list[0] and r_print==RESP_list[0]):
 					Feedback_table[0,0] += 1
@@ -527,6 +646,8 @@ class AuGMEnT():
 		corr_fix = 0
 		N_go = 0	
 		corr_go = 0
+
+		self.epsilon = 0
 		
 		for n in np.arange(N_stimuli):	
 			

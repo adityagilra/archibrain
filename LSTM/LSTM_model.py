@@ -4,11 +4,10 @@
 ## DATE: 11.04.2017
 
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout, LSTM
+from keras.layers import Dense, Activation, LSTM
 from keras import backend as K
 from keras.regularizers import l2
-from keras.optimizers import SGD
-from keras.engine.topology import Layer, Merge
+from keras.optimizers import SGD,Adam
 import numpy as np
 
 class LSTM_arch():
@@ -20,8 +19,10 @@ class LSTM_arch():
 	# O - number of the output units
 	# learn_rate - learning rate
 
-	def __init__(self,S,H,O,learn_rate,dic_stim=None,dic_resp=None):
+	def __init__(self,S,H,O,learn_rate,batch_size=1,dt=1,dic_stim=None,dic_resp=None):
 
+		np.random.seed(1234)		
+	
 		self.S = S
 		self.H = H
 		self.O = O
@@ -29,37 +30,160 @@ class LSTM_arch():
 		self.dic_stim = dic_stim
 		self.dic_resp = dic_resp
 
-		# LSTM model
-		self.model = Sequential()
-		self.model.add(LSTM(output_dim=self.H, input_dim=self.S, activation='sigmoid'))
-		self.model.add(Dense(output_dim=self.O, init='zero', activation='sigmoid'))
-		self.model.compile(loss='categorical_crossentropy', optimizer=SGD(lr=learn_rate, momentum=0.0, decay=0.0, nesterov=False), metrics=['accuracy'])
+		self.b_sz = batch_size
+		self.time_steps = dt
+
+		# LSTM model with stateful
+		self.LSTM = Sequential()
+		self.LSTM.add(LSTM(batch_input_shape=(self.b_sz,self.time_steps,self.S), units=self.H, activation='sigmoid',stateful=True))
+		self.LSTM.add(Dense(units=self.O, activation='softmax'))
+		self.LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 
-	def training(self,S_train,O_train,reset_cond=None,verbose=1):
+	def training(self,S_train,O_train,task,ep=3):
+
+		#self.LSTM.fit(S_train, O_train, epochs=ep, batch_size=self.b_sz, shuffle=False)	
 
 		N = np.shape(S_train)[0]
-		
-		for n in np.arange(N):
-			s = S_train[n:(n+1),:]
-			o = O_train[n:(n+1),:]
-			
-			s_print = self.dic_stim[repr(np.reshape(s,(1,-1)).astype(int))]
-			o_print = self.dic_resp[repr(np.reshape(o,(1,-1)).astype(int))]
-			#if s_print in reset_cond:				
-			#	print('RESET')					# does LSTM need of manual RESETTING?
-			#	self.model.reset_states()
-			if verbose:
-				print('ITER ',n,'\t S: ',s_print,'O: ',o_print)
+		convergence = False
+		E = np.zeros((N))
+		conv_iter = np.array([0])
 
-			self.model.fit(s,o,nb_epoch=1)				
-		
+		if task=='12AX':
+			correct = 0
+			conv2 = False
+			conv_iter_2 = np.array([0]) 
 
-	def test(self,S_test,O_test,reset_cond=None,verbose=1):
+		if task=='saccade':
+
+			trial_PL = np.zeros(50)
+			trial_PR = np.zeros(50)
+			trial_AL = np.zeros(50)
+			trial_AR = np.zeros(50)	
+
+			num_PL = 0
+			num_PR = 0
+			num_AL = 0
+			num_AR = 0
+
+			prop_PL = 0
+			prop_PR = 0
+			prop_AL = 0
+			prop_AR = 0				
+
+		for e in np.arange(ep):
+
+			self.LSTM.reset_states()
+
+			for n in np.arange(N):
+
+				s = S_train[n:(n+1),:,:]				
+				o = O_train[n:(n+1),:]
+
+				self.LSTM.fit(s, o, epochs=1, batch_size=self.b_sz, shuffle=False)
+
+				r = self.LSTM.predict(s,batch_size=self.b_sz)
+				resp_ind = np.argmax(r)
+
+				o_print = self.dic_resp[repr(o.astype(int))]
+				r_print = self.dic_resp[repr(resp_ind)]	
+
+				if task=='12AX':
+	
+					s = np.reshape(s[0,self.time_steps-1,:], (1,-1))
+					s_print = self.dic_stim[repr(s.astype(int))]
+
+					if r_print==o_print:
+						correct += 1
+					else:
+						correct = 0
+						E[n] += 1
+					
+					if conv2==False and correct==2*25*6:
+						conv2 = True
+						conv_iter_2 = np.array([n]) 
+
+					if correct==1000 and convergence==False:
+						convergence = True
+						conv_iter = np.array([n])
+						break
+				
+				if task=='saccade':
+
+					s_fix = np.reshape(s[0,1,:], (1,-1))
+					s_fix = self.dic_stim[repr(s_fix.astype(int))]
+
+					s_cue = np.reshape(s[0,2,:], (1,-1))
+					s_cue = self.dic_stim[repr(s_cue.astype(int))]
+
+					if s_fix=='P' and s_cue=='L':
+						print('PL')
+						num_PL += 1
+						if r_print == o_print:
+							trial_PL[(num_PL-1) % 50] = 1
+						else:
+							trial_PL[(num_PL-1) % 50] = 0
+							E[n] = 1
+						prop_PL = np.mean(trial_PL)
+
+					if s_fix=='P' and s_cue=='R':
+						print('PR')
+						num_PR += 1
+						if r_print == o_print:
+							trial_PR[(num_PR-1) % 50] = 1
+						else:
+							trial_PR[(num_PR-1) % 50] = 0
+							E[n] = 1
+						prop_PR = np.mean(trial_PR)
+
+					if s_fix=='A' and s_cue=='L':
+						print('AL')
+						num_AL += 1
+						if r_print == o_print:
+							trial_AL[(num_AL-1) % 50] = 1
+						else:
+							trial_AL[(num_AL-1) % 50] = 0
+							E[n] = 1
+						prop_AL = np.mean(trial_AL)
+
+					if s_fix=='A' and s_cue=='R':
+						print('AR')
+						num_AR += 1
+						if r_print == o_print:
+							trial_AR[(num_AR-1) % 50] = 1	
+						else:
+							trial_AR[(num_AR-1) % 50] = 0
+							E[n] = 1
+						prop_AR = np.mean(trial_AR)
+
+					if convergence==False and prop_PL>=0.9 and prop_PR>=0.9 and prop_AL>=0.9 and prop_AR>=0.9:
+						convergence = True
+						conv_iter = np.array([n])
+
+		if task=='12AX':
+
+			if conv2==True:
+				print('SIMULATION MET (LENIENT) CRITERION AT ITERATION ',conv_iter_2)
+			if convergence==True:
+				print('SIMULATION MET (HARD) CRITERION AT ITERATION ',conv_iter)
+		
+			return E, conv_iter, conv_iter_2
+
+		if task=='saccade':
+
+			if convergence==True:
+				print('SIMULATION MET CRITERION AT ITERATION ',conv_iter)
+
+			return E, conv_iter
+								
+
+
+									
+
+	def test(self,S_test,O_test,verbose=1):
 
 		N = np.shape(S_test)[0]
 		binary = (self.O==2)
-		R = self.model.predict(S_test)
 		
 		Feedback_table = np.zeros((2,2))
 
@@ -67,11 +191,17 @@ class LSTM_arch():
 		RESP_list = np.unique(RESP_list)
 		RESP_list.sort()
 
-		for n in np.arange(N):
+		#scores = LSTM.evaluate(S_test,O_test,batch_size=self.b_sz)
+		#print('Keras Evaluation:\n', scores)
 
-			s = np.reshape(S_test[n:(n+1),:],(1,-1))
+		R = self.LSTM.predict(S_test,batch_size=self.b_sz)
+
+		for n in np.arange(N):
+			
+			s = S_test[n:(n+1),self.time_steps-1,:]
+			r = R[n]
+			s = np.reshape(s,(1,-1))
 			o = np.reshape(O_test[n:(n+1),:],(1,-1))
-			r = R[n,:]
 			resp_ind = np.argmax(r)
 			s_print = self.dic_stim[repr(s.astype(int))]
 			o_print = self.dic_resp[repr(o.astype(int))]
@@ -95,93 +225,4 @@ class LSTM_arch():
 			print("PERFORMANCE TABLE (output vs. response):\n",Feedback_table)
 		
 		corr = Feedback_table[0,0] + Feedback_table[1,1]
-		print("Percentage of correct predictions: ", 100*corr/N) 			
-
-
-
-	def training_saccade(self,S_train,O_train,reset_case,verbose=False):
-
-		N_stimuli = np.shape(S_train)[0]
-		zero = np.zeros((1,self.S))
-		s_old = zero
-
-		phase = 'start'
-		fix = 0
-		delay = 0
-		r = None 
-		abort = False
-		resp = False
-	
-		for n in np.arange(N_stimuli):	
-			
-			if abort==True and jump!=0:
-				jump-=1
-				if jump==0:
-					abort = False
-			else:
-				s = S_train[n:(n+1),:]
-				o = O_train[n:(n+1),:]
-				s_print = self.dic_stim[repr(s.astype(int))]
-				o_print = self.dic_resp[repr(o.astype(int))]
-				s_inst = s
-				s_trans = self.define_transient(s_inst, s_old)
-				s_old = s_inst
-							
-				if s_print=='empty' and phase!='delay':			# empty screen, begin of the trial
-					phase = 'start'
-				elif  phase=='start' and (s_print=='P' or s_print=='A'):   	# fixation mark appers
-					phase = 'fix'	
-					num_fix = 0
-					attempts = 0
-				elif (s_print=='AL' or s_print=='AR' or s_print=='PL' or s_print=='PR'): 	# location cue
-					phase = 'cue'
-				elif (s_print=='P' or s_print=='A') and phase=='cue':	   	# memory delay
-					phase = 'delay'
-				elif s_print=='empty' and phase=='delay':	 # go = solve task
-					phase = 'go'
-					num_attempts = 1
-					resp = False
-
-				if o_print!='None':			
-					r_print = self.dic_resp[repr(resp_ind)]
-					print('ITER: ',n+1,'-',phase,'\t STIM: ',s_print,'\t OUT: ',o_print,'\t RESP: ', r_print,'\t\t Q: ',Q)
-				else:
-					r_print = 'None'
-					print('ITER: ',n+1,'-',phase,'\t STIM: ',s_print)
-				
-				
-				if phase=='fix':
-					attempts+=1
-					if o_print!=r_print:
-						num_fix = 0    # no fixation	
-					else: 
-						num_fix+=1     # fixation		
-
-				if phase=='go':
-					if o_print!=r_print:
-						if r_print!='F':
-							resp = True		
-					else: 
-						resp = True				
-
-				if phase=='fix' and num_fix<2 and attempts==2:
-					while num_fix<2 and attempts<10:
-						fix = self.try_again(s,o_print,phase)
-						attempts += 1
-						if fix==False:
-							num_fix = 0
-						else:
-							num_fix += 1
-					if attempts==10 and r!=self.rew_pos:
-						print('No fixation. ABORT')
-						abort = True
-						jump = 4  
-
-				if phase=='go' and resp==False:
-					attempts = 1
-					while resp==False and attempts<8:
-						resp = self.try_again(s,o_print,phase)
-						attempts += 1
-				if resp==True:
-					resp = self.try_again(s,o_print,phase)
-						
+		print("Percentage of correct predictions: ", 100*corr/N) 									

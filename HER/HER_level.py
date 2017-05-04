@@ -43,19 +43,26 @@ class HER_level():
 	#   problem(C1,C2) the prediction/ouput will have the form 
 	#   [C1_corr, C1_wrong, C2_corr, C2_wrong]
 	
-	def __init__(self,l,S,P,alpha,beta,elig_decay_const):
+	def __init__(self,l,S,P,alpha,alpha_mem,beta,elig_decay_const,init='zero'):
 		
 		self.S = S
 		self.P = P
 		self.level = l
 		self.alpha = alpha
+		self.alpha_mem = alpha_mem
 		self.beta = beta
 		self.elig_decay_const = elig_decay_const
 
+		np.random.seed(1234)
+
 		self.r = None
 		
-		self.X = np.zeros((self.S,self.S))
-		self.W = np.zeros((self.S,self.P))
+		if init == 'zero':
+			self.X = np.zeros((self.S,self.S))
+			self.W = np.zeros((self.S,self.P))
+		elif init =='random':
+			self.X = 0.2*np.random.random((self.S,self.S))-0.1
+			self.W = 0.2*np.random.random((self.S,self.P))-0.1			
 
 	def empty_memory(self):
 		self.r = None
@@ -64,26 +71,40 @@ class HER_level():
 	def memory_gating(self,s,bias=0,gate='softmax'):			
 		
 		if (self.r is None):
-			self.r = s	
+			self.r = s
 		else:
-			v = act.linear(s,np.transpose(self.X))
+				
+			#v = act.linear(s,np.transpose(self.X))
+			v = act.linear(s,self.X)
+
 			v_i = v[np.where(s==1)]
 			v_j = v[np.where(self.r==1)]
 
-			random_value = np.random.random()
+			if v_i==v_j:
+				random_bin = np.random.choice(2,1)
+				# print('V_i: ',v_i,'\tV_j: ',v_j,'\tStoring: ',random_bin)
+				if random_bin == 0:
+					self.r = s   
+			
 			if(gate=='softmax'):
+				random_value = np.random.random()
 				p_storing = ( np.exp(self.beta*v_i)+bias )/( np.exp(self.beta*v_i)+np.exp(self.beta*v_j)+bias )
-				#print(v_i,'\t',v_j,'\t',p_storing,'\t',random_value)
-				if math.isnan(p_storing)==False:    # because of the exponential and beta=12 , the probability value could be a NaN
+				# print('V_i: ',v_i,'\tV_j: ',v_j,'\tP_storing:',p_storing)
+				
+				if math.isnan(p_storing)==False:    # because of the exponential and beta=12, the probability value could be a NaN
 					if random_value<=p_storing:
 						self.r = s 
-				else:        # if the storing probability is NaN I adopt the maximum criterion
+				else:        
+					# if the storing probability is NaN, I adopt the maximum criterion
 					if v_i>=v_j:
 						self.r = s 					
 			elif(gate=='max'):
-				if v_i>=v_j:
-					self.r = s 
-		return self.r                      
+				if v_i>v_j:
+					self.r = s
+
+			elif(gate=='free'):
+				self.r = s  
+                   
 
 	def compute_error(self, p, o, a):
 		return a*(o-p)
@@ -93,6 +114,5 @@ class HER_level():
 		return np.reshape(o_prime,(1,-1))
 
 	def top_down(self, P_err):
-		#self.P_prime = np.transpose(np.reshape(P_err,(-1,self.S)))
 		self.P_prime = np.reshape(P_err,(self.S,-1))
 

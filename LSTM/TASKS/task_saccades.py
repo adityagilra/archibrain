@@ -24,45 +24,39 @@ import numpy as np
 def build_trial(tr):
 	
 	# start
-	S = np.zeros((1,4)) # empty screen
-	O = np.zeros((1,3)) # no action
+	S = np.array([[1,0,0,0,0]]) # empty screen
+	O = np.zeros((1,2)) # no action
 	
 	# fix
 	if tr==0 or tr==1:
-		S = np.concatenate((S,np.array([[1,0,0,0]])))  # Pro-saccade trials (black)
-		S = np.concatenate((S,np.array([[1,0,0,0]])))  
+		S = np.concatenate((S,np.array([[0,1,0,0,0]])))  # Pro-saccade trials (black)
 	else:
-		S = np.concatenate((S,np.array([[0,1,0,0]])))  # Anti-saccade trials (white)
-		S = np.concatenate((S,np.array([[0,1,0,0]]))) 
-	O = np.concatenate((O,np.array([[0,1,0]])))
-	O = np.concatenate((O,np.array([[0,1,0]])))
+		S = np.concatenate((S,np.array([[0,0,1,0,0]])))  # Anti-saccade trials (white)
+	O = np.concatenate((O,np.array([[0,0]])))
 
 	# cue
-	if tr==0:
-		S = np.concatenate((S,np.array([[1,0,1,0]])))  # Pro-saccade + Left (PL)
-	elif tr==1:
-		S = np.concatenate((S,np.array([[1,0,0,1]])))  # Pro-saccade + Right (PR)
-	elif tr==2:
-		S = np.concatenate((S,np.array([[0,1,1,0]])))  # Anti-saccade + Left (AL)
-	elif tr==3:
-		S = np.concatenate((S,np.array([[0,1,0,1]])))  # Anti-saccade + Right (AR)
-	O = np.concatenate((O,np.zeros((1,3))))	 # no action
+	if tr==0 or tr==2:
+		S = np.concatenate((S,np.array([[0,0,0,1,0]])))  # Left (L)
+	elif tr==1 or tr==3:
+		S = np.concatenate((S,np.array([[0,0,0,0,1]])))  # Right (R)
+	O = np.concatenate((O,np.zeros((1,2))))	 # no action
 
 	# delay (two timesteps)
 	if tr==0 or tr==1:
-		S = np.concatenate((S,np.array([[1,0,0,0]]),np.array([[1,0,0,0]])))  
+		S = np.concatenate((S,np.array([[0,1,0,0,0]]),np.array([[0,1,0,0,0]])))  
 	else:
-		S = np.concatenate((S,np.array([[0,1,0,0]]),np.array([[0,1,0,0]])))  
-	O = np.concatenate((O,np.array([[0,0,0]]),np.array([[0,0,0]])))  # no action
+		S = np.concatenate((S,np.array([[0,0,1,0,0]]),np.array([[0,0,1,0,0]])))  
+	O = np.concatenate((O,np.array([[0,0]]),np.array([[0,0]])))  # no action
 
 	# go
-	S = np.concatenate((S,np.zeros((1,4)) ))  # empty screen
+	S = np.concatenate((S,np.array([[1,0,0,0,0]]) ))  # empty screen
 	if tr==0 or tr==3:
-		O = np.concatenate((O, np.array([[1,0,0]])) ) # L = response for PL or AR 
+		O = np.concatenate((O, np.array([[1,0]])) ) # L = response for PL or AR 
 	else:
-		O = np.concatenate((O, np.array([[0,0,1]])) )  # R = response for PR or AL
+		O = np.concatenate((O, np.array([[0,1]])) )  # R = response for PR or AL
 
 	return S, O
+
 
 
 # construction of the dataset
@@ -83,13 +77,24 @@ def data_construction(N=500,perc_training=0.8):
 		S_test = np.concatenate((S_test,S_tst))
 		O_test = np.concatenate((O_test,O_tst))
 
-	dic_stim = {'array([[0, 0, 0, 0]])':'empty',
-		    'array([[1, 0, 0, 0]])':'P',
-		    'array([[0, 1, 0, 0]])':'A',
-		    'array([[1, 0, 1, 0]])':'PL',
-		    'array([[1, 0, 0, 1]])':'PR',
-		    'array([[0, 1, 1, 0]])':'AL',
-		    'array([[0, 1, 0, 1]])':'AR'}
-	dic_resp =  {'array([[0, 0, 0]])':'None','array([[1, 0, 0]])':'L', 'array([[0, 1, 0]])':'F','array([[0, 0, 1]])':'R', '0':'L','1':'F','2':'R'}			
+	dic_stim = {'array([[1, 0, 0, 0, 0]])':'empty',
+		    'array([[0, 1, 0, 0, 0]])':'P',
+		    'array([[0, 0, 1, 0, 0]])':'A',
+		    'array([[0, 0, 0, 1, 0]])':'L',
+		    'array([[0, 0, 0, 0, 1]])':'R'}
+	dic_resp =  {'array([[1, 0]])':'L', 'array([[0, 1]])':'R', '0':'L','1':'R'}			
 
 	return S_train,O_train,S_test,O_test,dic_stim,dic_resp
+
+
+
+def data_modification_for_LSTM(S,O,dt=10):
+	
+	S_dim = np.shape(S)[1]
+
+	S_3D = np.reshape(S,(-1,dt,S_dim))
+
+	go_phase = dt + np.arange(np.shape(S_3D)[0])*dt -1
+	O_2 = O[go_phase,:]
+
+	return S_3D, O_2
