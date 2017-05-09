@@ -3,45 +3,49 @@
 ## AUTHOR: Marco Martinolli
 ## DATE: 07.03.2017
 
-from HER_level import HER_level
-from HER_base import HER_base
-from HER_model import HER_arch
-
 import numpy as np
 import matplotlib 
 import os
-import activations as act
 
 matplotlib.use('GTK3Cairo') 
 from matplotlib import pyplot as plt
 import pylab
 import gc
-from sys import version_info
 
-task_dic ={'0':'task 1_2', 
-           '1':'task AX_CPT',
-	   '2':'task 12 AX-S', 
-	   '3':'task 12 AX', 
-	   '4':'saccade/antisaccade task'}
+import sys
+sys.path.append("..")
+sys.path.append("HER")
 
-py3 = version_info[0] > 2 # creates boolean value for test that Python major version > 2
-if py3:
-  task_selection = input("\nPlease select a task: \n\t 0: task 1_2 \n\t 1: task AX_CPT \n\t 2: task 12 AX-S\n\t 3: task 12 AX\n\t 4: saccade/antisaccade task\nEnter id number:  ")
-else:
-  task_selection = raw_input("\nPlease select a task: \n\t 0: task 1_2 \n\t 1: task AX_CPT \n\t 2: task 12 AX-S\n\t 3: task 12 AX\n\t 4: saccade/antisaccade task\nEnter id number:  ")
+from HER_level import HER_level
+from HER_base import HER_base
+from HER_model import HER_arch
+import activations as act
 
-print("\nYou have selected: ", task_dic[task_selection],'\n\n')
+
+def task_selector(task):
+	if(task == '0'):
+		HER_task_1_2()
+	elif(task == '1'):
+		HER_task_AX_CPT()
+	elif(task == '2'):
+		HER_task_1_2AX_S()
+	elif(task == '3'):
+		HER_task_1_2AX()
+	elif(task == '4'):
+		HER_task_saccades()
+	else:
+		print('The task is not valid for HER\n\n')
 
 
 #########################################################################################################################################
 #######################   TASK 1-2 
 #########################################################################################################################################
 
-if (task_selection=="0"):
+def HER_task_1_2():
 
 	from TASKS.task_1_2 import data_construction
 
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=4000, p1=0.7, p2=0.3, perc_training=0.8)
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=4000, p1=0.7, p2=0.3, training_perc=0.8, model='1')
 
 	## CONSTRUCTION OF BASE LEVEL OF HER ARCHITECTURE
 	S = np.shape(S_tr)[1]
@@ -67,15 +71,15 @@ if (task_selection=="0"):
 #######################   TASK AX CPT
 #########################################################################################################################################
 
-elif (task_selection=="1"):
-	
+def HER_task_AX_CPT():
+
 	from TASKS.task_AX_CPT import data_construction
 	task = 'AX-CPT'
 	np.random.seed(1234)
 
 	cues_vec = ['A','B','X','Y']
 	pred_vec = ['LC','LW','RC','RW']
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=40000, perc_target=0.2, perc_training=0.8)
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=40000, perc_target=0.2, perc_training=0.8, model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 2                      # number of levels (<= 3)
@@ -108,7 +112,7 @@ elif (task_selection=="1"):
 	HER = HER_arch(NL,S,P,learn_rate_vec,beta_vec,gamma,elig_decay_vec)
 
 	## TRAINING
-	data_folder = 'DATA'
+	data_folder = 'HER/DATA'
 	if do_training:
 		
 		HER.training(S_tr,O_tr,bias_vec,learn_rule_WM,elig_update,dic_stim,dic_resp,verb)
@@ -173,7 +177,7 @@ elif (task_selection=="1"):
 	
 	## PLOTS
 	# plot of the memory weights
-	image_folder = 'IMAGES'
+	image_folder = 'HER/IMAGES'
 	if do_weight_plots:
 		fig1 = plt.figure(figsize=(10*NL,8))
 		for l in np.arange(NL):
@@ -213,7 +217,7 @@ elif (task_selection=="1"):
 #######################   TASK 1-2 AX - S
 #########################################################################################################################################
 
-elif (task_selection=="2"):
+def HER_task_1_2AX_S():
 	
 	from TASKS.task_1_2AX_S import data_construction
 	
@@ -222,7 +226,7 @@ elif (task_selection=="2"):
 
 	cues_vec = ['1','2','AX','AY','BX','BY']
 	pred_vec = ['LC','LW','RC','RW']
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=100000, p_digit=0.1, p_wrong=0.15, p_correct=0.25, perc_training=0.9)
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=100000, p_digit=0.1, p_wrong=0.15, p_correct=0.25, perc_training=0.9, model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 2                       # number of levels (<= 3)
@@ -252,7 +256,7 @@ elif (task_selection=="2"):
 	HER = HER_arch(NL,S,P,learn_rate_vec,beta_vec,gamma,elig_decay_vec)
 
 	## TRAINING
-	data_folder='DATA'
+	data_folder='HER/DATA'
 	if do_training:
 		HER.training(S_tr,O_tr,learn_rule_WM,elig_update,dic_stim,dic_resp)
 			
@@ -283,7 +287,7 @@ elif (task_selection=="2"):
 
 	## PLOTS
 	# plot of the memory weights
-	image_folder = 'IMAGES'
+	image_folder = 'HER/IMAGES'
 	if do_weight_plots:
 		fig1 = plt.figure(figsize=(10*NL,8))
 		for l in np.arange(NL):
@@ -325,7 +329,7 @@ elif (task_selection=="2"):
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-elif (task_selection=="3"):
+def HER_task_1_2AX():
 	
 	from TASKS.task_1_2AX import data_construction
 	
@@ -338,7 +342,7 @@ elif (task_selection=="3"):
 	N = 8000
 	p_c = 0.5
 	p_tr = 0.8
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N,p_c,p_tr)
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N,p_c,p_tr,model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 3                       # number of levels (<= 3)
@@ -372,7 +376,7 @@ elif (task_selection=="3"):
 	HER.print_HER(False)
 
 	## TRAINING
-	data_folder='DATA'
+	data_folder='HER/DATA'
 	if do_training:
 		E,conv_iter = HER.training(S_tr,O_tr,bias_vec,learn_rule_WM,verb,gate)
 			
@@ -411,7 +415,7 @@ elif (task_selection=="3"):
 
 	## PLOTS
 	# plot of the memory weights
-	image_folder = 'IMAGES'
+	image_folder = 'HER/IMAGES'
 	fontTitle = 26
 	fontTicks = 22
 	fontLabel = 22
@@ -511,7 +515,7 @@ elif (task_selection=="3"):
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-elif (task_selection=="4"):
+def HER_task_saccades():
 	
 	from TASKS.task_saccades import data_construction
 	task = 'saccade'
@@ -522,7 +526,7 @@ elif (task_selection=="4"):
 
 	N_trial = 15000 
 	perc_tr = 0.8
-	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr)
+	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 3                       # number of levels (<= 3)
@@ -553,7 +557,7 @@ elif (task_selection=="4"):
 	#print(S_tr[:20,:])
 
 	## TRAINING
-	data_folder='DATA'
+	data_folder='HER/DATA'
 	N_training = np.around(N_trial*perc_tr).astype(int)
 	if do_training:
 
@@ -600,7 +604,7 @@ elif (task_selection=="4"):
 
 	## PLOTS
 	# plot of the memory weights
-	image_folder = 'IMAGES'
+	image_folder = 'HER/IMAGES'
 	fontTitle = 26
 	fontTicks = 22
 	fontLabel = 22
@@ -731,13 +735,3 @@ elif (task_selection=="4"):
 		if gate=='free':
 			savestr = image_folder+'/'+task+'_error_nomemory_go.png'		
 		figE_go.savefig(savestr)
-
-
-
-#########################################################################################################################################
-#########################################################################################################################################	
-
-else:
-	print("No task identified. Please, retry.")
-
-gc.collect()

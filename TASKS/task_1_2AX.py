@@ -10,21 +10,26 @@
 
 import numpy as np
 
-def preprocess_data(S,R):
+def preprocess_data(S, R, model=None):
 
 	leng = np.shape(S)[0]
-	num_stim = np.max(S)+1
-	S_new = np.zeros((leng,num_stim))
-	R_new = np.zeros((leng,2))
+	num_task = np.max(S)+1
+	S_new = np.zeros((leng,num_task))
 	seq = np.arange(leng)
 	
-	S_new[seq,S] = 1
-	R_new=np.where(R==0,[1,0],[0,1])		
+	if(model == '0' or model == '2'):
+		S_new[seq,S] = 1
+		R_new = np.where(R == 0, [1,0], [0,1])
+	elif(model == '1'):
+		S_new[seq,S] = 1
+		R_new = np.where(R == 0, [1,0,0,1], [0,1,1,0])
+	else:
+		raise TypeError	
 	
 	return S_new, R_new
 
 # construction of the dataset
-def subset_construction(N=500,p_target=0.5):
+def subset_construction(N=500, p_target=0.5, model=None):
 	np.random.seed(1234)		
 
 	p_wrong = (1-p_target)/7
@@ -34,9 +39,9 @@ def subset_construction(N=500,p_target=0.5):
 	RR = []
 
 	S_DIG = np.random.choice(np.arange(2), (N,1))
-	RANDOM_NUMBER_INNER_LOOPS = np.random.choice(np.arange(4),(N,1)) +1
+	RANDOM_NUMBER_INNER_LOOPS = np.random.choice(np.arange(4), (N,1)) +1
 	tot_number = np.sum(RANDOM_NUMBER_INNER_LOOPS)
-	RANDOM_PATTERNS = np.random.choice(np.arange(9),(tot_number,1), p=[p_targ,p_wrong,p_wrong, p_wrong,p_targ,p_wrong, p_wrong,p_wrong,p_wrong]) + 2
+	RANDOM_PATTERNS = np.random.choice(np.arange(9), (tot_number,1), p=[p_targ, p_wrong, p_wrong, p_wrong, p_targ, p_wrong, p_wrong, p_wrong, p_wrong]) + 2
 
 	cont = 0
 
@@ -152,19 +157,18 @@ def subset_construction(N=500,p_target=0.5):
 					RR.append(0)
 	RR = np.reshape(RR,(-1,1))	
 	
-	
 	# preprocess data to have the right format	
-	[S, O] = preprocess_data(SS,RR)
+	[S, O] = preprocess_data(SS, RR, model)
 	
 	return S,O
 
-def data_construction(N=500,p_c=0.5,p_tr=0.8):
+def data_construction(N=500, p_c=0.5, p_tr=0.8, model=None):
 	
 	N_tr = int(np.around(N*p_tr))	
 	
 	# data division in training and test subsets
-	[S_tr, O_tr] = subset_construction(N_tr,p_c)
-	[S_test, O_test] = subset_construction(N-N_tr,p_c)
+	[S_tr, O_tr] = subset_construction(N_tr, p_c, model)
+	[S_test, O_test] = subset_construction(N-N_tr, p_c, model)
 
 	dic_stim = {'array([[1, 0, 0, 0, 0, 0, 0, 0]])':'1',
 		    'array([[0, 1, 0, 0, 0, 0, 0, 0]])':'2',
@@ -175,7 +179,31 @@ def data_construction(N=500,p_c=0.5,p_tr=0.8):
 		    'array([[0, 0, 0, 0, 0, 1, 0, 0]])':'Y',
 		    'array([[0, 0, 0, 0, 0, 0, 0, 1]])':'Z'}
 	
-	dic_resp =  {'array([[1, 0]])':'L', 'array([[0, 1]])':'R',
-			'0':'L','1':'R'}			
+	if(model == '0' or model == '2'):
+		dic_resp =  {'array([[1, 0]])':'L', 'array([[0, 1]])':'R', '0':'L', '1':'R'}
+	elif(model == '1'):
+		dic_resp =  {'array([[1, 0, 0, 1]])':'L', 'array([[0, 1, 1, 0]])':'R', '0':'L', '1':'R'}
+	else:
+		raise TypeError	
 
-	return S_tr, O_tr, S_test, O_test, dic_stim, dic_resp	
+	return S_tr, O_tr, S_test, O_test, dic_stim, dic_resp
+
+
+def data_modification_for_LSTM(S,O,dt=10):
+	
+	S_dim = np.shape(S)[1] 	
+	sub_S = S[0:dt,:]
+	# print(np.shape(sub_S))
+
+	S_3D = np.reshape(sub_S,(1,dt,S_dim))
+	O_2 = O[(dt-1):dt,:]
+
+	for n in ((np.arange(np.shape(S)[0]-dt))+1):	
+
+		seq = S[n:(n+dt),:]
+		seq_3D = np.reshape(seq,(1, np.shape(seq)[0], np.shape(seq)[1]))	
+		S_3D = np.concatenate((S_3D,seq_3D),axis=0)	
+	
+		O_2 = np.concatenate((O_2,O[(n+dt-1):(n+dt),:]),axis=0)	
+
+	return S_3D, O_2

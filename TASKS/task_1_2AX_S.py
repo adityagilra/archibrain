@@ -10,7 +10,7 @@
 
 import numpy as np
 
-def preprocess_data(S,R,dic):
+def preprocess_data(S, R, dic, model=None):
 
 	leng = np.shape(S)[0]
 	num_task = np.max(S)+1
@@ -18,11 +18,16 @@ def preprocess_data(S,R,dic):
 	for i in np.arange(leng):
 		S_new[i] = dic[S[i,0]]
 	
-	R_new=np.where(R==0,[1,0,0,1],[0,1,1,0])		
+	if(model == '0' or model == '2'):
+		R_new = np.where(R == 0,[1,0],[0,1])
+	elif(model == '1'):
+		R_new = np.where(R == 0,[1,0,0,1],[0,1,1,0])
+	else:
+		raise TypeError		
 	
 	return S_new, R_new
 
-def subset_data(S,O,training_perc=0.8):
+def subset_data(S, O, training_perc=0.8, model=None):
 
 	sz = np.shape(O)[0]
 	idx = int(np.around(sz*training_perc))	
@@ -35,7 +40,15 @@ def subset_data(S,O,training_perc=0.8):
 	O_test = O[idx:, :]
 
 	# the test subset must starts with the digit correspondent to the first positive answer
-	ind_R = np.where((O_test==[0,1,1,0]).all(1))	
+	if(model == '0' or model == '2'):
+		ind_R = np.where((O_test==[0,1]).all(1))
+		O_test = np.concatenate([ [[1,0]],O_test ])
+	elif(model == '1'):
+		ind_R = np.where((O_test==[0,1,1,0]).all(1))
+		O_test = np.concatenate([ [[1,0,0,1]],O_test ])
+	else:
+		raise TypeError	
+
 	ind_first_R = ind_R[0][0]
 	
 	if(np.array_equiv(S_test[ind_first_R,:],[[0,0,1,0,0,0]])):
@@ -44,15 +57,17 @@ def subset_data(S,O,training_perc=0.8):
 	else:
 		# digit_to_insert = '2'
 		S_test = np.concatenate([ [[0,1,0,0,0,0]],S_test ])
-	O_test = np.concatenate([ [[1,0,0,1]],O_test ])
+	
 
-	return S_train,O_train,S_test,O_test
+	return S_train, O_train, S_test, O_test
 
 
 # construction of the dataset
-def data_construction(N=500,p_digit=0.05,p_wrong=0.225,p_correct=0.225,perc_training=0.8):
+def data_construction(N=500, p_digit=0.05, p_wrong=0.225, p_correct=0.225, perc_training=0.8, model=None):
 
 	cue_type = ['1', '2', 'AX', 'AY','BX','BY']
+
+	np.random.seed(1234)
 
 	SS = np.random.choice(np.arange(6), (N-1,1), p=[p_digit,p_digit,p_correct,p_wrong,p_wrong,p_correct]) 
 	SS = np.concatenate([np.random.choice(np.arange(2), (1,1), p=[0.5,0.5]), SS])	
@@ -78,14 +93,14 @@ def data_construction(N=500,p_digit=0.05,p_wrong=0.225,p_correct=0.225,perc_trai
 		    	1:np.array([0, 1, 0, 0, 0, 0]),
 		    	2:np.array([0, 0, 1, 0, 0, 0]),
 		    	3:np.array([0, 0, 0, 1, 0, 0]),
-			4:np.array([0, 0, 0, 0, 1, 0]),
-			5:np.array([0, 0, 0, 0, 0, 1])}	
-
+				4:np.array([0, 0, 0, 0, 1, 0]),
+				5:np.array([0, 0, 0, 0, 0, 1])}
+	
 	# preprocess data to have the right format	
-	[S, O] = preprocess_data(SS,RR,dic_building)
+	[S, O] = preprocess_data(SS, RR, dic_building, model)
 
 	# data division in training and test subsets
-	[S_tr, O_tr, S_test, O_test] = subset_data(S,O,0.8)
+	[S_tr, O_tr, S_test, O_test] = subset_data(S, O, 0.8, model)
 
 	dic_stim = {'array([[1, 0, 0, 0, 0, 0]])':'1',
 		    'array([[0, 1, 0, 0, 0, 0]])':'2',
@@ -93,6 +108,12 @@ def data_construction(N=500,p_digit=0.05,p_wrong=0.225,p_correct=0.225,perc_trai
 		    'array([[0, 0, 0, 1, 0, 0]])':'AY',
 		    'array([[0, 0, 0, 0, 1, 0]])':'BX',
 		    'array([[0, 0, 0, 0, 0, 1]])':'BY'}
-	dic_resp =  {'array([[1, 0, 0, 1]])':'L', 'array([[0, 1, 1, 0]])':'R',}			
 
-	return S_tr,O_tr,S_test,O_test,dic_stim,dic_resp
+	if(model == '0' or model == '2'):
+		dic_resp =  {'array([[1, 0]])':'L', 'array([[0, 1]])':'R', '0':'L', '1':'R'}
+	elif(model =='1'):
+		dic_resp =  {'array([[1, 0, 0, 1]])':'L', 'array([[0, 1, 1, 0]])':'R',}
+	else:
+		raise TypeError
+
+	return S_tr, O_tr, S_test, O_test, dic_stim, dic_resp

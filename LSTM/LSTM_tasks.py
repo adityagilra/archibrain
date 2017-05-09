@@ -3,8 +3,7 @@
 ## AUTHOR: Marco Martinolli
 ## DATE: 11.04.2017
 
-from LSTM_model import LSTM_arch
-
+import tensorflow as tf
 import numpy as np
 import matplotlib 
 matplotlib.use('GTK3Cairo') 
@@ -14,26 +13,28 @@ import pylab
 import gc 
 from keras.models import load_model
 import h5py
-from sys import version_info
 
-task_dic ={'0':'task 12-AX',
-	   '1':'saccade/anti-saccade task'}
+import sys
+sys.path.append("..")
+sys.path.append("LSTM")
 
-py3 = version_info[0] > 2 	# creates boolean value for test that Python major version > 2
-if py3:
-  task_selection = input("\nPlease select a task: \n\t 0: task 12-AX\n\t 1: saccade/anti-saccade task\n Enter id number:  ")
-else:
-  task_selection = raw_input("\nPlease select a task: \n\t 0: task 12-AX\n\t 1: saccade/anti-saccade task\n Enter id number:  ")
+from LSTM_model import LSTM_arch
 
-print("\nYou have selected: ", task_dic[task_selection],'\n\n')
 
+def task_selector(task):
+	if(task == '0'):
+		LSTM_task_1_2AX()
+	elif(task == '4'):
+		LSTM_task_saccades()
+	else:
+		print('The task is not valid for LSTM\n')
 
 
 #########################################################################################################################################
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-if (task_selection=="0"):
+def LSTM_task_1_2AX():
 
 	from TASKS.task_1_2AX import data_construction, data_modification_for_LSTM
 	task = '12-AX'
@@ -47,7 +48,7 @@ if (task_selection=="0"):
 	N_trial = 20000
 	perc_tr = 0.8
 	p_target = 0.5
-	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N_trial,p_target,perc_tr)
+	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N_trial,p_target,perc_tr,model='2')
 		
 	dt = 10	
 	S_train_3D,O_train = data_modification_for_LSTM(S_tr,O_tr,dt)
@@ -75,7 +76,7 @@ if (task_selection=="0"):
 	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
 	
 	## TRAINING
-	folder = 'DATA'
+	folder = 'LSTM/DATA'
 	N_trial=20000
 	if do_training:	
 
@@ -127,7 +128,7 @@ if (task_selection=="0"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'LSTM/IMAGES'
 	fontTitle = 26
 	fontTicks = 22
 	fontLabel = 22
@@ -185,7 +186,7 @@ if (task_selection=="0"):
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-if (task_selection=="1"):
+def LSTM_task_saccades():
 	
 	from TASKS.task_saccades import data_construction, data_modification_for_LSTM
 	task = 'saccade'
@@ -199,7 +200,7 @@ if (task_selection=="1"):
 	print('Dataset construction...')
 	N_trial = 20000 
 	perc_tr = 0.8
-	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr)
+	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='2')
 	dt = 6 # 6 phases: start,fix,cue,delay,delay,gp
 	S_train_3D,O_train = data_modification_for_LSTM(S_tr,O_tr,dt)
 	S_test_3D,O_test = data_modification_for_LSTM(S_tst,O_tst,dt)
@@ -225,7 +226,7 @@ if (task_selection=="1"):
 	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'LSTM/DATA'
 	if do_training:	
 
 		print('TRAINING...\n')	
@@ -264,7 +265,7 @@ if (task_selection=="1"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'LSTM/IMAGES'
 	
 	fontTitle = 26
 	fontTicks = 22

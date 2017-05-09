@@ -9,20 +9,25 @@
 
 import numpy as np
 
-def preprocess_data(S,R,dic):
+def preprocess_data(S, R, dic, model=None):
 
 	leng = np.shape(S)[0]
 	num_task = np.max(S)+1
-	S_new = np.zeros((leng,num_task.astype(int)))
+	S_new = np.zeros((leng, num_task.astype(int)))
 	for i in np.arange(leng):
 		S_new[i] = dic[S[i,0]]
 	
-	R_new=np.where(R==0,[1,0,0,1],[0,1,1,0])		
+	if(model == '0' or model == '2'):
+		R_new = np.where(R == 0,[1,0],[0,1])
+	elif(model == '1'):
+		R_new = np.where(R == 0,[1,0,0,1],[0,1,1,0])
+	else:
+		raise TypeError			
 	
 	return S_new, R_new
 
 
-def subset_data(S,O,training_perc=0.8):
+def subset_data(S, O, training_perc=0.8, model=None):
 
 	sz = np.shape(O)[0]
 	idx = int(np.around(sz*training_perc))	
@@ -40,13 +45,19 @@ def subset_data(S,O,training_perc=0.8):
 			S_test = np.concatenate([ [[1,0,0,0]],S_test ])
 		else:
 			S_test = np.concatenate([ [[0,1,0,0]],S_test ])
-		O_test = np.concatenate([ [[1,0,0,1]],O_test ])
 
-	return S_train,O_train,S_test,O_test
+		if(model == '0' or model == '2'):
+			O_test = np.concatenate([ [[1,0]],O_test ])
+		elif(model == '1'):
+			O_test = np.concatenate([ [[1,0,0,1]],O_test ])
+		else:
+			raise TypeError	
+
+	return S_train, O_train, S_test, O_test
 
 
 # construction of the dataset
-def data_construction(N=500,perc_target=0.2,perc_training=0.8):
+def data_construction(N=500, perc_target=0.2, perc_training=0.8, model=None):
 
 	if np.remainder(N,2)!=0:
 		N += 1
@@ -74,18 +85,21 @@ def data_construction(N=500,perc_target=0.2,perc_training=0.8):
 			RR[i]=1
 	
 	# preprocess data to have the right format	
-	[S, O] = preprocess_data(SS,RR,dic_building)
+	[S, O] = preprocess_data(SS, RR, dic_building, model)
 
 	# data division in training and test subsets
-	[S_tr, O_tr, S_test, O_test] = subset_data(S,O,0.8)
+	[S_tr, O_tr, S_test, O_test] = subset_data(S, O, 0.8, model)
 
 	dic_stim = {'array([[1, 0, 0, 0]])':'A',
 		    'array([[0, 1, 0, 0]])':'B',
 		    'array([[0, 0, 1, 0]])':'X',
 		    'array([[0, 0, 0, 1]])':'Y'}
-	dic_resp =  {'array([[1, 0, 0, 1]])':'L', 
-			'array([[0, 1, 1, 0]])':'R',
-			'0':'L',
-			'1':'R'}			
 
-	return S_tr,O_tr,S_test,O_test,dic_stim,dic_resp
+	if(model == '0' or model == '2'):
+		dic_resp =  {'array([[1, 0]])':'L', 'array([[0, 1]])':'R', '0':'L', '1':'R'}	
+	elif(model == '1'):
+		dic_resp =  {'array([[1, 0, 0, 1]])':'L', 'array([[0, 1, 1, 0]])':'R', '0':'L', '1':'R'}
+	else:
+		raise TypeError		
+
+	return S_tr, O_tr, S_test, O_test, dic_stim, dic_resp

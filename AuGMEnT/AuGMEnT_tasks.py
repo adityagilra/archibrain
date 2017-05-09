@@ -3,9 +3,6 @@
 ## AUTHOR: Marco Martinolli
 ## DATE: 27.03.2017
 
-from AuGMEnT_model import AuGMEnT
-
-
 import numpy as np
 import matplotlib 
 matplotlib.use('GTK3Cairo') 
@@ -14,25 +11,34 @@ from matplotlib import gridspec
 import pylab
 import gc 
 
-from sys import version_info
+import sys
+sys.path.append("..")
+sys.path.append("AuGMEnT")
 
-task_dic ={'0':'task 1-2', 
-           '1':'task AX_CPT',
-	   '2':'task 12-AX_S', 
-	   '3':'task 12-AX',
-	   '4':'saccade/anti-saccade task'}
+from AuGMEnT_model import AuGMEnT
 
-py3 = version_info[0] > 2 # creates boolean value for test that Python major version > 2
-task_selection = input("\nPlease select a task: \n\t 0: task 1-2 \n\t 1: task AX_CPT \n\t 2: task 12-AX-S\n\t 3: task 12-AX\n\t 4: saccade/anti-saccade task\n Enter id number:  ")
-print("\nYou have selected: ", task_dic[task_selection],'\n\n')
+
+def task_selector(task):
+	if(task == '0'):
+		AuGMEnT_task_1_2()
+	elif(task == '1'):
+		AuGMEnT_task_AX_CPT()
+	elif(task == '2'):
+		AuGMEnT_task_1_2AX_S()
+	elif(task == '3'):
+		AuGMEnT_task_1_2AX()
+	elif(task == '4'):
+		AuGMEnT_task_saccades()
+	else:
+		print('The task is not valid for AuGMEnT\n')
 
 
 #########################################################################################################################################
 #######################   TASK 1-2
 #########################################################################################################################################
 
-if (task_selection=="0"):
-	
+def AuGMEnT_task_1_2():
+
 	from TASKS.task_1_2 import data_construction
 	task = '1-2'
 
@@ -47,7 +53,7 @@ if (task_selection=="0"):
 	np.random.seed(1234)
 
 
-	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N, p1,tr_perc)
+	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N=N, p1=p1, p2=1-p1, training_perc=tr_perc, model='0')
 	print('Done!')
 	reset_cond = ['1','2']	
 
@@ -103,7 +109,7 @@ if (task_selection=="0"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	if do_weight_plots:
 
 		fig = plt.figure(figsize=(30,8))
@@ -147,7 +153,7 @@ if (task_selection=="0"):
 #######################   TASK AX CPT
 #########################################################################################################################################
 
-if (task_selection=="1"):
+def AuGMEnT_task_AX_CPT():
 	
 	from TASKS.task_AX_CPT import data_construction
 	task = 'AX_CPT'
@@ -161,7 +167,7 @@ if (task_selection=="1"):
 	tr_perc = 0.8
 	np.random.seed(1234)
 
-	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N=N_stimuli, perc_target=0.2, perc_training=tr_perc)
+	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N=N_stimuli, perc_target=0.2, perc_training=tr_perc, model='0')
 	print('Done!')
 	reset_cond = ['A','B']	
 
@@ -203,7 +209,7 @@ if (task_selection=="1"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 		g = 3
@@ -262,7 +268,7 @@ if (task_selection=="1"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	fontTitle = 26
 	fontTicks = 22
 	fontLabel = 22
@@ -430,9 +436,9 @@ if (task_selection=="1"):
 #######################   TASK 12AX_simple
 #########################################################################################################################################
 
-if (task_selection=="2"):
+def AuGMEnT_task_1_2AX_S():
 	
-	from TASKS.task_1_2AX_simple import data_construction
+	from TASKS.task_1_2AX_S import data_construction
 	task = '12AX_S' 
 
 	np.random.seed(1234)
@@ -442,7 +448,7 @@ if (task_selection=="2"):
 	pred_vec = ['L','R']
 	
 	N = 28000
-	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N,0.1,0.2,0.2,0.8)
+	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N, 0.1, 0.2, 0.2, 0.8, model='0')
 	reset_cond = ['1','2']	
 
 	## CONSTRUCTION OF THE AuGMEnT NETWORK
@@ -484,7 +490,7 @@ if (task_selection=="2"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 		g = 3
@@ -541,7 +547,7 @@ if (task_selection=="2"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	
 	fontTitle = 26
 	fontTicks = 22
@@ -640,7 +646,7 @@ if (task_selection=="2"):
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-if (task_selection=="3"):
+def AuGMEnT_task_1_2AX():
 	
 	from TASKS.task_1_2AX import data_construction				# BE CAREFULLLLL
 	task = '12-AX'
@@ -653,7 +659,7 @@ if (task_selection=="3"):
 	perc_tr = 0.8
 	p_c = 0.5
 	print('Dataset construction...')
-	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N,p_c,perc_tr)
+	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N,p_c,perc_tr,model='0')
 
 	reset_cond = ['1','2']	
 
@@ -695,7 +701,7 @@ if (task_selection=="3"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 	
@@ -756,7 +762,7 @@ if (task_selection=="3"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	
 	fontTitle = 26
 	fontTicks = 22
@@ -860,7 +866,7 @@ if (task_selection=="3"):
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-if (task_selection=="4"):
+def AuGMEnT_task_saccades():
 	
 	from TASKS.task_saccades import data_construction
 	task = 'saccade'
@@ -871,7 +877,7 @@ if (task_selection=="4"):
 
 	N_trial = 10000 
 	perc_tr = 0.8
-	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr)
+	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='0')
 
 	reset_cond = ['empty']	
 
@@ -903,8 +909,8 @@ if (task_selection=="4"):
 	do_weight_plots = False	
 	do_error_plots = True		
 
-	reg_vec=[]
-	mem_vec=[]
+	reg_vec = []
+	mem_vec = []
 	for i in range(R):
 		reg_vec.append('R'+str(i+1))
 	for i in range(M):
@@ -914,7 +920,7 @@ if (task_selection=="4"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 		training_trial = np.round(N_trial*perc_tr).astype(int)
@@ -978,7 +984,7 @@ if (task_selection=="4"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 
 	fontTitle = 26
 	fontTicks = 22
@@ -1080,5 +1086,3 @@ if (task_selection=="4"):
 		if M==0:
 			savestr = folder+'/'+task+'_error_'+rew+'_nomemory.png'		
 		figE.savefig(savestr)
-
-
