@@ -21,11 +21,13 @@ sys.path.append("LSTM")
 from LSTM_model import LSTM_arch
 
 
-def task_selector(task):
+def run_task(task, params_bool=None, params_task=None):
 	if(task == '0'):
-		LSTM_task_1_2AX()
+		LSTM_task_1_2AX(params_bool, params_task)
+
 	elif(task == '4'):
-		LSTM_task_saccades()
+		LSTM_task_saccades(params_bool, params_task)
+		
 	else:
 		print('The task is not valid for LSTM\n')
 
@@ -34,7 +36,7 @@ def task_selector(task):
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-def LSTM_task_1_2AX():
+def LSTM_task_1_2AX(params_bool, params_task):
 
 	from TASKS.task_1_2AX import data_construction, data_modification_for_LSTM
 	task = '12-AX'
@@ -45,10 +47,17 @@ def LSTM_task_1_2AX():
 	pred_vec = ['L','R']
 
 	print('Dataset construction...')
-	N_trial = 20000
-	perc_tr = 0.8
-	p_target = 0.5
-	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N_trial,p_target,perc_tr,model='2')
+
+	if params_task is None:
+		N = 20000
+		p_c = 0.5
+		perc_tr = 0.8
+	else:
+		N = params_task[0]
+		p_c = params_task[1]
+		perc_tr = params_task[2]
+
+	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N,p_c,perc_tr,model='2')
 		
 	dt = 10	
 	S_train_3D,O_train = data_modification_for_LSTM(S_tr,O_tr,dt)
@@ -68,16 +77,23 @@ def LSTM_task_1_2AX():
 	
 	verb = 1
 	
-	do_training =  True
-	do_test = True
-
-	do_error_plots = False		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]	
 
 	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
 	
 	## TRAINING
 	folder = 'LSTM/DATA'
-	N_trial=20000
+	N_trial=N
 	if do_training:	
 
 		print('TRAINING...\n')	
@@ -186,7 +202,7 @@ def LSTM_task_1_2AX():
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-def LSTM_task_saccades():
+def LSTM_task_saccades(params_bool, params_task):
 	
 	from TASKS.task_saccades import data_construction, data_modification_for_LSTM
 	task = 'saccade'
@@ -198,9 +214,16 @@ def LSTM_task_saccades():
 
 	
 	print('Dataset construction...')
-	N_trial = 20000 
-	perc_tr = 0.8
+
+	if params_task is None:
+		N_trial = 20000 
+		perc_tr = 0.8
+	else:
+		N_trial = params_task[0]
+		perc_tr = params_task[1]
+
 	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='2')
+
 	dt = 6 # 6 phases: start,fix,cue,delay,delay,gp
 	S_train_3D,O_train = data_modification_for_LSTM(S_tr,O_tr,dt)
 	S_test_3D,O_test = data_modification_for_LSTM(S_tst,O_tst,dt)
@@ -218,10 +241,17 @@ def LSTM_task_saccades():
 
 	verb = 1
 	
-	do_training = False
-	do_test = False
-
-	do_error_plots = True		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]		
 
 	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
 

@@ -18,46 +18,22 @@ sys.path.append("AuGMEnT")
 from AuGMEnT_model import AuGMEnT
 
 
-def task_selector(task, params=None):
+def run_task(task, params_bool=None, params_task=None):
 	if(task == '0'):
-		if params is not None:
-			params.append(int(input("\nNumber of trials (N): ")))
-			params.append(float(input("Probability of '1' (p1): ")))
-			params.append(float(input("Training percentage: ")))
-
-		AuGMEnT_task_1_2(params)
+		AuGMEnT_task_1_2(params_bool, params_task)
 
 	elif(task == '1'):
-		if params is not None:
-			params.append(int(input("\nNumber of trials (N): ")))
-			params.append(float(input("Probability of target (p1): ")))
-			params.append(float(input("Training percentage: ")))
-
-		AuGMEnT_task_AX_CPT(params)
+		AuGMEnT_task_AX_CPT(params_bool, params_task)
 
 	elif(task == '2'):
-		if params is not None:
-			params.append(int(input("\nNumber of trials (N): ")))
-			params.append(float(input("Probability of digit (p_digit): ")))
-			params.append(float(input("Probability of wrong response (p_wrong): ")))
-			params.append(float(input("Probability of correct response (p_correct): ")))
-			params.append(float(input("Training percentage: ")))
-
-		AuGMEnT_task_1_2AX_S(params)
+		AuGMEnT_task_1_2AX_S(params_bool, params_task)
 
 	elif(task == '3'):
-		if params is not None:
-			params.append(int(input("\nNumber of trials (N): ")))
-			params.append(float(input("Probability of target (p_target): ")))
-			params.append(float(input("Training percentage: ")))
+		AuGMEnT_task_1_2AX(params_bool, params_task)
 
-		AuGMEnT_task_1_2AX(params)
 	elif(task == '4'):
-		if params is not None:
-			params.append(int(input("\nNumber of trials (N): ")))
-			params.append(float(input("Training percentage: ")))
+		AuGMEnT_task_saccades(params_bool, params_task)
 
-		AuGMEnT_task_saccades(params)
 	else:
 		print('The task is not valid for AuGMEnT\n')
 
@@ -66,7 +42,7 @@ def task_selector(task, params=None):
 #######################   TASK 1-2
 #########################################################################################################################################
 
-def AuGMEnT_task_1_2(params):
+def AuGMEnT_task_1_2(params_bool, params_task):
 
 	from TASKS.task_1_2 import data_construction
 	task = '1-2'
@@ -77,17 +53,16 @@ def AuGMEnT_task_1_2(params):
 
 	print('Dataset construction...')
 
-	if params is None:
+	if params_task is None:
 		N = 1000
 		p1 = 0.7
 		tr_perc = 0.8
 	else:
-		N = params[12]
-		p1 = params[13]
-		tr_perc = params[14]
+		N = params_task[0]
+		p1 = params_task[1]
+		tr_perc = params_task[2]
 
 	np.random.seed(1234)
-
 
 	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N=N, p1=p1, p2=1-p1, training_perc=tr_perc, model='0')
 	print('Done!')
@@ -97,52 +72,34 @@ def AuGMEnT_task_1_2(params):
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
 	A = np.shape(O_tr)[1]
 
-	if params is None:
-		R = 3			     # dimension of the regular units
-		M = 4 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = 0.2    			# synaptic tag decay 
-		beta = 0.1			# weight update coefficient
-		discount = 0.09			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = 0.05			# percentage of softmax modality for activity selection
-		g = 3
+	R = 3			     # dimension of the regular units
+	M = 4 			     # dimension of the memory units
+	
+	# value parameters were taken from the 
+	lamb = 0.2    			# synaptic tag decay 
+	beta = 0.1			# weight update coefficient
+	discount = 0.09			# discount rate for future rewards
+	alpha = 1-lamb*discount 	# synaptic permanence
+	eps = 0.05			# percentage of softmax modality for activity selection
+	g = 3
 
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = 'RL'
-
-		verb = 0
-		
-		do_training = True
-		do_test = True
-
-		do_weight_plots = True	
-
-	else:
-		R = params[0]			     # dimension of the regular units
-		M = params[1] 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = params[2]    			# synaptic tag decay 
-		beta = params[3]			# weight update coefficient
-		discount = params[4]			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = params[5]			# percentage of softmax modality for activity selection
-		g = params[6]
-
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = rew_system[params[7]]
-		
-		do_training = params[8]
-		do_test = params[9]
-
-		do_weight_plots = params[10]	
-		do_error_plots = params[11]
+	# reward settings
+	rew_system = ['RL','PL','SRL']
+	rew = 'RL'
 
 	verb = 0
+		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	fontTitle = 22
 	fontTicks = 20
@@ -217,7 +174,7 @@ def AuGMEnT_task_1_2(params):
 #######################   TASK AX CPT
 #########################################################################################################################################
 
-def AuGMEnT_task_AX_CPT(params):
+def AuGMEnT_task_AX_CPT(params_bool, params_task):
 	
 	from TASKS.task_AX_CPT import data_construction
 	task = 'AX_CPT'
@@ -227,14 +184,14 @@ def AuGMEnT_task_AX_CPT(params):
 	pred_vec = ['L','R']
 
 	print('Dataset construction...')
-	if params is None:
+	if params_task is None:
 		N_stimuli = 30000
 		target_perc = 0.2
 		tr_perc = 0.8
 	else:
-		N_stimuli = params[12]
-		target_perc = params[13]
-		tr_perc = params[14]
+		N_stimuli = params_task[0]
+		target_perc = params_task[1]
+		tr_perc = params_task[2]
 
 	np.random.seed(1234)
 
@@ -246,51 +203,35 @@ def AuGMEnT_task_AX_CPT(params):
 	A = np.shape(O_tr)[1]			     # dimension of the activity units = number of possible responses
 
 	## CONSTRUCTION OF THE AuGMEnT NETWORK
-	if params is None:
-		R = 3			     # dimension of the regular units
-		M = 4 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = 0.2    			# synaptic tag decay 
-		beta = 0.1			# weight update coefficient
-		discount = 0.09			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = 0.025			# percentage of softmax modality for activity selection
-		g = 4
+	R = 3			     # dimension of the regular units
+	M = 4 			     # dimension of the memory units
+	
+	# value parameters were taken from the 
+	lamb = 0.2    			# synaptic tag decay 
+	beta = 0.1			# weight update coefficient
+	discount = 0.09			# discount rate for future rewards
+	alpha = 1-lamb*discount 	# synaptic permanence
+	eps = 0.025			# percentage of softmax modality for activity selection
+	g = 4
 
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = 'PL'
-
-		do_training = True
-		do_test = True
-
-		do_weight_plots = False	
-		do_error_plots = True	
-
-	else:
-		R = params[0]			     # dimension of the regular units
-		M = params[1] 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = params[2]    			# synaptic tag decay 
-		beta = params[3]			# weight update coefficient
-		discount = params[4]			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = params[5]			# percentage of softmax modality for activity selection
-		g = params[6]
-
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = rew_system[params[7]]
-		
-		do_training = params[8]
-		do_test = params[9]
-
-		do_weight_plots = params[10]	
-		do_error_plots = params[11]
+	# reward settings
+	rew_system = ['RL','PL','SRL']
+	rew = 'PL'
 
 	verb = 0
+
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
+
 	do_reward_comparison = False
 
 	reg_vec=[]
@@ -531,7 +472,7 @@ def AuGMEnT_task_AX_CPT(params):
 #######################   TASK 12AX_simple
 #########################################################################################################################################
 
-def AuGMEnT_task_1_2AX_S(params):
+def AuGMEnT_task_1_2AX_S(params_bool, params_task):
 	
 	from TASKS.task_1_2AX_S import data_construction
 	task = '12AX_S' 
@@ -542,18 +483,18 @@ def AuGMEnT_task_1_2AX_S(params):
 	cues_vec_tot = ['1+','2+','AX+','AY+','BX+','BY+','1-','2-','AX-','AY-','BX-','BY-']
 	pred_vec = ['L','R']
 	
-	if params is None:
+	if params_task is None:
 		N = 28000
 		p_digit = 0.1
 		p_wrong = 0.2
 		p_correct = 0.2
 		perc_training = 0.8
 	else:
-		N = params[12]
-		p_digit = params[13]
-		p_wrong = params[14]
-		p_correct = params[15]
-		perc_training = params[16]
+		N = params_task[0]
+		p_digit = params_task[1]
+		p_wrong = params_task[2]
+		p_correct = params_task[3]
+		perc_training = params_task[4]
 
 	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N, p_digit, p_wrong, p_correct, perc_training, model='0')
 	reset_cond = ['1','2']	
@@ -562,51 +503,34 @@ def AuGMEnT_task_1_2AX_S(params):
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
 	A = np.shape(O_tr)[1]			     # dimension of the activity units = number of possible responses
 
-	if params is None:
-		R = 4			     # dimension of the regular units
-		M = 5 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = 0.2    			# synaptic tag decay 
-		beta = 0.01			# weight update coefficient
-		discount = 0.9			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = 0.025			# percentage of softmax modality for activity selection
-		g = 4
-
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = 'PL'
+	R = 4			     # dimension of the regular units
+	M = 5 			     # dimension of the memory units
 	
-		do_training = True
-		do_test = True
+	# value parameters were taken from the 
+	lamb = 0.2    			# synaptic tag decay 
+	beta = 0.01			# weight update coefficient
+	discount = 0.9			# discount rate for future rewards
+	alpha = 1-lamb*discount 	# synaptic permanence
+	eps = 0.025			# percentage of softmax modality for activity selection
+	g = 4
 
-		do_weight_plots = False	
-		do_error_plots = False	
-
-	else:
-		R = params[0]			     # dimension of the regular units
-		M = params[1] 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = params[2]    			# synaptic tag decay 
-		beta = params[3]			# weight update coefficient
-		discount = params[4]			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = params[5]			# percentage of softmax modality for activity selection
-		g = params[6]
-
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = rew_system[params[7]]
-		
-		do_training = params[8]
-		do_test = params[9]
-
-		do_weight_plots = params[10]	
-		do_error_plots = params[11]	
+	# reward settings
+	rew_system = ['RL','PL','SRL']
+	rew = 'PL'
 
 	verb = 0
+	
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	reg_vec=[]
 	mem_vec=[]
@@ -775,7 +699,7 @@ def AuGMEnT_task_1_2AX_S(params):
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-def AuGMEnT_task_1_2AX(params):
+def AuGMEnT_task_1_2AX(params_bool, params_task):
 	
 	from TASKS.task_1_2AX import data_construction				# BE CAREFULLLLL
 	task = '12-AX'
@@ -784,14 +708,14 @@ def AuGMEnT_task_1_2AX(params):
 	cues_vec_tot = ['1+','2+','A+','B+','C+','X+','Y+','Z+','1-','2-','A-','B-','C-','X-','Y-','Z-']
 	pred_vec = ['L','R']
 
-	if params is None:
+	if params_task is None:
 		N = 20000
-		perc_tr = 0.8
 		p_c = 0.5
+		perc_tr = 0.8
 	else:
-		N = params[12]
-		p_c = params[13]
-		perc_tr = params[14]
+		N = params_task[0]
+		p_c = params_task[1]
+		perc_tr = params_task[2]
 
 	print('Dataset construction...')
 	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N,p_c,perc_tr,model='0')
@@ -802,52 +726,35 @@ def AuGMEnT_task_1_2AX(params):
 	A = np.shape(O_tr)[1]			     # dimension of the activity units = number of possible responses
 
 	## CONSTRUCTION OF THE AuGMEnT NETWORK
-	if params is None:
-		R = 3			     # dimension of the regular units
-		M = 4			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = 0.2    			# synaptic tag decay 
-		beta = 0.05			# weight update coefficient
-		discount = 0.9			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = 0.025			# percentage of softmax modality for activity selection
-		g = 4
-
-		# reward settings
-		
-		rew_system = ['RL','PL','SRL']
-		rew = 'SRL'
+	R = 3			     # dimension of the regular units
+	M = 4			     # dimension of the memory units
 	
-		do_training = True
-		do_test = True
+	# value parameters were taken from the 
+	lamb = 0.2    			# synaptic tag decay 
+	beta = 0.05			# weight update coefficient
+	discount = 0.9			# discount rate for future rewards
+	alpha = 1-lamb*discount 	# synaptic permanence
+	eps = 0.025			# percentage of softmax modality for activity selection
+	g = 4
 
-		do_weight_plots = False	
-		do_error_plots = True		
-
-	else:
-		R = params[0]			     # dimension of the regular units
-		M = params[1] 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = params[2]    			# synaptic tag decay 
-		beta = params[3]			# weight update coefficient
-		discount = params[4]			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = params[5]			# percentage of softmax modality for activity selection
-		g = params[6]
-
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = rew_system[params[7]]
-		
-		do_training = params[8]
-		do_test = params[9]
-
-		do_weight_plots = params[10]	
-		do_error_plots = params[11]	
+	# reward settings
+	
+	rew_system = ['RL','PL','SRL']
+	rew = 'SRL'
 
 	verb = 0
+
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	reg_vec=[]
 	mem_vec=[]
@@ -1025,7 +932,7 @@ def AuGMEnT_task_1_2AX(params):
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-def AuGMEnT_task_saccades(params):
+def AuGMEnT_task_saccades(params_bool, params_task):
 	
 	from TASKS.task_saccades import data_construction
 	task = 'saccade'
@@ -1034,12 +941,12 @@ def AuGMEnT_task_saccades(params):
 	cues_vec_tot = ['P+','A+','L+','R+','P-','A-','L-','R-']
 	pred_vec = ['L','F','R']
 
-	if params is None:
+	if params_task is None:
 		N_trial = 10000 
 		perc_tr = 0.8
 	else:
-		N_trial = params[12]
-		perc_tr = params[13]
+		N_trial = params_task[0]
+		perc_tr = params_task[1]
 
 	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='0')
 
@@ -1049,52 +956,36 @@ def AuGMEnT_task_saccades(params):
 	A = np.shape(O_tr)[1] 			     # dimension of the activity units = number of possible responses
 
 	## CONSTRUCTION OF THE AuGMEnT NETWORK
-	if params is None:
-		R = 3			     # dimension of the regular units
-		M = 4 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = 0.2    			# synaptic tag decay 
-		beta = 0.1			# weight update coefficient
-		discount = 0.9			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = 0.025			# percentage of softmax modality for activity selection
+	R = 3			     # dimension of the regular units
+	M = 4 			     # dimension of the memory units
+	
+	# value parameters were taken from the 
+	lamb = 0.2    			# synaptic tag decay 
+	beta = 0.1			# weight update coefficient
+	discount = 0.9			# discount rate for future rewards
+	alpha = 1-lamb*discount 	# synaptic permanence
+	eps = 0.025			# percentage of softmax modality for activity selection
 
-		g = 10
+	g = 10
 
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = 'RL'
-		
-		do_training = False
-		do_test = False
-
-		do_weight_plots = False	
-		do_error_plots = True
-
-	else:
-		R = params[0]			     # dimension of the regular units
-		M = params[1] 			     # dimension of the memory units
-		
-		# value parameters were taken from the 
-		lamb = params[2]    			# synaptic tag decay 
-		beta = params[3]			# weight update coefficient
-		discount = params[4]			# discount rate for future rewards
-		alpha = 1-lamb*discount 	# synaptic permanence
-		eps = params[5]			# percentage of softmax modality for activity selection
-		g = params[6]
-
-		# reward settings
-		rew_system = ['RL','PL','SRL']
-		rew = rew_system[params[7]]
-		
-		do_training = params[8]
-		do_test = params[9]
-
-		do_weight_plots = params[10]	
-		do_error_plots = params[11]	
+	# reward settings
+	rew_system = ['RL','PL','SRL']
+	rew = 'RL'
 
 	verb = 0
+		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
+
 	shape_fac = 0.2
 
 	reg_vec = []

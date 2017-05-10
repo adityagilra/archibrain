@@ -22,17 +22,22 @@ from HER_model import HER_arch
 import activations as act
 
 
-def task_selector(task):
+def run_task(task, params_bool=None, params_task=None):
 	if(task == '0'):
-		HER_task_1_2()
+		HER_task_1_2(params_bool, params_task)
+
 	elif(task == '1'):
-		HER_task_AX_CPT()
+		HER_task_AX_CPT(params_bool, params_task)
+
 	elif(task == '2'):
-		HER_task_1_2AX_S()
+		HER_task_1_2AX_S(params_bool, params_task)
+
 	elif(task == '3'):
-		HER_task_1_2AX()
+		HER_task_1_2AX(params_bool, params_task)
+
 	elif(task == '4'):
-		HER_task_saccades()
+		HER_task_saccades(params_bool, params_task)
+
 	else:
 		print('The task is not valid for HER\n\n')
 
@@ -41,11 +46,20 @@ def task_selector(task):
 #######################   TASK 1-2 
 #########################################################################################################################################
 
-def HER_task_1_2():
+def HER_task_1_2(params_bool, params_task):
 
 	from TASKS.task_1_2 import data_construction
 
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=4000, p1=0.7, p2=0.3, training_perc=0.8, model='1')
+	if params_task is None:
+		N = 4000
+		p1 = 0.7
+		tr_perc = 0.8
+	else:
+		N = params_task[0]
+		p1 = params_task[1]
+		tr_perc = params_task[2]
+
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=N, p1=p1, p2=1-p1, training_perc=tr_perc, model='1')
 
 	## CONSTRUCTION OF BASE LEVEL OF HER ARCHITECTURE
 	S = np.shape(S_tr)[1]
@@ -56,6 +70,18 @@ def HER_task_1_2():
 	elig_decay_const = 0.3
 
 	verb = 0
+
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
  
 	L = HER_base(0,S, P, alpha, beta, gamma)
 
@@ -71,7 +97,7 @@ def HER_task_1_2():
 #######################   TASK AX CPT
 #########################################################################################################################################
 
-def HER_task_AX_CPT():
+def HER_task_AX_CPT(params_bool, params_task):
 
 	from TASKS.task_AX_CPT import data_construction
 	task = 'AX-CPT'
@@ -79,7 +105,17 @@ def HER_task_AX_CPT():
 
 	cues_vec = ['A','B','X','Y']
 	pred_vec = ['LC','LW','RC','RW']
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=40000, perc_target=0.2, perc_training=0.8, model='1')
+
+	if params_task is None:
+		N_stimuli = 40000
+		target_perc = 0.2
+		tr_perc = 0.8
+	else:
+		N_stimuli = params_task[0]
+		target_perc = params_task[1]
+		tr_perc = params_task[2]
+
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=N_stimuli, perc_target=target_perc, perc_training=tr_perc, model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 2                      # number of levels (<= 3)
@@ -103,11 +139,20 @@ def HER_task_AX_CPT():
 	learn_rule_WM = 'backprop'  	# options are: backprop or RL
 	elig_update = 'pre'		# options are: pre or post (eligibility trace update respectively at the beginning or at the end of the training iteration)
 
-	do_training = True 		# if false, it loads the weights from previous training
-	do_test = True
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
+
 	error_test = False		# see behavior of the network after training on specified scenarios
 
-	do_weight_plots = True
 
 	HER = HER_arch(NL,S,P,learn_rate_vec,beta_vec,gamma,elig_decay_vec)
 
@@ -217,7 +262,7 @@ def HER_task_AX_CPT():
 #######################   TASK 1-2 AX - S
 #########################################################################################################################################
 
-def HER_task_1_2AX_S():
+def HER_task_1_2AX_S(params_bool, params_task):
 	
 	from TASKS.task_1_2AX_S import data_construction
 	
@@ -226,7 +271,21 @@ def HER_task_1_2AX_S():
 
 	cues_vec = ['1','2','AX','AY','BX','BY']
 	pred_vec = ['LC','LW','RC','RW']
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=100000, p_digit=0.1, p_wrong=0.15, p_correct=0.25, perc_training=0.9, model='1')
+
+	if params_task is None:
+		N = 100000
+		p_digit = 0.1
+		p_wrong = 0.15
+		p_correct = 0.25
+		perc_training = 0.9
+	else:
+		N = params_task[0]
+		p_digit = params_task[1]
+		p_wrong = params_task[2]
+		p_correct = params_task[3]
+		perc_training = params_task[4]
+
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=N, p_digit=p_digit, p_wrong=p_wrong, p_correct=p_correct, perc_training=perc_training, model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 2                       # number of levels (<= 3)
@@ -243,15 +302,22 @@ def HER_task_1_2AX_S():
 	learn_rule_WM = 'backprop'
 	elig_update = 'inter'
 
-	do_training = True 		# if false, it loads the weights from previous training
-	do_test = True
+	verb = 0
 
-	do_weight_plots = True
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	fontTitle = 22
 	fontTicks = 20
-
-	verb = 1
 
 	HER = HER_arch(NL,S,P,learn_rate_vec,beta_vec,gamma,elig_decay_vec)
 
@@ -329,7 +395,7 @@ def HER_task_1_2AX_S():
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-def HER_task_1_2AX():
+def HER_task_1_2AX(params_bool, params_task):
 	
 	from TASKS.task_1_2AX import data_construction
 	
@@ -339,10 +405,16 @@ def HER_task_1_2AX():
 	pred_vec = ['LC','LW','RC','RW']
 	np.random.seed(1234)
 
-	N = 8000
-	p_c = 0.5
-	p_tr = 0.8
-	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N,p_c,p_tr,model='1')
+	if params_task is None:
+		N = 8000
+		p_c = 0.5
+		perc_tr = 0.8
+	else:
+		N = params_task[0]
+		p_c = params_task[1]
+		perc_tr = params_task[2]
+
+	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N,p_c,perc_tr,model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
 	NL = 3                       # number of levels (<= 3)
@@ -364,13 +436,19 @@ def HER_task_1_2AX():
 	
 	gate = 'softmax'
 
-	do_training = True 		# if false, it loads the weights from previous training
-	do_test = True
-
-	do_weight_plots = True
-	do_error_plots = True
-
 	verb = 0
+
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	HER = HER_arch(NL,S,P,learn_rate_vec,learn_rate_memory,beta_vec,gamma,elig_decay_vec,dic_stim,dic_resp,init)
 	HER.print_HER(False)
@@ -515,7 +593,7 @@ def HER_task_1_2AX():
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-def HER_task_saccades():
+def HER_task_saccades(params_bool, params_task):
 	
 	from TASKS.task_saccades import data_construction
 	task = 'saccade'
@@ -524,8 +602,13 @@ def HER_task_saccades():
 	cues_vec = ['empty','P','A','L','R']
 	pred_vec = ['LC','LW','FC','FW','RC','RW']
 
-	N_trial = 15000 
-	perc_tr = 0.8
+	if params_task is None:
+		N_trial = 15000 
+		perc_tr = 0.8
+	else:
+		N_trial = params_task[0]
+		perc_tr = params_task[1]
+
 	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='1')
 
 	## CONSTRUCTION OF THE HER MULTI-LEVEL NETWORK
@@ -544,13 +627,19 @@ def HER_task_saccades():
 
 	gate = 'softmax'
 
-	do_training = False 		# if false, it loads the weights from previous training
-	do_test = False
-
-	do_weight_plots = False
-	do_error_plots = True
-
 	verb = 0
+
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	HER = HER_arch(NL,S,P,learn_rate_vec,learn_rate_memory,beta_vec,gamma,elig_decay_vec,dic_stim,dic_resp)
 	HER.print_HER(False)
