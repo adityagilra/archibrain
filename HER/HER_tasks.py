@@ -55,9 +55,9 @@ def HER_task_1_2(params_bool, params_task):
 		p1 = 0.7
 		tr_perc = 0.8
 	else:
-		N = params_task[0]
-		p1 = params_task[1]
-		tr_perc = params_task[2]
+		N = int(params_task[0]) if params_task[0] != '' else 4000
+		p1 = float(params_task[1]) if params_task[1] != '' else 0.7
+		tr_perc = float(params_task[2]) if params_task[2] != '' else 0.8
 
 	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=N, p1=p1, p2=1-p1, training_perc=tr_perc, model='1')
 
@@ -111,9 +111,9 @@ def HER_task_AX_CPT(params_bool, params_task):
 		target_perc = 0.2
 		tr_perc = 0.8
 	else:
-		N_stimuli = params_task[0]
-		target_perc = params_task[1]
-		tr_perc = params_task[2]
+		N_stimuli = int(params_task[0]) if params_task[0] != '' else 40000
+		target_perc = float(params_task[1]) if params_task[1] != '' else 0.2
+		tr_perc = float(params_task[2]) if params_task[2] != '' else 0.8
 
 	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=N_stimuli, perc_target=target_perc, perc_training=tr_perc, model='1')
 
@@ -277,13 +277,14 @@ def HER_task_1_2AX_S(params_bool, params_task):
 		p_digit = 0.1
 		p_wrong = 0.15
 		p_correct = 0.25
-		perc_training = 0.9
+		#perc_training = 0.9
+		perc_training = 0.8
 	else:
-		N = params_task[0]
-		p_digit = params_task[1]
-		p_wrong = params_task[2]
-		p_correct = params_task[3]
-		perc_training = params_task[4]
+		N = int(params_task[0]) if params_task[0] != '' else 100000
+		p_digit = float(params_task[1]) if params_task[1] != '' else 0.1
+		p_wrong = float(params_task[2]) if params_task[2] != '' else 0.15
+		p_correct = float(params_task[3]) if params_task[3] != '' else 0.25
+		perc_training = float(params_task[4]) if params_task[4] != '' else 0.8
 
 	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N=N, p_digit=p_digit, p_wrong=p_wrong, p_correct=p_correct, perc_training=perc_training, model='1')
 
@@ -406,13 +407,14 @@ def HER_task_1_2AX(params_bool, params_task):
 	np.random.seed(1234)
 
 	if params_task is None:
-		N = 8000
+		#N = 8000
+		N = 20000
 		p_c = 0.5
 		perc_tr = 0.8
 	else:
-		N = params_task[0]
-		p_c = params_task[1]
-		perc_tr = params_task[2]
+		N = int(params_task[0]) if params_task[0] != '' else 20000
+		p_c = float(params_task[1]) if params_task[1] != '' else 0.5
+		perc_tr = float(params_task[2]) if params_task[2] != '' else 0.8
 
 	[S_tr,O_tr,S_test,O_test,dic_stim,dic_resp] = data_construction(N,p_c,perc_tr,model='1')
 
@@ -603,11 +605,12 @@ def HER_task_saccades(params_bool, params_task):
 	pred_vec = ['LC','LW','FC','FW','RC','RW']
 
 	if params_task is None:
-		N_trial = 15000 
+		#N_trial = 15000
+		N_trial = 20000
 		perc_tr = 0.8
 	else:
-		N_trial = params_task[0]
-		perc_tr = params_task[1]
+		N_trial = int(params_task[0]) if params_task[0] != '' else 20000
+		perc_tr = float(params_task[1]) if params_task[1] != '' else 0.8
 
 	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='1')
 

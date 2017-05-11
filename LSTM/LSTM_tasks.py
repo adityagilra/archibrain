@@ -22,7 +22,7 @@ from LSTM_model import LSTM_arch
 
 
 def run_task(task, params_bool=None, params_task=None):
-	if(task == '0'):
+	if(task == '3'):
 		LSTM_task_1_2AX(params_bool, params_task)
 
 	elif(task == '4'):
@@ -53,15 +53,20 @@ def LSTM_task_1_2AX(params_bool, params_task):
 		p_c = 0.5
 		perc_tr = 0.8
 	else:
-		N = params_task[0]
-		p_c = params_task[1]
-		perc_tr = params_task[2]
+		N = int(params_task[0]) if params_task[0] != '' else 20000
+		p_c = float(params_task[1]) if params_task[1] != '' else 0.5
+		perc_tr = float(params_task[2]) if params_task[2] != '' else 0.8
 
 	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N,p_c,perc_tr,model='2')
-		
+	
+	print('Dataset construction done!')
+
 	dt = 10	
 	S_train_3D,O_train = data_modification_for_LSTM(S_tr,O_tr,dt)
+	print('Training dataset modification done!')
+
 	S_test_3D,O_test = data_modification_for_LSTM(S_tst,O_tst,dt)
+	print('Test dataset modification done!')
 
 	## CONSTRUCTION OF THE LSTM NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
@@ -69,13 +74,13 @@ def LSTM_task_1_2AX(params_bool, params_task):
 	O = 2			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
-	alpha = 0.1		# learning rate
+	alpha = 0.0			# learning rate
 	hysteresis = 0.5	# hysteresis coefficient ???  s.t. context layer update: c(t) = 0.5 h(t-1) + 0.5 c(t-1)
 	toll_err = 0.1		# tolerance error ???
 
 	b_sz = 1
 	
-	verb = 1
+	verb = 0
 	
 	if params_bool is None:
 		do_training = True
@@ -219,8 +224,8 @@ def LSTM_task_saccades(params_bool, params_task):
 		N_trial = 20000 
 		perc_tr = 0.8
 	else:
-		N_trial = params_task[0]
-		perc_tr = params_task[1]
+		N_trial = int(params_task[0]) if params_task[0] != '' else 20000
+		perc_tr = float(params_task[1]) if params_task[1] != '' else 0.8
 
 	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='2')
 
