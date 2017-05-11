@@ -3,8 +3,7 @@
 ## AUTHOR: Marco Martinolli
 ## DATE: 11.04.2017
 
-from LSTM_model import LSTM_arch
-
+import tensorflow as tf
 import numpy as np
 import matplotlib 
 matplotlib.use('GTK3Cairo') 
@@ -14,26 +13,30 @@ import pylab
 import gc 
 from keras.models import load_model
 import h5py
-from sys import version_info
 
-task_dic ={'0':'task 12-AX',
-	   '1':'saccade/anti-saccade task'}
+import sys
+sys.path.append("..")
+sys.path.append("LSTM")
 
-py3 = version_info[0] > 2 	# creates boolean value for test that Python major version > 2
-if py3:
-  task_selection = input("\nPlease select a task: \n\t 0: task 12-AX\n\t 1: saccade/anti-saccade task\n Enter id number:  ")
-else:
-  task_selection = raw_input("\nPlease select a task: \n\t 0: task 12-AX\n\t 1: saccade/anti-saccade task\n Enter id number:  ")
+from LSTM_model import LSTM_arch
 
-print("\nYou have selected: ", task_dic[task_selection],'\n\n')
 
+def run_task(task, params_bool=None, params_task=None):
+	if(task == '3'):
+		LSTM_task_1_2AX(params_bool, params_task)
+
+	elif(task == '4'):
+		LSTM_task_saccades(params_bool, params_task)
+		
+	else:
+		print('The task is not valid for LSTM\n')
 
 
 #########################################################################################################################################
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-if (task_selection=="0"):
+def LSTM_task_1_2AX(params_bool, params_task):
 
 	from TASKS.task_1_2AX import data_construction, data_modification_for_LSTM
 	task = '12-AX'
@@ -44,14 +47,26 @@ if (task_selection=="0"):
 	pred_vec = ['L','R']
 
 	print('Dataset construction...')
-	N_trial = 20000
-	perc_tr = 0.8
-	p_target = 0.5
-	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N_trial,p_target,perc_tr)
-		
+
+	if params_task is None:
+		N = 20000
+		p_c = 0.5
+		perc_tr = 0.8
+	else:
+		N = int(params_task[0]) if params_task[0] != '' else 20000
+		p_c = float(params_task[1]) if params_task[1] != '' else 0.5
+		perc_tr = float(params_task[2]) if params_task[2] != '' else 0.8
+
+	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N,p_c,perc_tr,model='2')
+	
+	print('Dataset construction done!')
+
 	dt = 10	
 	S_train_3D,O_train = data_modification_for_LSTM(S_tr,O_tr,dt)
+	print('Training dataset modification done!')
+
 	S_test_3D,O_test = data_modification_for_LSTM(S_tst,O_tst,dt)
+	print('Test dataset modification done!')
 
 	## CONSTRUCTION OF THE LSTM NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
@@ -59,24 +74,31 @@ if (task_selection=="0"):
 	O = 2			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
-	alpha = 0.1		# learning rate
+	alpha = 0.0			# learning rate
 	hysteresis = 0.5	# hysteresis coefficient ???  s.t. context layer update: c(t) = 0.5 h(t-1) + 0.5 c(t-1)
 	toll_err = 0.1		# tolerance error ???
 
 	b_sz = 1
 	
-	verb = 1
+	verb = 0
 	
-	do_training =  True
-	do_test = True
-
-	do_error_plots = False		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]	
 
 	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
 	
 	## TRAINING
-	folder = 'DATA'
-	N_trial=20000
+	folder = 'LSTM/DATA'
+	N_trial=N
 	if do_training:	
 
 		print('TRAINING...\n')	
@@ -127,7 +149,7 @@ if (task_selection=="0"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'LSTM/IMAGES'
 	fontTitle = 26
 	fontTicks = 22
 	fontLabel = 22
@@ -185,7 +207,7 @@ if (task_selection=="0"):
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-if (task_selection=="1"):
+def LSTM_task_saccades(params_bool, params_task):
 	
 	from TASKS.task_saccades import data_construction, data_modification_for_LSTM
 	task = 'saccade'
@@ -197,9 +219,16 @@ if (task_selection=="1"):
 
 	
 	print('Dataset construction...')
-	N_trial = 20000 
-	perc_tr = 0.8
-	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr)
+
+	if params_task is None:
+		N_trial = 20000 
+		perc_tr = 0.8
+	else:
+		N_trial = int(params_task[0]) if params_task[0] != '' else 20000
+		perc_tr = float(params_task[1]) if params_task[1] != '' else 0.8
+
+	S_tr,O_tr,S_tst,O_tst,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='2')
+
 	dt = 6 # 6 phases: start,fix,cue,delay,delay,gp
 	S_train_3D,O_train = data_modification_for_LSTM(S_tr,O_tr,dt)
 	S_test_3D,O_test = data_modification_for_LSTM(S_tst,O_tst,dt)
@@ -217,15 +246,22 @@ if (task_selection=="1"):
 
 	verb = 1
 	
-	do_training = False
-	do_test = False
-
-	do_error_plots = True		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]		
 
 	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'LSTM/DATA'
 	if do_training:	
 
 		print('TRAINING...\n')	
@@ -264,7 +300,7 @@ if (task_selection=="1"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'LSTM/IMAGES'
 	
 	fontTitle = 26
 	fontTicks = 22

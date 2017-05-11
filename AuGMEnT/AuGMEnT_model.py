@@ -9,6 +9,10 @@
 
 
 import numpy as np
+import sys
+sys.path.append("..")
+sys.path.append("AuGMEnT")
+
 import activations as act
 
 class AuGMEnT():

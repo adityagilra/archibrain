@@ -3,9 +3,6 @@
 ## AUTHOR: Marco Martinolli
 ## DATE: 27.03.2017
 
-from AuGMEnT_model import AuGMEnT
-
-
 import numpy as np
 import matplotlib 
 matplotlib.use('GTK3Cairo') 
@@ -14,25 +11,39 @@ from matplotlib import gridspec
 import pylab
 import gc 
 
-from sys import version_info
+import sys
+sys.path.append("..")
+sys.path.append("AuGMEnT")
 
-task_dic ={'0':'task 1-2', 
-           '1':'task AX_CPT',
-	   '2':'task 12-AX_S', 
-	   '3':'task 12-AX',
-	   '4':'saccade/anti-saccade task'}
+from AuGMEnT_model import AuGMEnT
 
-py3 = version_info[0] > 2 # creates boolean value for test that Python major version > 2
-task_selection = input("\nPlease select a task: \n\t 0: task 1-2 \n\t 1: task AX_CPT \n\t 2: task 12-AX-S\n\t 3: task 12-AX\n\t 4: saccade/anti-saccade task\n Enter id number:  ")
-print("\nYou have selected: ", task_dic[task_selection],'\n\n')
+
+def run_task(task, params_bool=None, params_task=None):
+	if(task == '0'):
+		AuGMEnT_task_1_2(params_bool, params_task)
+
+	elif(task == '1'):
+		AuGMEnT_task_AX_CPT(params_bool, params_task)
+
+	elif(task == '2'):
+		AuGMEnT_task_1_2AX_S(params_bool, params_task)
+
+	elif(task == '3'):
+		AuGMEnT_task_1_2AX(params_bool, params_task)
+
+	elif(task == '4'):
+		AuGMEnT_task_saccades(params_bool, params_task)
+
+	else:
+		print('The task is not valid for AuGMEnT\n')
 
 
 #########################################################################################################################################
 #######################   TASK 1-2
 #########################################################################################################################################
 
-if (task_selection=="0"):
-	
+def AuGMEnT_task_1_2(params_bool, params_task):
+
 	from TASKS.task_1_2 import data_construction
 	task = '1-2'
 
@@ -41,21 +52,29 @@ if (task_selection=="0"):
 	pred_vec = ['L','R']
 
 	print('Dataset construction...')
-	N = 1000
-	p1 = 0.7
-	tr_perc = 0.8
+
+	if params_task is None:
+		#N = 1000
+		N = 4000
+		p1 = 0.7
+		tr_perc = 0.8
+	else:
+		N = int(params_task[0]) if params_task[0] != '' else 4000
+		p1 = float(params_task[1]) if params_task[1] != '' else 0.7
+		tr_perc = float(params_task[2]) if params_task[2] != '' else 0.8
+
 	np.random.seed(1234)
 
-
-	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N, p1,tr_perc)
+	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N=N, p1=p1, p2=1-p1, training_perc=tr_perc, model='0')
 	print('Done!')
 	reset_cond = ['1','2']	
 
 	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
+	A = np.shape(O_tr)[1]
+
 	R = 3			     # dimension of the regular units
 	M = 4 			     # dimension of the memory units
-	A = 2			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
 	lamb = 0.2    			# synaptic tag decay 
@@ -63,17 +82,25 @@ if (task_selection=="0"):
 	discount = 0.09			# discount rate for future rewards
 	alpha = 1-lamb*discount 	# synaptic permanence
 	eps = 0.05			# percentage of softmax modality for activity selection
+	g = 3
 
 	# reward settings
 	rew_system = ['RL','PL','SRL']
 	rew = 'RL'
 
 	verb = 0
-	
-	do_training = True
-	do_test = True
+		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
 
-	do_weight_plots = True	
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	fontTitle = 22
 	fontTicks = 20
@@ -89,6 +116,7 @@ if (task_selection=="0"):
 	## ARCHITECTURE
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
+
 	## TRAINING
 	if do_training:	
 		print('TRAINING...\n')
@@ -103,7 +131,7 @@ if (task_selection=="0"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	if do_weight_plots:
 
 		fig = plt.figure(figsize=(30,8))
@@ -147,7 +175,7 @@ if (task_selection=="0"):
 #######################   TASK AX CPT
 #########################################################################################################################################
 
-if (task_selection=="1"):
+def AuGMEnT_task_AX_CPT(params_bool, params_task):
 	
 	from TASKS.task_AX_CPT import data_construction
 	task = 'AX_CPT'
@@ -157,19 +185,28 @@ if (task_selection=="1"):
 	pred_vec = ['L','R']
 
 	print('Dataset construction...')
-	N_stimuli = 30000
-	tr_perc = 0.8
+	if params_task is None:
+		#N_stimuli = 30000
+		N_stimuli = 40000
+		target_perc = 0.2
+		tr_perc = 0.8
+	else:
+		N_stimuli = int(params_task[0]) if params_task[0] != '' else 40000
+		target_perc = float(params_task[1]) if params_task[1] != '' else 0.2
+		tr_perc = float(params_task[2]) if params_task[2] != '' else 0.8
+
 	np.random.seed(1234)
 
-	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N=N_stimuli, perc_target=0.2, perc_training=tr_perc)
+	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N=N_stimuli, perc_target=target_perc, perc_training=tr_perc, model='0')
 	print('Done!')
 	reset_cond = ['A','B']	
 
-	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
+	A = np.shape(O_tr)[1]			     # dimension of the activity units = number of possible responses
+
+	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	R = 3			     # dimension of the regular units
 	M = 4 			     # dimension of the memory units
-	A = 2			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
 	lamb = 0.2    			# synaptic tag decay 
@@ -184,13 +221,20 @@ if (task_selection=="1"):
 	rew = 'PL'
 
 	verb = 0
-	
-	do_training = True
-	do_test = True
 
-	do_weight_plots = False	
-	do_error_plots = True		
-	do_reward_comparison = False	
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
+
+	do_reward_comparison = False
 
 	reg_vec=[]
 	mem_vec=[]
@@ -203,7 +247,7 @@ if (task_selection=="1"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 		g = 3
@@ -262,7 +306,7 @@ if (task_selection=="1"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	fontTitle = 26
 	fontTicks = 22
 	fontLabel = 22
@@ -430,9 +474,9 @@ if (task_selection=="1"):
 #######################   TASK 12AX_simple
 #########################################################################################################################################
 
-if (task_selection=="2"):
+def AuGMEnT_task_1_2AX_S(params_bool, params_task):
 	
-	from TASKS.task_1_2AX_simple import data_construction
+	from TASKS.task_1_2AX_S import data_construction
 	task = '12AX_S' 
 
 	np.random.seed(1234)
@@ -441,15 +485,31 @@ if (task_selection=="2"):
 	cues_vec_tot = ['1+','2+','AX+','AY+','BX+','BY+','1-','2-','AX-','AY-','BX-','BY-']
 	pred_vec = ['L','R']
 	
-	N = 28000
-	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N,0.1,0.2,0.2,0.8)
+	if params_task is None:
+		#N = 28000
+		N = 100000
+		p_digit = 0.1
+		#p_wrong = 0.2
+		#p_correct = 0.2
+		p_wrong = 0.15
+		p_correct = 0.25
+		perc_training = 0.8
+	else:
+		N = int(params_task[0]) if params_task[0] != '' else 100000
+		p_digit = float(params_task[1]) if params_task[1] != '' else 0.1
+		p_wrong = float(params_task[2]) if params_task[2] != '' else 0.15
+		p_correct = float(params_task[3]) if params_task[3] != '' else 0.25
+		perc_training = float(params_task[4]) if params_task[4] != '' else 0.8
+
+	[S_tr, O_tr, S_test, O_test, dic_stim, dic_resp] = data_construction(N, p_digit, p_wrong, p_correct, perc_training, model='0')
 	reset_cond = ['1','2']	
 
 	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
+	A = np.shape(O_tr)[1]			     # dimension of the activity units = number of possible responses
+
 	R = 4			     # dimension of the regular units
 	M = 5 			     # dimension of the memory units
-	A = 2			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
 	lamb = 0.2    			# synaptic tag decay 
@@ -457,21 +517,25 @@ if (task_selection=="2"):
 	discount = 0.9			# discount rate for future rewards
 	alpha = 1-lamb*discount 	# synaptic permanence
 	eps = 0.025			# percentage of softmax modality for activity selection
-
 	g = 4
 
 	# reward settings
-	
 	rew_system = ['RL','PL','SRL']
 	rew = 'PL'
 
 	verb = 0
 	
-	do_training = True
-	do_test = True
-
-	do_weight_plots = False	
-	do_error_plots = False		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	reg_vec=[]
 	mem_vec=[]
@@ -484,7 +548,7 @@ if (task_selection=="2"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 		g = 3
@@ -541,7 +605,7 @@ if (task_selection=="2"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	
 	fontTitle = 26
 	fontTicks = 22
@@ -640,7 +704,7 @@ if (task_selection=="2"):
 #######################   TASK 1-2 AX
 #########################################################################################################################################
 
-if (task_selection=="3"):
+def AuGMEnT_task_1_2AX(params_bool, params_task):
 	
 	from TASKS.task_1_2AX import data_construction				# BE CAREFULLLLL
 	task = '12-AX'
@@ -649,19 +713,26 @@ if (task_selection=="3"):
 	cues_vec_tot = ['1+','2+','A+','B+','C+','X+','Y+','Z+','1-','2-','A-','B-','C-','X-','Y-','Z-']
 	pred_vec = ['L','R']
 
-	N = 20000
-	perc_tr = 0.8
-	p_c = 0.5
+	if params_task is None:
+		N = 20000
+		p_c = 0.5
+		perc_tr = 0.8
+	else:
+		N = int(params_task[0]) if params_task[0] != '' else 20000
+		p_c = float(params_task[1]) if params_task[1] != '' else 0.5
+		perc_tr = float(params_task[2]) if params_task[2] != '' else 0.8
+
 	print('Dataset construction...')
-	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N,p_c,perc_tr)
+	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N,p_c,perc_tr,model='0')
 
 	reset_cond = ['1','2']	
 
-	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
+	A = np.shape(O_tr)[1]			     # dimension of the activity units = number of possible responses
+
+	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	R = 3			     # dimension of the regular units
 	M = 4			     # dimension of the memory units
-	A = 2			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
 	lamb = 0.2    			# synaptic tag decay 
@@ -677,12 +748,18 @@ if (task_selection=="3"):
 	rew = 'SRL'
 
 	verb = 0
-	
-	do_training = True
-	do_test = True
 
-	do_weight_plots = False	
-	do_error_plots = True		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
 	reg_vec=[]
 	mem_vec=[]
@@ -695,7 +772,7 @@ if (task_selection=="3"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 	
@@ -756,7 +833,7 @@ if (task_selection=="3"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 	
 	fontTitle = 26
 	fontTicks = 22
@@ -860,7 +937,7 @@ if (task_selection=="3"):
 #######################   TASK SACCADES/ANTI-SACCADES
 #########################################################################################################################################
 
-if (task_selection=="4"):
+def AuGMEnT_task_saccades(params_bool, params_task):
 	
 	from TASKS.task_saccades import data_construction
 	task = 'saccade'
@@ -869,17 +946,24 @@ if (task_selection=="4"):
 	cues_vec_tot = ['P+','A+','L+','R+','P-','A-','L-','R-']
 	pred_vec = ['L','F','R']
 
-	N_trial = 10000 
-	perc_tr = 0.8
-	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr)
+	if params_task is None:
+		#N_trial = 10000
+		N_trial = 20000
+		perc_tr = 0.8
+	else:
+		N_trial = int(params_task[0]) if params_task[0] != '' else 20000
+		perc_tr = float(params_task[1]) if params_task[1] != '' else 0.8
+
+	S_tr,O_tr,S_test,O_test,dic_stim,dic_resp = data_construction(N=N_trial,perc_training=perc_tr,model='0')
 
 	reset_cond = ['empty']	
 
-	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
+	A = np.shape(O_tr)[1] 			     # dimension of the activity units = number of possible responses
+
+	## CONSTRUCTION OF THE AuGMEnT NETWORK
 	R = 3			     # dimension of the regular units
 	M = 4 			     # dimension of the memory units
-	A = 3			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
 	lamb = 0.2    			# synaptic tag decay 
@@ -893,18 +977,25 @@ if (task_selection=="4"):
 	# reward settings
 	rew_system = ['RL','PL','SRL']
 	rew = 'RL'
-	shape_fac = 0.2
-		
+
 	verb = 0
-	
-	do_training = False
-	do_test = False
+		
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]
 
-	do_weight_plots = False	
-	do_error_plots = True		
+	shape_fac = 0.2
 
-	reg_vec=[]
-	mem_vec=[]
+	reg_vec = []
+	mem_vec = []
 	for i in range(R):
 		reg_vec.append('R'+str(i+1))
 	for i in range(M):
@@ -914,7 +1005,7 @@ if (task_selection=="4"):
 	model = AuGMEnT(S,R,M,A,alpha,beta,discount,eps,g,rew,dic_stim,dic_resp)
 
 	## TRAINING
-	folder = 'DATA'
+	folder = 'AuGMEnT/DATA'
 	if do_training:	
 		print('TRAINING...\n')
 		training_trial = np.round(N_trial*perc_tr).astype(int)
@@ -978,7 +1069,7 @@ if (task_selection=="4"):
 
 	## PLOTS
 	# plot of the memory weights
-	folder = 'IMAGES'
+	folder = 'AuGMEnT/IMAGES'
 
 	fontTitle = 26
 	fontTicks = 22
@@ -1080,5 +1171,3 @@ if (task_selection=="4"):
 		if M==0:
 			savestr = folder+'/'+task+'_error_'+rew+'_nomemory.png'		
 		figE.savefig(savestr)
-
-
