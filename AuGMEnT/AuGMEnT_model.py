@@ -209,6 +209,8 @@ class AuGMEnT():
 				self.reset_memory()
 				self.reset_tags()
 				first = True
+			else:
+				first = False
 				
 			s_inst = s
 			s_trans = self.define_transient(s_inst,s_old)
@@ -263,7 +265,8 @@ class AuGMEnT():
 			# STEP OFF
 			s_inst = zero
 			s_trans = self.define_transient(s_inst,s_old)
-			o = np.array([[1,0]])
+			#o = np.array([[1,0]])
+			o = O_train[n:(n+1),:]
 			s_old = s_inst
 
 			y_r, y_m, Q = self.feedforward(s_inst,s_trans)

@@ -228,6 +228,8 @@ class HER_arch():
 			for l in np.arange(self.NL):
 				self.H[l].empty_memory()
 
+			corr = 0
+
 			for i in np.arange(N_samples):
 					
 				s = S_test[i:(i+1),:]		
@@ -248,7 +250,7 @@ class HER_arch():
 				resp_ind,prob = self.H[0].compute_response(m_l[0])
 
 				o_print = self.dic_resp[repr(o)]
-				r_print = np.where(resp_ind==0, RESP_list[0], RESP_list[1] ) 	
+				r_print = self.dic_resp[repr(resp_ind)]
 
 				if verbose:
 					if self.NL==2:			
@@ -256,6 +258,9 @@ class HER_arch():
 					elif self.NL==3:
 						print('TEST ITER:',i+1,'\ts: ',self.dic_stim[repr(s.astype(int))],'\tr0:', self.dic_stim[repr(self.H[0].r.astype(int))],'\tr1:', self.dic_stim[repr(self.H[1].r.astype(int))],'\tr2:', self.dic_stim[repr(self.H[2].r.astype(int))],'\tO: ',o_print,'\tR: ',r_print)	
 			
+
+				if (o_print == r_print):
+					corr += 1
 
 				if (binary):
 
@@ -270,7 +275,9 @@ class HER_arch():
 		
 			if (binary):	
 				print('Table: \n', Feedback_table)
-				print('Percentage of correct predictions: ', 100*(Feedback_table[0,0]+Feedback_table[1,1])/np.sum(Feedback_table),'%')
+			
+			print('Percentage of correct predictions: ', 100*corr/N_samples,'%')
+
 
 
 
