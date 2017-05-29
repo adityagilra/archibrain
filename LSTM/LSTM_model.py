@@ -37,7 +37,9 @@ class LSTM_arch():
 		self.LSTM = Sequential()
 		self.LSTM.add(LSTM(batch_input_shape=(self.b_sz,self.time_steps,self.S), units=self.H, activation='sigmoid',stateful=True))
 		self.LSTM.add(Dense(units=self.O, activation='softmax'))
-		self.LSTM.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+		opt = Adam(lr=learn_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+		self.LSTM.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
 
 	def training(self,S_train,O_train,task,ep=3):
@@ -196,6 +198,8 @@ class LSTM_arch():
 
 		R = self.LSTM.predict(S_test,batch_size=self.b_sz)
 
+		corr = 0
+
 		for n in np.arange(N):
 			
 			s = S_test[n:(n+1),self.time_steps-1,:]
@@ -207,6 +211,8 @@ class LSTM_arch():
 			o_print = self.dic_resp[repr(o.astype(int))]
 			r_print = self.dic_resp[repr(resp_ind)]
 
+			if (o_print == r_print):
+				corr += 1
 			if (binary):
 
 				if (verbose):
@@ -224,5 +230,4 @@ class LSTM_arch():
 		if binary:
 			print("PERFORMANCE TABLE (output vs. response):\n",Feedback_table)
 		
-		corr = Feedback_table[0,0] + Feedback_table[1,1]
-		print("Percentage of correct predictions: ", 100*corr/N) 									
+		print("Percentage of correct predictions: ", 100*corr/N)

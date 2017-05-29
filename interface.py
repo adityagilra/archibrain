@@ -10,7 +10,8 @@ task_dic = {
 	'1':'task AX_CPT',
 	'2':'task 12-AX_S',
 	'3':'task 12-AX',
-	'4':'saccade/anti-saccade task'
+	'4':'saccade/anti-saccade task',
+	'5':'sequence prediction task'
 }
 
 def check_validity(model_selection, task_selection):
@@ -19,7 +20,7 @@ def check_validity(model_selection, task_selection):
 	elif(model_selection == '1'):
 		return True
 	elif(model_selection == '2'):
-		if(task_selection == '3' or task_selection == '4'):
+		if(task_selection == '3' or task_selection == '4' or task_selection =='5'):
 			return True
 	return False
 
@@ -29,7 +30,7 @@ def main():
 	model_selection = input("\nPlease select a model: \n\t 0: AuGMEnT \n\t 1: HER \n\t 2: LSTM\nEnter model number: ")
 
 	# select task
-	task_selection = input("\nPlease select a task: \n\t 0: task 1-2 \n\t 1: task AX_CPT \n\t 2: task 12-AX-S\n\t 3: task 12-AX\n\t 4: saccade/anti-saccade task\nEnter task number: ")
+	task_selection = input("\nPlease select a task: \n\t 0: task 1-2 \n\t 1: task AX_CPT \n\t 2: task 12-AX-S\n\t 3: task 12-AX\n\t 4: saccade/anti-saccade task\n\t 5: sequence prediction task\nEnter task number: ")
 
 	# check model and task selection is valid
 	if(not check_validity(model_selection, task_selection)):
@@ -100,6 +101,13 @@ def main():
 			if(enter_params_task[0] == 'y' or enter_params_task[0] == 'Y'):
 				params_task = []
 				params_task.append(input("Number of trials (default: N = 20000): "))
+				params_task.append(input("Training percentage (default: tr_perc = 0.8): "))
+
+		elif(task_selection == '5'):
+			if(enter_params_task[0] == 'y' or enter_params_task[0] == 'Y'):
+				params_task = []
+				params_task.append(input("Number of trials (default: N = 5000): "))
+				params_task.append(input("Probability of target (default: p_target = 0.5): "))
 				params_task.append(input("Training percentage (default: tr_perc = 0.8): "))
 
 	print('\n\n')
