@@ -30,6 +30,12 @@ def run_task(task, params_bool=None, params_task=None):
 
 	elif(task == '5'):
 		LSTM_task_seq_prediction(params_bool, params_task)
+
+	elif(task == '6'):
+		LSTM_task_copy(params_bool, params_task)
+
+	elif(task == '7'):
+		LSTM_task_copy_repeat(params_bool, params_task)
 		
 	else:
 		print('The task is not valid for LSTM\n')
@@ -97,7 +103,7 @@ def LSTM_task_1_2AX(params_bool, params_task):
 		do_weight_plots = params_bool[2]	
 		do_error_plots = params_bool[3]	
 
-	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
+	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp,task)
 	
 	## TRAINING
 	folder = 'LSTM/DATA'
@@ -106,7 +112,7 @@ def LSTM_task_1_2AX(params_bool, params_task):
 
 		print('TRAINING...\n')	
 
-		E,conv_iter,conv_iter_2 = model.training(S_train_3D,O_train,'12AX',1)
+		E,conv_iter,conv_iter_2 = model.training(S_train_3D,O_train,ep=1)
 		
 		str_err = folder+'/'+task+'_error_units'+str(H)+'.txt'
 		np.savetxt(str_err,E)
@@ -261,7 +267,7 @@ def LSTM_task_saccades(params_bool, params_task):
 		do_weight_plots = params_bool[2]	
 		do_error_plots = params_bool[3]		
 
-	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
+	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp,task)
 
 	## TRAINING
 	folder = 'LSTM/DATA'
@@ -269,7 +275,7 @@ def LSTM_task_saccades(params_bool, params_task):
 
 		print('TRAINING...\n')	
 
-		E,conv_iter = model.training(S_train_3D,O_train,'saccade',1)
+		E,conv_iter = model.training(S_train_3D,O_train,ep=1)
 		
 		str_err = folder+'/'+task+'_error.txt'
 		np.savetxt(str_err,E)
@@ -299,7 +305,7 @@ def LSTM_task_saccades(params_bool, params_task):
 	## TEST
 	if do_test:
 		print('TEST...\n')
-		model.test(S_test_3D,O_test,verb)
+		model.test(S_test_3D,O_test,verbose=verb)
 
 	## PLOTS
 	# plot of the memory weights
@@ -413,7 +419,7 @@ def LSTM_task_seq_prediction(params_bool, params_task):
 		do_weight_plots = params_bool[2]	
 		do_error_plots = params_bool[3]	
 
-	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp)
+	model = LSTM_arch(S,H,O,alpha,b_sz,dt,dic_stim,dic_resp,task)
 	
 	## TRAINING
 	folder = 'LSTM/DATA'
@@ -422,7 +428,7 @@ def LSTM_task_seq_prediction(params_bool, params_task):
 
 		print('TRAINING...\n')	
 
-		E,conv_iter,conv_iter_2 = model.training(S_train_3D,O_train,'12AX',1)
+		E,conv_iter,conv_iter_2 = model.training(S_train_3D,O_train,ep=1)
 		
 		str_err = folder+'/'+task+'_error_units'+str(H)+'.txt'
 		np.savetxt(str_err,E)
@@ -518,4 +524,261 @@ def LSTM_task_seq_prediction(params_bool, params_task):
 		plt.ylabel('Cumulative Error',fontsize=fontLabel)
 		plt.show()
 		savestr = folder+'/'+task+'_error_units'+str(H)+'.png'
+		fig.savefig(savestr)
+
+
+#########################################################################################################################################
+#######################   TASK COPY
+#########################################################################################################################################
+def LSTM_task_copy(params_bool, params_task):
+
+	from TASKS.task_copy import data_construction
+	task = 'copy'
+
+	if params_task is None:
+		size = 8
+		min_length = 1
+		max_length = 20
+		end_marker = True
+		training_iters = 200000
+		test_iters = 1000
+		batch_size = 1
+	else:
+		size = int(params_task[0]) if params_task[0] != '' else 8
+		min_length = int(params_task[1]) if params_task[1] != '' else 1
+		max_length = int(params_task[2]) if params_task[2] != '' else 20
+		end_marker = bool(params_task[3]) if params_task[3] != '' else True
+		training_iters = int(params_task[4]) if params_task[4] != '' else 200000
+		test_iters = int(params_task[5]) if params_task[5] != '' else 200000
+		batch_size = int(params_task[6]) if params_task[6] != '' else 1
+
+	print('Dataset construction...')
+
+	S_train, O_train = data_construction(max_iters=training_iters, batch_size=batch_size, min_length=min_length, \
+									max_length=max_length, size=size, end_marker=end_marker)
+	S_test, O_test = data_construction(max_iters=test_iters, batch_size=batch_size, min_length=min_length, \
+									max_length=max_length, size=size, end_marker=end_marker)
+
+	print('Dataset construction done!')
+
+	S = size+1
+	H = [256, 256, 256]
+	O = size+1
+
+	learn_rate = 3e-5
+
+	verb = 0
+	
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]	
+
+	model = LSTM_arch(S=S,H=H,O=O,learn_rate=learn_rate,batch_size=batch_size,task=task)
+
+	folder = 'LSTM/DATA'
+	if do_training:
+
+		print('TRAINING...\n')	
+		
+		acc, loss, iters = model.training(S_train, O_train, max_iters=training_iters)
+		str_loss = folder+'/'+task+'_training_loss.txt'
+		np.savetxt(str_loss,loss)
+		str_acc = folder+'/'+task+'_training_acc.txt'
+		np.savetxt(str_acc,acc)
+
+		str_save = folder+'/'+task+'_weights_units.h5'
+		model.LSTM.save_weights(str_save)
+
+		print('\nSaved model to disk.')
+
+	else:
+
+		str_loss = folder+'/'+task+'_training_loss.txt'
+		loss = np.loadtxt(str_loss)
+		str_acc = folder+'/'+task+'_training_acc.txt'
+		acc = np.loadtxt(str_acc)
+
+		str_load = folder+'/'+task+'_weights_units.h5'
+		model.LSTM.load_weights(str_load)
+
+		print('\nLoaded weights from disk.')
+
+	if do_test:
+
+		print('TESTING...\n')
+
+		test_loss, test_acc = model.test(S_test, O_test, max_iters=test_iters)
+
+		print('\nAverage Test Loss = ' + str(test_loss))
+		print('Average Test Accuracy = ' + str(test_acc))
+
+	example_input, example_output = data_construction(max_iters=1, batch_size=batch_size, min_length=min_length, \
+									max_length=max_length, size=size, end_marker=end_marker)
+	predicted_output = model.LSTM.predict(example_input)
+
+	print('\nExample input:')
+	print(np.asarray(example_input, dtype=np.float32))
+	print('\nExample output:')
+	print(np.asarray(example_output, dtype=np.float32))
+	print('\nPredicted output:')
+	print(np.asarray(predicted_output > 0.5, dtype=np.float32))
+
+	folder = 'LSTM/IMAGES'
+
+	if do_error_plots:
+
+		fig = plt.figure(figsize=(20,8))
+		plt.subplot(1,2,1)
+		plt.plot(iters, acc, 'b-', linewidth=2, alpha=0.8)
+		plt.title('Training Accuracy (LSTM - Copy Task)')
+		plt.ylabel('Accuracy')
+		plt.xlabel('Iteration')
+		
+		plt.subplot(1,2,2)
+		plt.plot(iters, loss, 'b-', linewidth=2, alpha=0.8)
+		plt.title('Training Loss (LSTM - Copy Task)')
+		plt.ylabel('Loss')
+		plt.xlabel('Iteration')
+		plt.show()
+
+		savestr = folder+'/'+task+'_training_error_plot.png'
+		fig.savefig(savestr)
+
+
+
+#########################################################################################################################################
+#######################   TASK COPY REPEAT
+#########################################################################################################################################
+def LSTM_task_copy_repeat(params_bool, params_task):
+
+	from TASKS.task_copy_repeat import data_construction
+	task = 'copy_repeat'
+
+	if params_task is None:
+		size = 8
+		min_length = 1
+		max_length = 20
+		min_repeats = 2
+		max_repeats = 5
+		end_marker = True
+		training_iters = 200000
+		test_iters = 1000
+		batch_size = 1
+	else:
+		size = int(params_task[0]) if params_task[0] != '' else 8
+		min_length = int(params_task[1]) if params_task[1] != '' else 1
+		max_length = int(params_task[2]) if params_task[2] != '' else 20
+		min_repeats = int(params_task[3]) if params_task[3] != '' else 2
+		max_repeats = int(params_task[4]) if params_task[4] != '' else 5
+		end_marker = bool(params_task[5]) if params_task[5] != '' else True
+		training_iters = int(params_task[6]) if params_task[6] != '' else 200000
+		test_iters = int(params_task[7]) if params_task[7] != '' else 200000
+		batch_size = int(params_task[8]) if params_task[8] != '' else 1
+
+	print('Dataset construction...')
+
+	S_train, O_train = data_construction(max_iters=training_iters, batch_size=batch_size, min_length=min_length, max_length=max_length, \
+								min_repeats=min_repeats, max_repeats=max_repeats, size=size, end_marker=end_marker)
+	S_test, O_test = data_construction(max_iters=test_iters, batch_size=batch_size, min_length=min_length, max_length=max_length, \
+								min_repeats=min_repeats, max_repeats=max_repeats, size=size, end_marker=end_marker)
+
+	print('Dataset construction done!')
+
+	S = size+2
+	H = [512, 512, 512]
+	O = size+2
+
+	learn_rate = 3e-5
+
+	verb = 0
+	
+	if params_bool is None:
+		do_training = True
+		do_test = True
+		do_weight_plots = True
+		do_error_plots = True
+		
+	else:
+		do_training = params_bool[0]
+		do_test = params_bool[1]
+		do_weight_plots = params_bool[2]	
+		do_error_plots = params_bool[3]	
+
+	model = LSTM_arch(S=S,H=H,O=O,learn_rate=learn_rate,batch_size=batch_size,task=task)
+
+	folder = 'LSTM/DATA'
+	if do_training:
+
+		print('TRAINING...\n')	
+		
+		acc, loss, iters = model.training(S_train, O_train, max_iters=training_iters)
+		str_loss = folder+'/'+task+'_training_loss.txt'
+		np.savetxt(str_loss,loss)
+		str_acc = folder+'/'+task+'_training_acc.txt'
+		np.savetxt(str_acc,acc)
+
+		str_save = folder+'/'+task+'_weights_units.h5'
+		model.LSTM.save_weights(str_save)
+
+		print('\nSaved model to disk.')
+
+	else:
+
+		str_loss = folder+'/'+task+'_training_loss.txt'
+		loss = np.loadtxt(str_loss)
+		str_acc = folder+'/'+task+'_training_acc.txt'
+		acc = np.loadtxt(str_acc)
+
+		str_load = folder+'/'+task+'_weights_units.h5'
+		model.LSTM.load_weights(str_load)
+
+		print('\nLoaded weights from disk.')
+
+	if do_test:
+
+		print('TESTING...\n')
+
+		test_loss, test_acc = model.test(S_test, O_test, max_iters=test_iters)
+
+		print('\nAverage Test Loss = ' + str(test_loss))
+		print('Average Test Accuracy = ' + str(test_acc))
+
+	example_input, example_output = data_construction(max_iters=1, batch_size=batch_size, min_length=min_length, max_length=max_length, \
+								min_repeats=min_repeats, max_repeats=max_repeats, size=size, end_marker=end_marker)
+	predicted_output = model.LSTM.predict(example_input)
+
+	print('\nExample input:')
+	print(np.asarray(example_input, dtype=np.float32))
+	print('\nExample output:')
+	print(np.asarray(example_output, dtype=np.float32))
+	print('\nPredicted output:')
+	print(np.asarray(predicted_output > 0.5, dtype=np.float32))
+
+	folder = 'LSTM/IMAGES'
+
+	if do_error_plots:
+
+		fig = plt.figure(figsize=(20,8))
+		plt.subplot(1,2,1)
+		plt.plot(iters, acc, 'b-', linewidth=2, alpha=0.8)
+		plt.title('Training Accuracy (LSTM - Repeat Copy Task)')
+		plt.ylabel('Accuracy')
+		plt.xlabel('Iteration')
+		
+		plt.subplot(1,2,2)
+		plt.plot(iters, loss, 'b-', linewidth=2, alpha=0.8)
+		plt.title('Training Loss (LSTM - Repeat Copy Task)')
+		plt.ylabel('Loss')
+		plt.xlabel('Iteration')
+		plt.show()
+
+		savestr = folder+'/'+task+'_training_error_plot.png'
 		fig.savefig(savestr)
