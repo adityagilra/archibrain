@@ -539,18 +539,16 @@ def LSTM_task_copy(params_bool, params_task):
 		size = 8
 		min_length = 1
 		max_length = 20
-		end_marker = True
 		training_iters = 200000
-		test_iters = 1000
-		batch_size = 1
 	else:
 		size = int(params_task[0]) if params_task[0] != '' else 8
 		min_length = int(params_task[1]) if params_task[1] != '' else 1
 		max_length = int(params_task[2]) if params_task[2] != '' else 20
-		end_marker = bool(params_task[3]) if params_task[3] != '' else True
-		training_iters = int(params_task[4]) if params_task[4] != '' else 200000
-		test_iters = int(params_task[5]) if params_task[5] != '' else 200000
-		batch_size = int(params_task[6]) if params_task[6] != '' else 1
+		training_iters = int(params_task[3]) if params_task[3] != '' else 200000
+
+	end_marker = True
+	test_iters = 1000
+	batch_size = 1
 
 	print('Dataset construction...')
 
@@ -668,20 +666,20 @@ def LSTM_task_copy_repeat(params_bool, params_task):
 		max_length = 20
 		min_repeats = 2
 		max_repeats = 5
-		end_marker = True
 		training_iters = 200000
-		test_iters = 1000
-		batch_size = 1
+
+		
 	else:
 		size = int(params_task[0]) if params_task[0] != '' else 8
 		min_length = int(params_task[1]) if params_task[1] != '' else 1
 		max_length = int(params_task[2]) if params_task[2] != '' else 20
 		min_repeats = int(params_task[3]) if params_task[3] != '' else 2
 		max_repeats = int(params_task[4]) if params_task[4] != '' else 5
-		end_marker = bool(params_task[5]) if params_task[5] != '' else True
-		training_iters = int(params_task[6]) if params_task[6] != '' else 200000
-		test_iters = int(params_task[7]) if params_task[7] != '' else 200000
-		batch_size = int(params_task[8]) if params_task[8] != '' else 1
+		training_iters = int(params_task[5]) if params_task[5] != '' else 200000
+
+	end_marker = True
+	test_iters = 1000
+	batch_size = 1
 
 	print('Dataset construction...')
 

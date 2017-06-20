@@ -92,7 +92,7 @@ class AuGMEnT():
 			self.rew_pos = 1
 			self.rew_neg = -1
 		elif self.rew_rule =='BRL':
-			self.rew_pos = 1
+			self.rew_pos = 1		#positive reward will be changed depending on actual output
 			self.rew_neg = -1
 
 

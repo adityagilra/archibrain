@@ -122,10 +122,7 @@ def main():
 				params_task.append(input("Size of bit string (default: size = 8): "))
 				params_task.append(input("Minimum length of sequence (default: min_length = 1): "))
 				params_task.append(input("Maximum length of sequence (default: max_length = 20): "))
-				params_task.append(input("End marker for input sequence (default: end_marker = True): "))
 				params_task.append(input("Number of training iterations (default: training_iters = 200000): "))
-				params_task.append(input("Number of test iterations (default: test_iters = 1000): "))
-				params_task.append(input("Batch size (default: batch_size = 1): "))
 				
 		elif(task_selection == '7'):
 			if(enter_params_task[0] == 'y' or enter_params_task[0] == 'Y'):
@@ -135,10 +132,7 @@ def main():
 				params_task.append(input("Maximum length of sequence (default: max_length = 20): "))
 				params_task.append(input("Minimum number of repeats (default: min_repeats = 2): "))
 				params_task.append(input("Maximum number of repeats (default: max_repeats = 5): "))
-				params_task.append(input("End marker for input sequence (default: end_marker = True): "))
 				params_task.append(input("Number of training iterations (default: training_iters = 200000): "))
-				params_task.append(input("Number of test iterations (default: test_iters = 1000): "))
-				params_task.append(input("Batch size (default: batch_size = 1): "))
 				
 
 	print('\n\n')
