@@ -1214,7 +1214,7 @@ def AuGMEnT_task_seq_prediction(params_bool, params_task):
 	
 	# value parameters were taken from the 
 	lamb = 0.2    			# synaptic tag decay 
-	beta = 0.05			# weight update coefficient
+	beta = 0.02			# weight update coefficient
 	discount = 0.9			# discount rate for future rewards
 	alpha = 1-lamb*discount 	# synaptic permanence
 	eps = 0.025			# percentage of softmax modality for activity selection
@@ -1222,7 +1222,7 @@ def AuGMEnT_task_seq_prediction(params_bool, params_task):
 
 	# reward settings
 	
-	rew_system = ['RL','PL','SRL']
+	rew_system = ['RL','PL','SRL','BRL']
 	rew = 'SRL'
 
 	verb = 0

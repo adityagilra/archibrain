@@ -15,6 +15,17 @@ sys.path.append("AuGMEnT")
 
 import activations as act
 
+def BRL(r):
+	if(r == 'A'):
+		return 1.5
+	elif(r == 'B'):
+		return 0.75
+	elif(r == 'C'):
+		return 0.75
+	elif(r == 'Y'):
+		return 1.5
+	return 1
+
 class AuGMEnT():
 
 	## Inputs
@@ -69,15 +80,19 @@ class AuGMEnT():
 		self.Tag_w_m = np.zeros((self.M, self.A))
 
 		self.sTRACE = np.zeros((2*self.S, self.M))
+		self.rew_rule = rew_rule
 
-		if rew_rule =='RL':
+		if self.rew_rule =='RL':
 			self.rew_pos = 1
 			self.rew_neg = 0
-		elif rew_rule =='PL':
+		elif self.rew_rule =='PL':
 			self.rew_pos = 0
 			self.rew_neg = -1
-		elif rew_rule =='SRL':
+		elif self.rew_rule =='SRL':
 			self.rew_pos = 1
+			self.rew_neg = -1
+		elif self.rew_rule =='BRL':
+			self.rew_pos = 1		#positive reward will be changed depending on actual output
 			self.rew_neg = -1
 
 
@@ -252,8 +267,11 @@ class AuGMEnT():
 				r = self.rew_neg
 				E[n] = 1
 				correct = 0
-			else: 
-				r = self.rew_pos
+			else:
+				if self.rew_rule == 'BRL': 
+					r = BRL(r_print)
+				else:
+					r = self.rew_pos
 				correct += 1			
 			q_old = q
 
@@ -297,7 +315,10 @@ class AuGMEnT():
 			if self.dic_resp[repr(resp_ind)]!=self.dic_resp[repr(o)]:
 				r = self.rew_neg
 			else: 
-				r = self.rew_pos			
+				if self.rew_rule == 'BRL': 
+					r = BRL(r_print)
+				else:
+					r = self.rew_pos			
 			q_old = q
 
 		if convergence == True:
@@ -330,6 +351,9 @@ class AuGMEnT():
 			else: 	
 				resp = True		# fixation
 				r = 0	
+
+		if self.rew_rule == 'BRL':
+			self.rew_pos = BRL(r_print)
 
 		if phase=='go':
 			if r_print!='F':
@@ -460,6 +484,9 @@ class AuGMEnT():
 					self.update_weights(r,q,q_old)
 	
 				self.update_tags(s_inst,s_trans,y_r,y_m,z,resp_ind)
+
+				if self.rew_rule == 'BRL':
+					self.rew_pos = BRL(r_print)
 
 				if phase=='cue' and phase!='delay':
 					r = 0
@@ -638,6 +665,7 @@ class AuGMEnT():
 
 		print("Percentage of correct predictions: ", 100*corr/N_stimuli) 
 
+		return 100*corr/N_stimuli
 
 
 

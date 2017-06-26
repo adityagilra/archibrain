@@ -11,18 +11,22 @@ task_dic = {
 	'2':'task 12-AX_S',
 	'3':'task 12-AX',
 	'4':'saccade/anti-saccade task',
-	'5':'sequence prediction task'
+	'5':'sequence prediction task',
+	'6':'copy task',
+	'7':'repeat copy task'
 }
 
 def check_validity(model_selection, task_selection):
-	if(model_selection == '0'):
-		return True
-	elif(model_selection == '1'):
-		return True
-	elif(model_selection == '2'):
-		if(task_selection == '3' or task_selection == '4' or task_selection =='5'):
-			return True
-	return False
+	if model_selection == '0':
+		if task_selection == '6' or task_selection == '7':
+			return False
+	elif model_selection == '1':
+		if task_selection == '6' or task_selection == '7':
+			return False
+	elif model_selection == '2':
+		if task_selection == '0' or task_selection == '1' or task_selection == '2':
+			return False
+	return True
 
 
 def main():
@@ -30,7 +34,9 @@ def main():
 	model_selection = input("\nPlease select a model: \n\t 0: AuGMEnT \n\t 1: HER \n\t 2: LSTM\nEnter model number: ")
 
 	# select task
-	task_selection = input("\nPlease select a task: \n\t 0: task 1-2 \n\t 1: task AX_CPT \n\t 2: task 12-AX-S\n\t 3: task 12-AX\n\t 4: saccade/anti-saccade task\n\t 5: sequence prediction task\nEnter task number: ")
+	task_selection = input("\nPlease select a task: \n\t 0: task 1-2 \n\t 1: task AX_CPT \n\t 2: task 12-AX-S\n" + 
+					"\t 3: task 12-AX\n\t 4: saccade/anti-saccade task\n\t 5: sequence prediction task\n" + 
+					"\t 6: copy task\n\t 7: repeat copy task \nEnter task number: ")
 
 	# check model and task selection is valid
 	if(not check_validity(model_selection, task_selection)):
@@ -109,6 +115,25 @@ def main():
 				params_task.append(input("Number of trials (default: N = 5000): "))
 				params_task.append(input("Probability of target (default: p_target = 0.5): "))
 				params_task.append(input("Training percentage (default: tr_perc = 0.8): "))
+
+		elif(task_selection == '6'):
+			if(enter_params_task[0] == 'y' or enter_params_task[0] == 'Y'):
+				params_task = []
+				params_task.append(input("Size of bit string (default: size = 8): "))
+				params_task.append(input("Minimum length of sequence (default: min_length = 1): "))
+				params_task.append(input("Maximum length of sequence (default: max_length = 20): "))
+				params_task.append(input("Number of training iterations (default: training_iters = 200000): "))
+				
+		elif(task_selection == '7'):
+			if(enter_params_task[0] == 'y' or enter_params_task[0] == 'Y'):
+				params_task = []
+				params_task.append(input("Size of bit string (default: size = 8): "))
+				params_task.append(input("Minimum length of sequence (default: min_length = 1): "))
+				params_task.append(input("Maximum length of sequence (default: max_length = 20): "))
+				params_task.append(input("Minimum number of repeats (default: min_repeats = 2): "))
+				params_task.append(input("Maximum number of repeats (default: max_repeats = 5): "))
+				params_task.append(input("Number of training iterations (default: training_iters = 200000): "))
+				
 
 	print('\n\n')
 
