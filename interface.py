@@ -112,7 +112,7 @@ def main():
 		elif(task_selection == '5'):
 			if(enter_params_task[0] == 'y' or enter_params_task[0] == 'Y'):
 				params_task = []
-				params_task.append(input("Number of trials (default: N = 5000): "))
+				params_task.append(input("Number of trials (default: N = 20000): "))
 				params_task.append(input("Probability of target (default: p_target = 0.5): "))
 				params_task.append(input("Training percentage (default: tr_perc = 0.8): "))
 

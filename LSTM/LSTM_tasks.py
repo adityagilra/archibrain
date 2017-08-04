@@ -395,11 +395,11 @@ def LSTM_task_seq_prediction(params_bool, params_task):
 
 	## CONSTRUCTION OF THE LSTM NETWORK
 	S = np.shape(S_tr)[1]        # dimension of the input = number of possible stimuli
-	H = 10	 		     # number of the hidden units
+	H = 20	 		     # number of the hidden units
 	O = np.shape(O_tr)[1]			     # dimension of the activity units = number of possible responses
 	
 	# value parameters were taken from the 
-	alpha = 0.001			# learning rate
+	alpha = 0.002		# learning rate
 	hysteresis = 0.5	# hysteresis coefficient ???  s.t. context layer update: c(t) = 0.5 h(t-1) + 0.5 c(t-1)
 	toll_err = 0.1		# tolerance error ???
 
@@ -498,27 +498,23 @@ def LSTM_task_seq_prediction(params_bool, params_task):
 
 		fig= plt.figure(figsize=(20,8))
 		plt.subplot(1,2,1)
-		plt.bar(bin*np.arange(len(E_bin))/6,E_bin,width=bin/6,color='red',edgecolor='black', alpha=0.6)
-		plt.axvline(x=2902/6, linewidth=5, ls='dashed', color='b')
-		plt.axvline(x=48000/6, linewidth=5, ls='dashed', color='r')
-		plt.axvline(x=conv_iter_2/6, linewidth=5, color='r')
+		plt.bar(bin*np.arange(len(E_bin))/3,E_bin,width=bin/3,color='red',edgecolor='black', alpha=0.6)
+		plt.axvline(x=conv_iter_2/3, linewidth=5, color='r')
 		tit = 'Seq Predict: Training Convergence'
 		plt.title(tit,fontweight="bold",fontsize=fontTitle)		
 		plt.xlabel('Training Trials',fontsize=fontLabel)
 		plt.ylabel('Number of Errors per bin',fontsize=fontLabel)		
-		plt.xticks(np.linspace(0,N_round/6,5,endpoint=True),fontsize=fontTicks)	
+		plt.xticks(np.linspace(0,N_round/3,5,endpoint=True),fontsize=fontTicks)	
 		plt.yticks(fontsize=fontTicks)	
-		text = 'Bin = '+str(np.around(bin/6).astype(int))
+		text = 'Bin = '+str(np.around(bin).astype(int))
 		plt.figtext(x=0.38,y=0.78,s=text,fontsize=fontLabel,bbox={'facecolor':'white', 'alpha':0.5, 'pad':10})
 
 		plt.subplot(1,2,2)
-		plt.plot(np.arange(N)/6, E_cum, color='red',linewidth=7, alpha=0.6)
-		plt.axvline(x=2902/6, linewidth=5, ls='dashed', color='b')
-		plt.axvline(x=48000/6, linewidth=5, ls='dashed', color='r')
-		plt.axvline(x=conv_iter_2/6, linewidth=5, color='r')
+		plt.plot(np.arange(N)/3, E_cum, color='red',linewidth=7, alpha=0.6)
+		plt.axvline(x=conv_iter_2/3, linewidth=5, color='r')
 		tit = 'Seq Predict: Cumulative Training Error'
 		plt.title(tit,fontweight="bold",fontsize=fontTitle)			
-		plt.xticks(np.linspace(0,N_round/6,5,endpoint=True),fontsize=fontTicks)
+		plt.xticks(np.linspace(0,N_round/3,5,endpoint=True),fontsize=fontTicks)
 		plt.yticks(fontsize=fontTicks)
 		plt.xlabel('Training Trials',fontsize=fontLabel)
 		plt.ylabel('Cumulative Error',fontsize=fontLabel)
@@ -679,7 +675,7 @@ def LSTM_task_copy_repeat(params_bool, params_task):
 
 	end_marker = True
 	test_iters = 1000
-	batch_size = 1
+	batch_size = 10
 
 	print('Dataset construction...')
 
