@@ -1005,27 +1005,25 @@ def HER_task_seq_prediction(params_bool, params_task):
 		N_round = np.around(N/1000).astype(int)*1000
 		
 		plt.subplot(1,2,1)
-		plt.bar(bin*np.arange(len(E_bin))/6,E_bin,width=bin/6,color='blue',edgecolor='black', alpha=0.6)
-		plt.axvline(x=4492/6, linewidth=5, ls='dashed', color='b')
+		plt.bar(bin*np.arange(len(E_bin))/3,E_bin,width=bin/3,color='blue',edgecolor='black', alpha=0.6)
 		if conv_iter!=0:
-			plt.axvline(x=conv_iter/6, linewidth=5, color='b')
+			plt.axvline(x=conv_iter/3, linewidth=5, color='b')
 		tit = 'Seq Predict: Training Convergence'
 		plt.title(tit,fontweight="bold",fontsize=fontTitle)		
 		plt.xlabel('Training Trials',fontsize=fontLabel)
 		plt.ylabel('Number of Errors per bin',fontsize=fontLabel)		
-		plt.xticks(np.linspace(0,N_round/6,5,endpoint=True),fontsize=fontTicks)	
+		plt.xticks(np.linspace(0,N_round/3,5,endpoint=True),fontsize=fontTicks)	
 		plt.yticks(fontsize=fontTicks)	
 		text = 'Bin = '+str(np.around(bin).astype(int))
 		plt.figtext(x=0.38,y=0.78,s=text,fontsize=fontLabel,bbox={'facecolor':'white', 'alpha':0.5, 'pad':10})
 
 		plt.subplot(1,2,2)
-		plt.plot(np.arange(N)/6, E_cum, color='blue',linewidth=7, alpha=0.6)
-		plt.axvline(x=4492/6, linewidth=5, ls='dashed', color='b')
+		plt.plot(np.arange(N)/3, E_cum, color='blue',linewidth=7, alpha=0.6)
 		if conv_iter!=0:
-			plt.axvline(x=conv_iter/6, linewidth=5, color='b')
+			plt.axvline(x=conv_iter/3, linewidth=5, color='b')
 		tit = 'Seq Predict: Cumulative Training Error'
 		plt.title(tit,fontweight="bold",fontsize=fontTitle)			
-		plt.xticks(np.linspace(0,N_round/6,5,endpoint=True),fontsize=fontTicks)
+		plt.xticks(np.linspace(0,N_round/3,5,endpoint=True),fontsize=fontTicks)
 		plt.yticks(fontsize=fontTicks)
 		plt.xlabel('Training Trials',fontsize=fontLabel)
 		plt.ylabel('Cumulative Error',fontsize=fontLabel)

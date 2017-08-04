@@ -80,7 +80,7 @@ class LSTM_arch():
 			E = np.zeros((N))
 			conv_iter = np.array([0])
 
-			if task=='12AX':
+			if task=='12AX' or task=='sequence_prediction':
 				correct = 0
 				conv2 = False
 				conv_iter_2 = np.array([0]) 
@@ -119,7 +119,7 @@ class LSTM_arch():
 					o_print = self.dic_resp[repr(o.astype(int))]
 					r_print = self.dic_resp[repr(resp_ind)]	
 
-					if task=='12AX':
+					if task=='12AX' or task=='sequence_prediction':
 		
 						s = np.reshape(s[0,self.time_steps-1,:], (1,-1))
 						s_print = self.dic_stim[repr(s.astype(int))]
@@ -213,7 +213,7 @@ class LSTM_arch():
 
 			return acc, loss, iters
 
-		if task=='12AX':
+		if task=='12AX' or task=='sequence_prediction':
 
 			if conv2==True:
 				print('SIMULATION MET (LENIENT) CRITERION AT ITERATION ',conv_iter_2)
