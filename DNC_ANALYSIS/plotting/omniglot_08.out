@@ -1,0 +1,1029 @@
+nohup: ignoring input
+INFO:tensorflow:Create CheckpointSaverHook.
+2017-09-02 00:56:30.277755: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-02 00:56:30.277804: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-02 00:56:30.277814: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-02 00:56:30.277820: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-02 00:56:30.277826: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-02 00:56:30.338862: E tensorflow/stream_executor/cuda/cuda_driver.cc:406] failed call to cuInit: CUDA_ERROR_UNKNOWN
+2017-09-02 00:56:30.338960: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:158] retrieving CUDA diagnostic information for host: iccluster137
+2017-09-02 00:56:30.338982: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:165] hostname: iccluster137
+2017-09-02 00:56:30.339046: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:189] libcuda reported version is: 367.48.0
+2017-09-02 00:56:30.339228: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:369] driver version file contents: """NVRM version: NVIDIA UNIX x86_64 Kernel Module  367.48  Sat Sep  3 18:21:08 PDT 2016
+GCC version:  gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) 
+"""
+2017-09-02 00:56:30.339335: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:193] kernel reported version is: 367.48.0
+2017-09-02 00:56:30.339356: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:300] kernel version seems to match DSO: 367.48.0
+INFO:tensorflow:Restoring parameters from check_dir/model.ckpt-0
+Omniglot Task - DNC - concatenated_input -  200 hidden -  0.001 lr
+INFO:tensorflow:Saving checkpoints for 0 into check_dir/model.ckpt.
+
+Episode 00500: 1.595374
+Labels Distribution:  [ 349.  126.  127.  176.   22.]
+Accuracies:
+[ 0.372  0.267  0.242  0.23   0.221  0.216  0.214  0.209  0.205  0.204]
+
+Episode 01000: 1.567202
+Labels Distribution:  [ 151.  141.   93.  333.   82.]
+Accuracies:
+[ 0.449  0.3    0.276  0.263  0.257  0.251  0.248  0.239  0.234  0.222]
+
+Episode 01500: 1.555725
+Labels Distribution:  [  76.   95.  409.   57.  163.]
+Accuracies:
+[ 0.453  0.306  0.279  0.27   0.267  0.261  0.257  0.252  0.245  0.229]
+
+Episode 02000: 1.545815
+Labels Distribution:  [ 214.  147.  100.  117.  222.]
+Accuracies:
+[ 0.452  0.307  0.281  0.271  0.268  0.265  0.264  0.261  0.255  0.242]
+
+Episode 02500: 1.536420
+Labels Distribution:  [ 213.  183.  178.   49.  177.]
+Accuracies:
+[ 0.453  0.309  0.286  0.275  0.27   0.269  0.267  0.266  0.264  0.253]
+
+Episode 03000: 1.521271
+Labels Distribution:  [  35.   92.  382.  152.  139.]
+Accuracies:
+[ 0.457  0.311  0.288  0.277  0.273  0.274  0.272  0.274  0.278  0.269]
+
+Episode 03500: 1.516562
+Labels Distribution:  [ 123.  190.  229.  121.  137.]
+Accuracies:
+[ 0.452  0.315  0.289  0.278  0.273  0.273  0.273  0.279  0.28   0.281]
+
+Episode 04000: 1.505614
+Labels Distribution:  [ 183.  182.  229.   81.  125.]
+Accuracies:
+[ 0.458  0.314  0.29   0.278  0.273  0.272  0.272  0.281  0.287  0.29 ]
+
+Episode 04500: 1.499456
+Labels Distribution:  [ 128.  237.  183.  149.  103.]
+Accuracies:
+[ 0.457  0.315  0.29   0.283  0.278  0.276  0.278  0.282  0.29   0.304]
+
+Episode 05000: 1.494703
+Labels Distribution:  [ 100.  171.  183.  205.  141.]
+Accuracies:
+[ 0.452  0.313  0.291  0.281  0.273  0.276  0.277  0.282  0.293  0.308]
+
+Episode 05500: 1.489658
+Labels Distribution:  [  97.  135.  231.  110.  227.]
+Accuracies:
+[ 0.456  0.312  0.289  0.281  0.28   0.276  0.28   0.285  0.295  0.314]
+
+Episode 06000: 1.485417
+Labels Distribution:  [  95.  199.  123.  195.  188.]
+Accuracies:
+[ 0.454  0.314  0.296  0.281  0.278  0.276  0.278  0.284  0.293  0.317]
+
+Episode 06500: 1.486154
+Labels Distribution:  [ 110.  122.  196.  163.  209.]
+Accuracies:
+[ 0.452  0.318  0.293  0.285  0.28   0.28   0.282  0.286  0.295  0.314]
+
+Episode 07000: 1.477134
+Labels Distribution:  [ 250.   96.  126.  186.  142.]
+Accuracies:
+[ 0.44   0.325  0.306  0.297  0.296  0.295  0.299  0.303  0.313  0.32 ]
+
+Episode 07500: 1.409849
+Labels Distribution:  [ 160.  164.  148.  228.  100.]
+Accuracies:
+[ 0.392  0.341  0.346  0.351  0.356  0.36   0.365  0.37   0.368  0.357]
+
+Episode 08000: 1.319074
+Labels Distribution:  [ 225.  111.  169.   78.  217.]
+Accuracies:
+[ 0.361  0.36   0.385  0.4    0.41   0.418  0.418  0.422  0.415  0.403]
+
+Episode 08500: 1.277153
+Labels Distribution:  [ 110.  161.  145.  188.  196.]
+Accuracies:
+[ 0.328  0.38   0.408  0.43   0.438  0.443  0.443  0.448  0.44   0.427]
+
+Episode 09000: 1.232907
+Labels Distribution:  [ 118.  245.  131.  165.  141.]
+Accuracies:
+[ 0.32   0.398  0.437  0.453  0.462  0.476  0.474  0.469  0.464  0.441]
+
+Episode 09500: 1.210415
+Labels Distribution:  [ 106.  128.  180.  160.  226.]
+Accuracies:
+[ 0.292  0.416  0.454  0.473  0.48   0.488  0.493  0.488  0.478  0.465]
+INFO:tensorflow:Saving checkpoints for 10000 into check_dir/model.ckpt.
+
+Episode 10000: 1.170906
+Labels Distribution:  [ 140.  264.  214.  116.   66.]
+Accuracies:
+[ 0.277  0.431  0.471  0.492  0.501  0.509  0.511  0.507  0.499  0.482]
+
+Episode 10500: 1.144493
+Labels Distribution:  [  83.  131.  200.  165.  221.]
+Accuracies:
+[ 0.275  0.444  0.489  0.51   0.52   0.524  0.529  0.524  0.515  0.5  ]
+
+Episode 11000: 1.120926
+Labels Distribution:  [ 127.  181.  136.  151.  205.]
+Accuracies:
+[ 0.273  0.455  0.501  0.522  0.531  0.539  0.54   0.54   0.53   0.519]
+
+Episode 11500: 1.080470
+Labels Distribution:  [ 151.  152.  146.  150.  201.]
+Accuracies:
+[ 0.278  0.472  0.526  0.546  0.562  0.573  0.575  0.571  0.565  0.553]
+
+Episode 12000: 1.042190
+Labels Distribution:  [  98.  229.  141.  131.  201.]
+Accuracies:
+[ 0.278  0.49   0.541  0.569  0.585  0.594  0.598  0.598  0.591  0.577]
+
+Episode 12500: 0.977281
+Labels Distribution:  [ 126.  222.  137.  210.  105.]
+Accuracies:
+[ 0.274  0.517  0.574  0.609  0.625  0.633  0.638  0.64   0.634  0.618]
+
+Episode 13000: 0.955945
+Labels Distribution:  [ 131.  150.  215.  121.  183.]
+Accuracies:
+[ 0.269  0.527  0.589  0.623  0.64   0.65   0.653  0.648  0.643  0.634]
+
+Episode 13500: 0.921761
+Labels Distribution:  [ 131.   95.  154.  179.  241.]
+Accuracies:
+[ 0.262  0.545  0.61   0.645  0.656  0.667  0.67   0.671  0.664  0.653]
+
+Episode 14000: 0.909607
+Labels Distribution:  [ 111.  165.  242.  127.  155.]
+Accuracies:
+[ 0.26   0.551  0.612  0.649  0.669  0.674  0.68   0.676  0.67   0.665]
+
+Episode 14500: 0.869378
+Labels Distribution:  [ 225.  171.   87.  171.  146.]
+Accuracies:
+[ 0.256  0.567  0.64   0.668  0.687  0.694  0.696  0.692  0.692  0.682]
+
+Episode 15000: 0.850891
+Labels Distribution:  [ 141.  214.   75.  193.  177.]
+Accuracies:
+[ 0.259  0.581  0.649  0.683  0.698  0.705  0.708  0.709  0.7    0.69 ]
+
+Episode 15500: 0.839619
+Labels Distribution:  [ 148.  184.   79.  231.  158.]
+Accuracies:
+[ 0.251  0.587  0.655  0.69   0.705  0.712  0.716  0.71   0.707  0.697]
+
+Episode 16000: 0.823383
+Labels Distribution:  [ 136.  189.  230.  135.  110.]
+Accuracies:
+[ 0.25   0.599  0.669  0.694  0.717  0.721  0.723  0.72   0.718  0.707]
+
+Episode 16500: 0.799845
+Labels Distribution:  [ 130.  223.  148.  204.   95.]
+Accuracies:
+[ 0.25   0.607  0.68   0.708  0.722  0.729  0.734  0.732  0.728  0.715]
+
+Episode 17000: 0.796525
+Labels Distribution:  [ 143.  181.  175.  150.  151.]
+Accuracies:
+[ 0.246  0.617  0.68   0.71   0.728  0.732  0.735  0.734  0.735  0.718]
+
+Episode 17500: 0.773694
+Labels Distribution:  [ 128.  227.  107.  190.  148.]
+Accuracies:
+[ 0.246  0.624  0.696  0.725  0.738  0.744  0.743  0.748  0.742  0.73 ]
+
+Episode 18000: 0.773735
+Labels Distribution:  [ 184.  184.  146.  140.  146.]
+Accuracies:
+[ 0.25   0.627  0.691  0.718  0.735  0.743  0.747  0.747  0.739  0.734]
+
+Episode 18500: 0.769659
+Labels Distribution:  [ 149.  242.  157.  142.  110.]
+Accuracies:
+[ 0.244  0.631  0.697  0.721  0.738  0.743  0.748  0.745  0.741  0.732]
+
+Episode 19000: 0.746519
+Labels Distribution:  [ 182.  178.  106.  154.  180.]
+Accuracies:
+[ 0.25   0.647  0.707  0.733  0.749  0.755  0.76   0.758  0.758  0.744]
+
+Episode 19500: 0.723680
+Labels Distribution:  [ 179.  168.  141.  135.  177.]
+Accuracies:
+[ 0.251  0.659  0.722  0.744  0.76   0.765  0.77   0.774  0.77   0.759]
+INFO:tensorflow:Saving checkpoints for 20000 into check_dir/model.ckpt.
+
+Episode 20000: 0.717740
+Labels Distribution:  [ 150.  100.  173.  212.  165.]
+Accuracies:
+[ 0.25   0.662  0.724  0.751  0.761  0.77   0.771  0.772  0.77   0.76 ]
+
+Episode 20500: 0.712190
+Labels Distribution:  [ 174.  208.  160.  156.  102.]
+Accuracies:
+[ 0.253  0.666  0.723  0.751  0.762  0.774  0.775  0.78   0.776  0.766]
+
+Episode 21000: 0.714805
+Labels Distribution:  [ 184.  162.  163.  150.  141.]
+Accuracies:
+[ 0.252  0.661  0.723  0.752  0.765  0.77   0.778  0.78   0.774  0.765]
+
+Episode 21500: 0.681324
+Labels Distribution:  [ 142.   94.  174.  213.  177.]
+Accuracies:
+[ 0.253  0.68   0.741  0.762  0.78   0.787  0.795  0.796  0.792  0.784]
+
+Episode 22000: 0.684412
+Labels Distribution:  [ 179.  173.  164.  162.  122.]
+Accuracies:
+[ 0.253  0.678  0.741  0.76   0.777  0.79   0.794  0.795  0.794  0.781]
+
+Episode 22500: 0.665424
+Labels Distribution:  [ 156.  148.  173.  187.  136.]
+Accuracies:
+[ 0.261  0.688  0.745  0.776  0.784  0.793  0.799  0.803  0.8    0.788]
+
+Episode 23000: 0.647450
+Labels Distribution:  [ 166.  158.  169.  118.  189.]
+Accuracies:
+[ 0.262  0.698  0.754  0.78   0.792  0.804  0.808  0.812  0.806  0.802]
+
+Episode 23500: 0.638472
+Labels Distribution:  [ 160.  156.  133.  164.  187.]
+Accuracies:
+[ 0.264  0.704  0.761  0.786  0.801  0.81   0.812  0.819  0.813  0.806]
+
+Episode 24000: 0.620880
+Labels Distribution:  [ 165.  167.  135.  152.  181.]
+Accuracies:
+[ 0.262  0.708  0.762  0.795  0.808  0.817  0.825  0.823  0.822  0.814]
+
+Episode 24500: 0.623578
+Labels Distribution:  [ 178.  169.  149.  168.  136.]
+Accuracies:
+[ 0.266  0.708  0.77   0.791  0.803  0.814  0.82   0.824  0.82   0.814]
+
+Episode 25000: 0.617385
+Labels Distribution:  [ 213.  158.  170.  172.   87.]
+Accuracies:
+[ 0.263  0.716  0.77   0.796  0.81   0.817  0.827  0.828  0.83   0.818]
+
+Episode 25500: 0.620819
+Labels Distribution:  [ 159.  155.  168.  168.  150.]
+Accuracies:
+[ 0.257  0.71   0.766  0.788  0.805  0.815  0.82   0.825  0.824  0.815]
+
+Episode 26000: 0.593654
+Labels Distribution:  [ 163.  189.  138.  146.  164.]
+Accuracies:
+[ 0.264  0.725  0.781  0.806  0.819  0.827  0.836  0.839  0.839  0.83 ]
+
+Episode 26500: 0.594335
+Labels Distribution:  [ 161.  177.  145.  171.  146.]
+Accuracies:
+[ 0.262  0.722  0.781  0.806  0.816  0.825  0.834  0.839  0.835  0.829]
+
+Episode 27000: 0.568140
+Labels Distribution:  [ 160.  140.  177.  177.  146.]
+Accuracies:
+[ 0.269  0.738  0.792  0.814  0.831  0.841  0.848  0.85   0.848  0.84 ]
+
+Episode 27500: 0.578406
+Labels Distribution:  [ 133.  149.  155.  189.  174.]
+Accuracies:
+[ 0.264  0.735  0.789  0.814  0.822  0.834  0.841  0.844  0.846  0.835]
+
+Episode 28000: 0.560720
+Labels Distribution:  [ 178.  163.  168.  160.  131.]
+Accuracies:
+[ 0.269  0.743  0.799  0.821  0.833  0.841  0.847  0.854  0.854  0.846]
+
+Episode 28500: 0.555837
+Labels Distribution:  [ 193.  135.  178.  170.  124.]
+Accuracies:
+[ 0.273  0.747  0.797  0.821  0.83   0.842  0.847  0.853  0.85   0.846]
+
+Episode 29000: 0.546133
+Labels Distribution:  [ 158.  151.  164.  208.  119.]
+Accuracies:
+[ 0.273  0.749  0.803  0.827  0.839  0.847  0.852  0.857  0.86   0.854]
+
+Episode 29500: 0.542021
+Labels Distribution:  [ 205.  114.  176.  143.  162.]
+Accuracies:
+[ 0.273  0.749  0.806  0.828  0.839  0.849  0.856  0.858  0.858  0.85 ]
+INFO:tensorflow:Saving checkpoints for 30000 into check_dir/model.ckpt.
+
+Episode 30000: 0.554061
+Labels Distribution:  [ 201.  108.  161.  190.  140.]
+Accuracies:
+[ 0.267  0.749  0.8    0.822  0.832  0.843  0.848  0.852  0.855  0.845]
+
+Episode 30500: 0.521021
+Labels Distribution:  [ 119.  154.  190.  179.  158.]
+Accuracies:
+[ 0.273  0.762  0.819  0.837  0.852  0.855  0.861  0.866  0.868  0.862]
+
+Episode 31000: 0.527671
+Labels Distribution:  [ 163.  125.  188.  157.  167.]
+Accuracies:
+[ 0.282  0.756  0.815  0.829  0.845  0.854  0.861  0.865  0.869  0.856]
+
+Episode 31500: 0.527750
+Labels Distribution:  [ 177.  204.  168.  130.  121.]
+Accuracies:
+[ 0.274  0.76   0.811  0.828  0.846  0.853  0.859  0.865  0.866  0.861]
+
+Episode 32000: 0.506496
+Labels Distribution:  [ 149.  110.  145.  225.  171.]
+Accuracies:
+[ 0.283  0.77   0.825  0.844  0.853  0.861  0.867  0.875  0.875  0.868]
+
+Episode 32500: 0.498262
+Labels Distribution:  [ 149.  140.  134.  218.  159.]
+Accuracies:
+[ 0.278  0.774  0.825  0.845  0.857  0.866  0.868  0.876  0.879  0.869]
+
+Episode 33000: 0.509134
+Labels Distribution:  [ 155.  157.  149.  176.  163.]
+Accuracies:
+[ 0.279  0.769  0.822  0.845  0.853  0.861  0.869  0.87   0.874  0.868]
+
+Episode 33500: 0.503538
+Labels Distribution:  [ 154.  164.  177.  173.  132.]
+Accuracies:
+[ 0.279  0.769  0.824  0.847  0.854  0.863  0.869  0.877  0.875  0.869]
+
+Episode 34000: 0.491145
+Labels Distribution:  [ 150.  165.  164.  164.  157.]
+Accuracies:
+[ 0.285  0.779  0.83   0.848  0.859  0.868  0.874  0.879  0.882  0.872]
+
+Episode 34500: 0.499189
+Labels Distribution:  [ 203.  149.  146.  134.  168.]
+Accuracies:
+[ 0.283  0.782  0.824  0.847  0.857  0.864  0.87   0.874  0.878  0.867]
+
+Episode 35000: 0.479102
+Labels Distribution:  [ 161.  165.  163.  179.  132.]
+Accuracies:
+[ 0.29   0.783  0.838  0.851  0.867  0.874  0.881  0.885  0.884  0.88 ]
+
+Episode 35500: 0.462298
+Labels Distribution:  [ 142.  151.  156.  181.  170.]
+Accuracies:
+[ 0.288  0.797  0.842  0.862  0.873  0.879  0.887  0.892  0.894  0.889]
+
+Episode 36000: 0.477309
+Labels Distribution:  [ 155.  131.  160.  156.  198.]
+Accuracies:
+[ 0.284  0.785  0.834  0.855  0.87   0.873  0.88   0.888  0.89   0.884]
+
+Episode 36500: 0.469127
+Labels Distribution:  [ 158.  164.  165.  156.  157.]
+Accuracies:
+[ 0.281  0.792  0.839  0.857  0.87   0.88   0.884  0.891  0.894  0.884]
+
+Episode 37000: 0.469293
+Labels Distribution:  [ 171.  211.  117.  192.  109.]
+Accuracies:
+[ 0.286  0.793  0.839  0.856  0.869  0.879  0.884  0.889  0.89   0.882]
+
+Episode 37500: 0.456431
+Labels Distribution:  [ 154.  203.  163.  148.  132.]
+Accuracies:
+[ 0.292  0.796  0.843  0.862  0.876  0.885  0.89   0.895  0.894  0.891]
+
+Episode 38000: 0.443255
+Labels Distribution:  [ 163.  194.  161.  154.  128.]
+Accuracies:
+[ 0.291  0.805  0.852  0.869  0.883  0.89   0.895  0.9    0.903  0.897]
+
+Episode 38500: 0.448136
+Labels Distribution:  [ 169.  178.  139.  163.  151.]
+Accuracies:
+[ 0.294  0.798  0.85   0.867  0.884  0.886  0.892  0.897  0.899  0.891]
+
+Episode 39000: 0.450623
+Labels Distribution:  [ 141.  163.  161.  165.  170.]
+Accuracies:
+[ 0.293  0.8    0.847  0.867  0.879  0.884  0.891  0.895  0.899  0.892]
+
+Episode 39500: 0.445805
+Labels Distribution:  [ 223.  161.  179.   98.  139.]
+Accuracies:
+[ 0.294  0.8    0.85   0.864  0.878  0.886  0.892  0.897  0.899  0.894]
+INFO:tensorflow:Saving checkpoints for 40000 into check_dir/model.ckpt.
+
+Episode 40000: 0.438364
+Labels Distribution:  [ 143.  133.  148.  202.  174.]
+Accuracies:
+[ 0.292  0.808  0.851  0.869  0.883  0.89   0.896  0.901  0.904  0.896]
+
+Episode 40500: 0.449407
+Labels Distribution:  [ 151.  160.  140.  159.  190.]
+Accuracies:
+[ 0.293  0.803  0.849  0.868  0.879  0.887  0.893  0.895  0.899  0.893]
+
+Episode 41000: 0.428635
+Labels Distribution:  [ 155.  136.  180.  161.  168.]
+Accuracies:
+[ 0.294  0.813  0.858  0.876  0.887  0.893  0.901  0.905  0.906  0.902]
+
+Episode 41500: 0.430213
+Labels Distribution:  [ 151.  150.  152.  166.  181.]
+Accuracies:
+[ 0.296  0.812  0.859  0.871  0.883  0.893  0.899  0.907  0.906  0.898]
+
+Episode 42000: 0.431174
+Labels Distribution:  [ 162.  177.  171.  116.  174.]
+Accuracies:
+[ 0.297  0.81   0.855  0.875  0.885  0.893  0.899  0.903  0.908  0.901]
+
+Episode 42500: 0.426270
+Labels Distribution:  [ 192.  169.  162.  156.  121.]
+Accuracies:
+[ 0.296  0.816  0.857  0.876  0.889  0.896  0.901  0.908  0.908  0.901]
+
+Episode 43000: 0.426763
+Labels Distribution:  [ 124.  194.  157.  156.  169.]
+Accuracies:
+[ 0.296  0.816  0.853  0.877  0.888  0.893  0.902  0.903  0.909  0.901]
+
+Episode 43500: 0.410066
+Labels Distribution:  [ 149.  151.  181.  164.  155.]
+Accuracies:
+[ 0.306  0.825  0.866  0.881  0.893  0.902  0.906  0.913  0.914  0.908]
+
+Episode 44000: 0.418749
+Labels Distribution:  [ 154.  181.  160.  141.  164.]
+Accuracies:
+[ 0.297  0.819  0.86   0.88   0.892  0.9    0.905  0.913  0.911  0.906]
+
+Episode 44500: 0.411874
+Labels Distribution:  [ 167.  141.  167.  188.  137.]
+Accuracies:
+[ 0.298  0.822  0.866  0.884  0.893  0.905  0.908  0.912  0.916  0.908]
+
+Episode 45000: 0.416465
+Labels Distribution:  [ 147.  182.  160.  153.  158.]
+Accuracies:
+[ 0.302  0.818  0.862  0.88   0.892  0.901  0.904  0.909  0.91   0.908]
+
+Episode 45500: 0.414562
+Labels Distribution:  [ 180.  108.  165.  199.  148.]
+Accuracies:
+[ 0.299  0.822  0.861  0.878  0.892  0.9    0.904  0.907  0.911  0.907]
+
+Episode 46000: 0.401690
+Labels Distribution:  [ 182.  183.  159.  130.  146.]
+Accuracies:
+[ 0.298  0.826  0.867  0.886  0.901  0.907  0.914  0.917  0.917  0.914]
+
+Episode 46500: 0.390638
+Labels Distribution:  [ 146.  157.  178.  146.  173.]
+Accuracies:
+[ 0.304  0.833  0.872  0.893  0.905  0.911  0.915  0.92   0.923  0.921]
+
+Episode 47000: 0.399984
+Labels Distribution:  [ 167.  160.  152.  162.  159.]
+Accuracies:
+[ 0.303  0.825  0.87   0.887  0.9    0.906  0.913  0.92   0.922  0.915]
+
+Episode 47500: 0.396280
+Labels Distribution:  [ 167.  178.  160.  151.  144.]
+Accuracies:
+[ 0.302  0.827  0.874  0.888  0.899  0.908  0.912  0.918  0.921  0.916]
+
+Episode 48000: 0.391164
+Labels Distribution:  [ 136.  175.  211.  126.  152.]
+Accuracies:
+[ 0.305  0.83   0.87   0.891  0.903  0.912  0.917  0.922  0.924  0.919]
+
+Episode 48500: 0.390533
+Labels Distribution:  [ 135.  164.  170.  165.  166.]
+Accuracies:
+[ 0.308  0.826  0.875  0.892  0.899  0.911  0.917  0.924  0.925  0.917]
+
+Episode 49000: 0.392260
+Labels Distribution:  [ 138.  152.  158.  179.  173.]
+Accuracies:
+[ 0.309  0.833  0.871  0.891  0.9    0.908  0.914  0.919  0.922  0.917]
+
+Episode 49500: 0.378009
+Labels Distribution:  [ 156.  160.  163.  161.  160.]
+Accuracies:
+[ 0.308  0.837  0.88   0.898  0.912  0.915  0.921  0.925  0.926  0.923]
+INFO:tensorflow:Saving checkpoints for 50000 into check_dir/model.ckpt.
+
+Episode 50000: 0.386393
+Labels Distribution:  [ 161.  165.  178.  140.  156.]
+Accuracies:
+[ 0.308  0.834  0.873  0.894  0.904  0.914  0.918  0.922  0.924  0.92 ]
+
+Episode 50500: 0.374444
+Labels Distribution:  [ 218.  164.  164.  136.  118.]
+Accuracies:
+[ 0.313  0.841  0.879  0.899  0.909  0.917  0.922  0.928  0.931  0.927]
+
+Episode 51000: 0.384160
+Labels Distribution:  [ 155.  166.  156.  171.  152.]
+Accuracies:
+[ 0.302  0.832  0.876  0.893  0.905  0.913  0.918  0.922  0.925  0.92 ]
+
+Episode 51500: 0.369507
+Labels Distribution:  [ 155.  160.  173.  159.  153.]
+Accuracies:
+[ 0.31   0.842  0.882  0.898  0.913  0.92   0.923  0.927  0.929  0.929]
+
+Episode 52000: 0.368882
+Labels Distribution:  [ 143.  159.  159.  194.  145.]
+Accuracies:
+[ 0.311  0.84   0.882  0.902  0.912  0.92   0.924  0.929  0.932  0.925]
+
+Episode 52500: 0.364413
+Labels Distribution:  [ 159.  169.  151.  155.  166.]
+Accuracies:
+[ 0.31   0.844  0.883  0.903  0.912  0.92   0.928  0.931  0.932  0.931]
+
+Episode 53000: 0.362206
+Labels Distribution:  [ 130.  158.  152.  168.  192.]
+Accuracies:
+[ 0.311  0.847  0.886  0.903  0.914  0.922  0.926  0.931  0.933  0.929]
+
+Episode 53500: 0.358518
+Labels Distribution:  [ 194.  147.  134.  153.  172.]
+Accuracies:
+[ 0.311  0.847  0.887  0.907  0.914  0.921  0.928  0.932  0.933  0.93 ]
+
+Episode 54000: 0.353347
+Labels Distribution:  [ 113.  153.  145.  216.  173.]
+Accuracies:
+[ 0.317  0.848  0.892  0.908  0.918  0.925  0.93   0.935  0.936  0.935]
+
+Episode 54500: 0.351144
+Labels Distribution:  [ 159.  165.  142.  177.  157.]
+Accuracies:
+[ 0.311  0.855  0.891  0.909  0.919  0.927  0.931  0.935  0.935  0.931]
+
+Episode 55000: 0.352295
+Labels Distribution:  [ 138.  153.  176.  178.  155.]
+Accuracies:
+[ 0.315  0.853  0.89   0.908  0.921  0.923  0.93   0.935  0.935  0.935]
+
+Episode 55500: 0.353327
+Labels Distribution:  [ 151.  174.  149.  170.  156.]
+Accuracies:
+[ 0.312  0.85   0.889  0.907  0.915  0.924  0.932  0.933  0.938  0.932]
+
+Episode 56000: 0.343468
+Labels Distribution:  [ 170.  137.  160.  179.  154.]
+Accuracies:
+[ 0.321  0.856  0.893  0.911  0.924  0.93   0.933  0.936  0.938  0.934]
+
+Episode 56500: 0.341179
+Labels Distribution:  [ 145.  162.  175.  168.  150.]
+Accuracies:
+[ 0.324  0.855  0.895  0.913  0.923  0.931  0.937  0.94   0.941  0.939]
+
+Episode 57000: 0.348402
+Labels Distribution:  [ 158.  156.  162.  149.  175.]
+Accuracies:
+[ 0.322  0.853  0.891  0.908  0.921  0.925  0.933  0.937  0.937  0.935]
+
+Episode 57500: 0.353977
+Labels Distribution:  [ 141.  144.  155.  193.  167.]
+Accuracies:
+[ 0.311  0.848  0.888  0.908  0.919  0.923  0.927  0.934  0.938  0.932]
+
+Episode 58000: 0.341614
+Labels Distribution:  [ 160.  157.  157.  154.  172.]
+Accuracies:
+[ 0.32   0.856  0.892  0.91   0.921  0.929  0.934  0.937  0.941  0.939]
+
+Episode 58500: 0.343870
+Labels Distribution:  [ 149.  159.  141.  153.  198.]
+Accuracies:
+[ 0.324  0.856  0.891  0.911  0.922  0.928  0.931  0.936  0.94   0.939]
+
+Episode 59000: 0.338576
+Labels Distribution:  [ 157.  155.  126.  187.  175.]
+Accuracies:
+[ 0.32   0.858  0.893  0.912  0.923  0.932  0.935  0.938  0.941  0.938]
+
+Episode 59500: 0.334587
+Labels Distribution:  [ 163.  141.  181.  161.  154.]
+Accuracies:
+[ 0.321  0.861  0.897  0.914  0.926  0.932  0.937  0.943  0.943  0.939]
+INFO:tensorflow:Saving checkpoints for 60000 into check_dir/model.ckpt.
+
+Episode 60000: 0.333332
+Labels Distribution:  [ 161.  147.  153.  184.  155.]
+Accuracies:
+[ 0.324  0.86   0.896  0.917  0.925  0.934  0.937  0.94   0.944  0.94 ]
+
+Episode 60500: 0.335574
+Labels Distribution:  [ 165.  154.  180.  155.  146.]
+Accuracies:
+[ 0.318  0.862  0.894  0.914  0.925  0.933  0.939  0.94   0.942  0.94 ]
+
+Episode 61000: 0.334067
+Labels Distribution:  [ 167.  153.  160.  164.  156.]
+Accuracies:
+[ 0.323  0.856  0.898  0.915  0.927  0.933  0.939  0.942  0.942  0.939]
+
+Episode 61500: 0.330005
+Labels Distribution:  [ 152.  154.  170.  170.  154.]
+Accuracies:
+[ 0.324  0.859  0.896  0.916  0.927  0.934  0.938  0.942  0.944  0.942]
+
+Episode 62000: 0.332028
+Labels Distribution:  [ 160.  158.  171.  131.  180.]
+Accuracies:
+[ 0.321  0.861  0.901  0.917  0.925  0.933  0.937  0.939  0.943  0.94 ]
+
+Episode 62500: 0.328426
+Labels Distribution:  [ 161.  161.  153.  156.  169.]
+Accuracies:
+[ 0.322  0.864  0.898  0.918  0.928  0.937  0.94   0.941  0.944  0.944]
+
+Episode 63000: 0.328124
+Labels Distribution:  [ 148.  127.  167.  164.  194.]
+Accuracies:
+[ 0.32   0.862  0.9    0.917  0.928  0.935  0.939  0.942  0.947  0.942]
+
+Episode 63500: 0.338322
+Labels Distribution:  [ 181.  157.  131.  176.  155.]
+Accuracies:
+[ 0.321  0.856  0.898  0.913  0.922  0.929  0.936  0.94   0.943  0.939]
+
+Episode 64000: 0.325612
+Labels Distribution:  [ 165.  130.  168.  167.  170.]
+Accuracies:
+[ 0.324  0.863  0.9    0.92   0.929  0.935  0.941  0.944  0.946  0.944]
+
+Episode 64500: 0.319791
+Labels Distribution:  [ 164.  134.  164.  158.  180.]
+Accuracies:
+[ 0.326  0.867  0.903  0.921  0.932  0.938  0.943  0.945  0.949  0.944]
+
+Episode 65000: 0.329688
+Labels Distribution:  [ 154.  163.  168.  166.  149.]
+Accuracies:
+[ 0.323  0.863  0.898  0.918  0.928  0.934  0.942  0.941  0.944  0.942]
+
+Episode 65500: 0.317429
+Labels Distribution:  [ 165.  162.  160.  171.  142.]
+Accuracies:
+[ 0.327  0.867  0.906  0.924  0.931  0.938  0.941  0.947  0.948  0.946]
+
+Episode 66000: 0.327173
+Labels Distribution:  [ 148.  169.  143.  175.  165.]
+Accuracies:
+[ 0.32   0.861  0.9    0.917  0.93   0.934  0.937  0.944  0.945  0.942]
+
+Episode 66500: 0.317989
+Labels Distribution:  [ 159.  157.  176.  144.  164.]
+Accuracies:
+[ 0.325  0.864  0.906  0.921  0.932  0.937  0.945  0.945  0.949  0.945]
+
+Episode 67000: 0.318541
+Labels Distribution:  [ 174.  164.  160.  167.  135.]
+Accuracies:
+[ 0.325  0.867  0.902  0.923  0.933  0.938  0.945  0.945  0.949  0.945]
+
+Episode 67500: 0.317482
+Labels Distribution:  [ 158.  168.  162.  154.  158.]
+Accuracies:
+[ 0.33   0.87   0.904  0.92   0.932  0.938  0.942  0.947  0.95   0.945]
+
+Episode 68000: 0.327444
+Labels Distribution:  [ 171.  165.  120.  128.  216.]
+Accuracies:
+[ 0.327  0.862  0.897  0.916  0.926  0.934  0.94   0.942  0.945  0.943]
+
+Episode 68500: 0.316097
+Labels Distribution:  [ 151.  189.  161.  163.  136.]
+Accuracies:
+[ 0.33   0.868  0.907  0.923  0.932  0.938  0.946  0.947  0.949  0.948]
+
+Episode 69000: 0.319579
+Labels Distribution:  [ 171.  142.  171.  160.  156.]
+Accuracies:
+[ 0.323  0.867  0.903  0.921  0.931  0.94   0.944  0.947  0.948  0.946]
+
+Episode 69500: 0.314692
+Labels Distribution:  [ 165.  173.  148.  146.  168.]
+Accuracies:
+[ 0.328  0.869  0.905  0.924  0.933  0.939  0.944  0.949  0.949  0.947]
+INFO:tensorflow:Saving checkpoints for 70000 into check_dir/model.ckpt.
+
+Episode 70000: 0.309147
+Labels Distribution:  [ 156.  171.  158.  155.  160.]
+Accuracies:
+[ 0.322  0.873  0.907  0.925  0.935  0.944  0.949  0.95   0.952  0.949]
+
+Episode 70500: 0.308625
+Labels Distribution:  [ 163.  156.  171.  160.  150.]
+Accuracies:
+[ 0.331  0.87   0.91   0.924  0.935  0.942  0.947  0.948  0.952  0.95 ]
+
+Episode 71000: 0.303983
+Labels Distribution:  [ 168.  182.  167.  159.  124.]
+Accuracies:
+[ 0.325  0.876  0.909  0.928  0.935  0.945  0.947  0.951  0.952  0.952]
+
+Episode 71500: 0.321627
+Labels Distribution:  [ 158.  160.  153.  190.  139.]
+Accuracies:
+[ 0.326  0.863  0.902  0.921  0.928  0.936  0.94   0.946  0.947  0.943]
+
+Episode 72000: 0.306819
+Labels Distribution:  [ 155.  175.  164.  154.  152.]
+Accuracies:
+[ 0.332  0.871  0.911  0.926  0.938  0.943  0.947  0.949  0.953  0.952]
+
+Episode 72500: 0.315589
+Labels Distribution:  [ 157.  160.  181.  152.  150.]
+Accuracies:
+[ 0.324  0.871  0.905  0.923  0.935  0.939  0.943  0.948  0.95   0.945]
+
+Episode 73000: 0.294705
+Labels Distribution:  [ 162.  145.  165.  155.  173.]
+Accuracies:
+[ 0.334  0.88   0.916  0.931  0.94   0.947  0.95   0.956  0.956  0.954]
+
+Episode 73500: 0.302773
+Labels Distribution:  [ 155.  151.  161.  155.  178.]
+Accuracies:
+[ 0.33   0.875  0.912  0.93   0.937  0.941  0.949  0.952  0.954  0.952]
+
+Episode 74000: 0.310794
+Labels Distribution:  [ 176.  159.  170.  147.  148.]
+Accuracies:
+[ 0.328  0.874  0.907  0.926  0.932  0.94   0.945  0.949  0.948  0.949]
+
+Episode 74500: 0.299800
+Labels Distribution:  [ 150.  186.  162.  155.  147.]
+Accuracies:
+[ 0.334  0.877  0.911  0.929  0.938  0.943  0.948  0.952  0.954  0.953]
+
+Episode 75000: 0.301076
+Labels Distribution:  [ 144.  175.  160.  173.  148.]
+Accuracies:
+[ 0.335  0.878  0.911  0.929  0.936  0.947  0.947  0.95   0.953  0.952]
+
+Episode 75500: 0.302859
+Labels Distribution:  [ 155.  157.  161.  162.  165.]
+Accuracies:
+[ 0.33   0.873  0.91   0.929  0.939  0.945  0.949  0.952  0.954  0.953]
+
+Episode 76000: 0.297933
+Labels Distribution:  [ 181.  150.  152.  165.  152.]
+Accuracies:
+[ 0.331  0.879  0.912  0.932  0.941  0.945  0.95   0.952  0.955  0.954]
+
+Episode 76500: 0.298315
+Labels Distribution:  [ 157.  162.  157.  165.  159.]
+Accuracies:
+[ 0.335  0.876  0.914  0.93   0.942  0.946  0.949  0.954  0.955  0.956]
+
+Episode 77000: 0.305607
+Labels Distribution:  [ 166.  168.  136.  178.  152.]
+Accuracies:
+[ 0.329  0.875  0.909  0.926  0.938  0.942  0.947  0.95   0.953  0.95 ]
+
+Episode 77500: 0.306681
+Labels Distribution:  [ 151.  184.  165.  158.  142.]
+Accuracies:
+[ 0.328  0.873  0.909  0.928  0.936  0.943  0.948  0.949  0.953  0.95 ]
+
+Episode 78000: 0.295118
+Labels Distribution:  [ 161.  162.  160.  160.  157.]
+Accuracies:
+[ 0.329  0.879  0.915  0.93   0.942  0.946  0.952  0.954  0.956  0.957]
+
+Episode 78500: 0.293061
+Labels Distribution:  [ 162.  154.  190.  155.  139.]
+Accuracies:
+[ 0.333  0.882  0.915  0.933  0.942  0.946  0.952  0.955  0.957  0.956]
+
+Episode 79000: 0.302193
+Labels Distribution:  [ 168.  164.  153.  159.  156.]
+Accuracies:
+[ 0.332  0.876  0.913  0.929  0.939  0.944  0.948  0.951  0.954  0.953]
+
+Episode 79500: 0.299948
+Labels Distribution:  [ 169.  200.  156.  143.  132.]
+Accuracies:
+[ 0.332  0.877  0.911  0.929  0.938  0.945  0.947  0.951  0.954  0.951]
+INFO:tensorflow:Saving checkpoints for 80000 into check_dir/model.ckpt.
+
+Episode 80000: 0.291870
+Labels Distribution:  [ 164.  145.  140.  158.  193.]
+Accuracies:
+[ 0.336  0.88   0.917  0.931  0.943  0.949  0.949  0.955  0.956  0.955]
+
+Episode 80500: 0.297498
+Labels Distribution:  [ 146.  197.  168.  130.  159.]
+Accuracies:
+[ 0.329  0.878  0.913  0.931  0.941  0.947  0.951  0.954  0.955  0.953]
+
+Episode 81000: 0.309629
+Labels Distribution:  [ 171.  154.  168.  157.  150.]
+Accuracies:
+[ 0.326  0.872  0.908  0.922  0.936  0.938  0.946  0.948  0.952  0.949]
+
+Episode 81500: 0.294875
+Labels Distribution:  [ 163.  172.  162.  158.  145.]
+Accuracies:
+[ 0.337  0.88   0.915  0.931  0.941  0.946  0.95   0.952  0.957  0.955]
+
+Episode 82000: 0.287871
+Labels Distribution:  [ 140.  156.  182.  164.  158.]
+Accuracies:
+[ 0.334  0.884  0.917  0.934  0.943  0.948  0.954  0.955  0.957  0.957]
+
+Episode 82500: 0.300634
+Labels Distribution:  [ 178.  149.  157.  158.  158.]
+Accuracies:
+[ 0.334  0.877  0.91   0.927  0.939  0.945  0.948  0.951  0.951  0.951]
+
+Episode 83000: 0.292376
+Labels Distribution:  [ 169.  171.  161.  143.  156.]
+Accuracies:
+[ 0.335  0.88   0.912  0.932  0.941  0.948  0.951  0.954  0.957  0.956]
+
+Episode 83500: 0.297146
+Labels Distribution:  [ 151.  166.  149.  173.  161.]
+Accuracies:
+[ 0.327  0.876  0.911  0.93   0.941  0.947  0.949  0.951  0.955  0.954]
+
+Episode 84000: 0.292259
+Labels Distribution:  [ 168.  174.  157.  153.  148.]
+Accuracies:
+[ 0.331  0.882  0.914  0.931  0.941  0.947  0.952  0.957  0.958  0.957]
+
+Episode 84500: 0.286973
+Labels Distribution:  [ 173.  157.  162.  152.  156.]
+Accuracies:
+[ 0.336  0.88   0.919  0.936  0.944  0.951  0.953  0.956  0.958  0.957]
+
+Episode 85000: 0.285850
+Labels Distribution:  [ 154.  182.  155.  160.  149.]
+Accuracies:
+[ 0.34   0.885  0.918  0.936  0.944  0.949  0.955  0.958  0.959  0.957]
+
+Episode 85500: 0.287285
+Labels Distribution:  [ 147.  145.  184.  136.  188.]
+Accuracies:
+[ 0.338  0.884  0.919  0.935  0.942  0.948  0.952  0.956  0.956  0.957]
+
+Episode 86000: 0.289130
+Labels Distribution:  [ 154.  172.  168.  152.  154.]
+Accuracies:
+[ 0.331  0.883  0.914  0.932  0.942  0.948  0.955  0.957  0.959  0.956]
+
+Episode 86500: 0.286372
+Labels Distribution:  [ 151.  172.  174.  150.  153.]
+Accuracies:
+[ 0.336  0.885  0.917  0.935  0.943  0.95   0.953  0.957  0.961  0.956]
+
+Episode 87000: 0.290021
+Labels Distribution:  [ 136.  161.  155.  162.  186.]
+Accuracies:
+[ 0.33   0.885  0.914  0.934  0.943  0.949  0.95   0.957  0.958  0.956]
+
+Episode 87500: 0.294619
+Labels Distribution:  [ 155.  173.  136.  156.  180.]
+Accuracies:
+[ 0.33   0.88   0.914  0.931  0.938  0.948  0.95   0.952  0.957  0.954]
+
+Episode 88000: 0.288142
+Labels Distribution:  [ 158.  150.  164.  165.  163.]
+Accuracies:
+[ 0.337  0.883  0.917  0.931  0.942  0.95   0.952  0.955  0.956  0.959]
+
+Episode 88500: 0.292143
+Labels Distribution:  [ 161.  160.  145.  162.  172.]
+Accuracies:
+[ 0.332  0.884  0.915  0.932  0.942  0.946  0.951  0.956  0.956  0.955]
+
+Episode 89000: 0.281051
+Labels Distribution:  [ 162.  153.  174.  147.  164.]
+Accuracies:
+[ 0.341  0.889  0.92   0.938  0.945  0.951  0.954  0.959  0.961  0.96 ]
+
+Episode 89500: 0.286374
+Labels Distribution:  [ 154.  136.  169.  164.  177.]
+Accuracies:
+[ 0.338  0.886  0.916  0.935  0.944  0.95   0.953  0.956  0.958  0.957]
+INFO:tensorflow:Saving checkpoints for 90000 into check_dir/model.ckpt.
+
+Episode 90000: 0.286324
+Labels Distribution:  [ 163.  162.  150.  164.  161.]
+Accuracies:
+[ 0.34   0.885  0.918  0.935  0.947  0.951  0.955  0.957  0.958  0.958]
+
+Episode 90500: 0.283194
+Labels Distribution:  [ 152.  176.  167.  154.  151.]
+Accuracies:
+[ 0.336  0.886  0.918  0.934  0.944  0.952  0.955  0.957  0.96   0.96 ]
+
+Episode 91000: 0.277278
+Labels Distribution:  [ 163.  169.  158.  161.  149.]
+Accuracies:
+[ 0.342  0.891  0.921  0.939  0.949  0.953  0.957  0.959  0.962  0.961]
+
+Episode 91500: 0.284042
+Labels Distribution:  [ 162.  169.  189.  150.  130.]
+Accuracies:
+[ 0.334  0.884  0.92   0.936  0.947  0.953  0.955  0.957  0.959  0.959]
+
+Episode 92000: 0.276859
+Labels Distribution:  [ 151.  163.  164.  154.  168.]
+Accuracies:
+[ 0.341  0.887  0.924  0.94   0.946  0.953  0.957  0.96   0.963  0.96 ]
+
+Episode 92500: 0.287090
+Labels Distribution:  [ 162.  160.  153.  162.  163.]
+Accuracies:
+[ 0.334  0.883  0.918  0.933  0.943  0.949  0.953  0.957  0.958  0.957]
+
+Episode 93000: 0.279794
+Labels Distribution:  [ 160.  155.  161.  156.  168.]
+Accuracies:
+[ 0.339  0.885  0.919  0.938  0.948  0.954  0.956  0.96   0.962  0.962]
+
+Episode 93500: 0.286854
+Labels Distribution:  [ 166.  156.  164.  143.  171.]
+Accuracies:
+[ 0.339  0.888  0.917  0.934  0.941  0.951  0.952  0.955  0.958  0.958]
+
+Episode 94000: 0.274592
+Labels Distribution:  [ 162.  160.  151.  162.  165.]
+Accuracies:
+[ 0.34   0.889  0.924  0.939  0.95   0.956  0.958  0.959  0.962  0.962]
+
+Episode 94500: 0.276063
+Labels Distribution:  [ 146.  153.  162.  153.  186.]
+Accuracies:
+[ 0.342  0.89   0.923  0.938  0.949  0.953  0.957  0.96   0.961  0.961]
+
+Episode 95000: 0.287151
+Labels Distribution:  [ 166.  155.  162.  155.  162.]
+Accuracies:
+[ 0.335  0.884  0.916  0.934  0.944  0.951  0.955  0.956  0.959  0.957]
+
+Episode 95500: 0.284242
+Labels Distribution:  [ 143.  157.  171.  165.  164.]
+Accuracies:
+[ 0.338  0.884  0.918  0.935  0.943  0.951  0.955  0.957  0.959  0.959]
+
+Episode 96000: 0.278374
+Labels Distribution:  [ 170.  158.  142.  159.  171.]
+Accuracies:
+[ 0.339  0.887  0.92   0.937  0.947  0.953  0.957  0.96   0.962  0.961]
+
+Episode 96500: 0.276424
+Labels Distribution:  [ 157.  148.  156.  180.  159.]
+Accuracies:
+[ 0.337  0.888  0.924  0.94   0.949  0.953  0.957  0.96   0.964  0.962]
+
+Episode 97000: 0.279119
+Labels Distribution:  [ 175.  142.  153.  171.  159.]
+Accuracies:
+[ 0.337  0.888  0.918  0.939  0.946  0.953  0.957  0.961  0.961  0.961]
+
+Episode 97500: 0.281599
+Labels Distribution:  [ 149.  155.  171.  163.  162.]
+Accuracies:
+[ 0.337  0.884  0.918  0.936  0.945  0.95   0.955  0.959  0.957  0.959]
+
+Episode 98000: 0.277667
+Labels Distribution:  [ 164.  162.  176.  149.  149.]
+Accuracies:
+[ 0.34   0.887  0.921  0.939  0.949  0.952  0.957  0.959  0.962  0.961]
+
+Episode 98500: 0.273783
+Labels Distribution:  [ 162.  153.  166.  151.  168.]
+Accuracies:
+[ 0.343  0.888  0.925  0.94   0.95   0.955  0.956  0.962  0.964  0.962]
+
+Episode 99000: 0.275992
+Labels Distribution:  [ 179.  175.   93.  198.  155.]
+Accuracies:
+[ 0.337  0.891  0.922  0.94   0.951  0.954  0.956  0.962  0.962  0.962]
+
+Episode 99500: 0.268341
+Labels Distribution:  [ 161.  173.  156.  149.  161.]
+Accuracies:
+[ 0.347  0.892  0.927  0.942  0.951  0.954  0.961  0.961  0.964  0.964]
+INFO:tensorflow:Saving checkpoints for 100000 into check_dir/model.ckpt.
+
+Episode 100000: 0.272172
+Labels Distribution:  [ 151.  187.  169.  154.  139.]
+Accuracies:
+[ 0.343  0.891  0.924  0.94   0.948  0.955  0.959  0.96   0.964  0.963]
