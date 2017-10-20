@@ -1,0 +1,15 @@
+--------
+ README 
+--------
+
+Differentiable Neural Computer (DNC)
+
+The folders are organized in the following way:
+
+- ORIGINAL DNC includes the implementation of the DNC model in tensorflow as contained in https://github.com/deepmind/dnc. In addition it contains the tasks for SAS, 12AX and omniglot and related results. 
+
+- MODIFIED DNC has the development of DNC and the data from the simulations on the omniglot task. Developments of DNC model involve simplification of the addressing scheme to pure content-based strategy (Reduced DNC), optional flag for LRUA access module to memory specifically for classification tasks and optional flag for structuration of the input (concatenated or not)
+
+- One-Shot-NTM contains the implementation of NTM model with LRUA scheme according to the model described by A. Santoro in "One-shot Learning with Memory-Augmented Neural Networks". 
+
+- plotting, which has all the images and scripts associated to the comparison of the performance of MANNs on the omniglot task
