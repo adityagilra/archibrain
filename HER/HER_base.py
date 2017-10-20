@@ -22,8 +22,6 @@ class HER_base(HER_level):
 
 	def __init__(self,l,S,P,alpha,alpha_mem,beta,gam,elig_decay_const,init='zero',dic_resp=None):
 		
-		np.random.seed(1234)
-		
 		if l!=0:
 			sys.exit("HER_base class called to level different than the first.")	
 		

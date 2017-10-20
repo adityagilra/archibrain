@@ -53,9 +53,7 @@ class HER_level():
 		self.beta = beta
 		self.elig_decay_const = elig_decay_const
 
-		np.random.seed(1234)
-
-		self.r = None
+		self.r = np.zeros((1,self.S))
 		
 		if init == 'zero':
 			self.X = np.zeros((self.S,self.S))
@@ -68,42 +66,44 @@ class HER_level():
 		self.r = None
 	
 			
-	def memory_gating(self,s,bias=0,gate='softmax'):			
-		
-		if (self.r is None):
-			self.r = s
-		else:
-				
-			#v = act.linear(s,np.transpose(self.X))
-			v = act.linear(s,self.X)
-
-			v_i = v[np.where(s==1)]
-			v_j = v[np.where(self.r==1)]
-
-			if v_i==v_j:
-				random_bin = np.random.choice(2,1)
-				# print('V_i: ',v_i,'\tV_j: ',v_j,'\tStoring: ',random_bin)
-				if random_bin == 0:
-					self.r = s   
+	def memory_gating(self,s,s_print,bias=0,gate='softmax'):
 			
-			if(gate=='softmax'):
-				random_value = np.random.random()
-				p_storing = ( np.exp(self.beta*v_i)+bias )/( np.exp(self.beta*v_i)+np.exp(self.beta*v_j)+bias )
-				# print('V_i: ',v_i,'\tV_j: ',v_j,'\tP_storing:',p_storing)
+		if s_print!='e':
+			
+			if (self.r==0).all():
+				self.r = s
+			else:
 				
-				if math.isnan(p_storing)==False:    # because of the exponential and beta=12, the probability value could be a NaN
-					if random_value<=p_storing:
-						self.r = s 
-				else:        
-					# if the storing probability is NaN, I adopt the maximum criterion
-					if v_i>=v_j:
-						self.r = s 					
-			elif(gate=='max'):
-				if v_i>v_j:
-					self.r = s
+				#v = act.linear(s,np.transpose(self.X))
+				v = act.linear(s,self.X)
 
-			elif(gate=='free'):
-				self.r = s  
+				v_i = v[np.where(s==1)]
+				v_j = v[np.where(self.r==1)]
+
+				if v_i==v_j:
+					random_bin = np.random.choice(2,1)
+					# print('V_i: ',v_i,'\tV_j: ',v_j,'\tStoring: ',random_bin)
+					if random_bin == 0:
+						self.r = s   
+			
+				if(gate=='softmax'):
+					random_value = np.random.random()
+					p_storing = ( np.exp(self.beta*v_i)+bias )/( np.exp(self.beta*v_i)+np.exp(self.beta*v_j)+bias )
+					# print('V_i: ',v_i,'\tV_j: ',v_j,'\tP_storing:',p_storing)
+				
+					if math.isnan(p_storing)==False:    # because of the exponential and beta=12, the probability value could be a NaN
+						if random_value<=p_storing:
+							self.r = s 
+					else:        
+						# if the storing probability is NaN, I adopt the maximum criterion
+						if v_i>=v_j:
+							self.r = s 					
+				elif(gate=='max'):
+					if v_i>v_j:
+						self.r = s
+	
+				elif(gate=='free'):
+					self.r = s  
                    
 
 	def compute_error(self, p, o, a):

@@ -7,7 +7,7 @@ Hierarchical Error Representation model (HER) - "Frontal cortex function derives
 
 The codes are organized in the following way:
 
-- HER_main.py is the file where the HER architecture is built, the parameters are set and the task is decided
+- HER_main.py (old) is the file where the HER architecture is built, the parameters are set and the task is decided
   The task is selected by the user during compilation time: after the program is run using python3 HER_main.py, the user has to select a task as requested.
 	1: 1-2 task
 	2: AX CPT task
@@ -15,7 +15,7 @@ The codes are organized in the following way:
 	4: titanic task 
   Enter the id of the task and then push enter to perform it.
 
-- HER_model.py implements all the dynamics of the multi-level system both for the training and the test.
+- HER_model.py implements all the dynamics of the multi-level system both for the training and the test (disjoint functions for SAS and 12AX tasks)
   Here is the operations it presents in order of execution:
 	1. initialization of the variables
 	2. presentation of the current stimulus
@@ -23,8 +23,9 @@ The codes are organized in the following way:
 	4. computation of prediction, top-down and modulated prediction (starting from the superior level and proceeding downwards)
 	5. computation of the error and of the modulated error
 	6. bottom-up
-	7. update weights. Here the user can select backpropagation (default) or the Reinforcement learning rule for the update of the weight matrix for the WM
-	8. update of the eligibility trace (if the flag is "post" as default, otherwise the update is at position 3)
+	7. update weights.
+	8. update of the eligibility trace
+  N.B. Memory states are reset at the end of each trial!
 
 - HER_level.py implements the class for each level of the HER architecture. 
   The key functions are:
@@ -39,3 +40,11 @@ The codes are organized in the following way:
   The class has also the functions base_training and base_test which can be used in case the HER architecture has only one level (and there is no modulation).
 
 - activations.py presents just some general activation functions to use in the network.
+
+- HER_SAS.py is the main file that runs simulations and analysis of HER on the SAS task (constrution of the dataset comes from task_saccades.py)
+
+- HER_12AX.py is the main file that runs simulations and analysis of HER on the 12AX task (constrution of the dataset comes from task_12AX.py)
+
+- HER_tasks.py is used externally for the interface.py in the main folder
+
+
