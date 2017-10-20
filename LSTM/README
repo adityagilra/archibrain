@@ -1,0 +1,17 @@
+--------
+ README 
+--------
+
+Long Short-Term Memory (LSTM)
+
+The codes are organized in the following way:
+
+- LSTM_SAS.py is the main file that runs simulations and analysis of LSTM on the SAS task (constrution of the dataset comes from task_saccades.py)
+
+- LSTM_12AX.py is the main file that runs simulations and analysis of LSTM on the 12AX task (constrution of the dataset comes from task_1_2AX.py)
+
+- LSTM_tasks.py is used externally for the interface.py in the main folder
+
+- LSTM_model.py implements the LSTM network and dynamics in keras both for the training and the test (disjoint functions for SAS and 12AX tasks)
+
+- LSTM_model_2.py (old) is an alternative way of running LSTM simulations with training and test functions shared by all the tasks
