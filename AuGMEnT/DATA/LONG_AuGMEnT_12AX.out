@@ -1,0 +1,31 @@
+nohup: input ignorato
+SIMULATION  1
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5   0.    0.    0.    0.    0.    0.    0.    0.    0. ] %
+SIMULATION  2
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.    0.    0.    0.    0.    0.    0.    0.    0. ] %
+SIMULATION  3
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2   0.    0.    0.    0.    0.    0.    0. ] %
+SIMULATION  4
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2  84.    0.    0.    0.    0.    0.    0. ] %
+SIMULATION  5
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2  84.   84.2   0.    0.    0.    0.    0. ] %
+SIMULATION  6
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2  84.   84.2  84.    0.    0.    0.    0. ] %
+SIMULATION  7
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2  84.   84.2  84.   83.2   0.    0.    0. ] %
+SIMULATION  8
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2  84.   84.2  84.   83.2  86.7   0.    0. ] %
+SIMULATION  9
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2  84.   84.2  84.   83.2  86.7  84.2   0. ] %
+SIMULATION  10
+	 CONVERGED AT TRIAL  0.0
+Percentage of correct trials during test:  [ 84.5  84.   84.2  84.   84.2  84.   83.2  86.7  84.2  84.1] %

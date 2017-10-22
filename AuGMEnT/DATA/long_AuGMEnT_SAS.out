@@ -1,0 +1,281 @@
+nohup: input ignorato
+SIMULATION  1
+TRIAL  1000 	 PL: 0.06   PR: 0.84   AL: 0.76   AR: 0.66
+TRIAL  2000 	 PL: 0.96   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  3000 	 PL: 0.88   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  4000 	 PL: 0.92   PR: 0.92   AL: 1.0   AR: 0.98
+TRIAL  5000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  6000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.96
+TRIAL  7000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  8000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  9000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.94
+TRIAL  10000 	 PL: 0.98   PR: 0.98   AL: 0.96   AR: 0.98
+TRIAL  11000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  12000 	 PL: 0.96   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  13000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  14000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  15000 	 PL: 0.98   PR: 0.96   AL: 1.0   AR: 1.0
+TRIAL  16000 	 PL: 0.96   PR: 0.98   AL: 0.96   AR: 0.98
+TRIAL  17000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  18000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  19000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  20000 	 PL: 0.96   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  21000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  22000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  23000 	 PL: 1.0   PR: 1.0   AL: 0.94   AR: 0.98
+TRIAL  24000 	 PL: 0.98   PR: 1.0   AL: 0.96   AR: 1.0
+	 CONVERGED AT TRIAL  1521.0
+Percentage of correct FIX responses during test:  [ 100.    0.    0.    0.    0.    0.    0.    0.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.    0.    0.    0.    0.    0.    0.    0.    0.    0.] %
+SIMULATION  2
+TRIAL  1000 	 PL: 1.0   PR: 0.06   AL: 0.96   AR: 1.0
+TRIAL  2000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.96
+TRIAL  3000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  4000 	 PL: 0.96   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  5000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  6000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  7000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  8000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  9000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  10000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  11000 	 PL: 0.98   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  12000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  13000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  14000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  15000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.96
+TRIAL  16000 	 PL: 1.0   PR: 0.96   AL: 1.0   AR: 0.98
+TRIAL  17000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  18000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 1.0
+TRIAL  19000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  20000 	 PL: 0.98   PR: 0.92   AL: 1.0   AR: 1.0
+TRIAL  21000 	 PL: 0.96   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  22000 	 PL: 0.94   PR: 1.0   AL: 1.0   AR: 0.96
+TRIAL  23000 	 PL: 0.98   PR: 0.94   AL: 0.98   AR: 0.98
+TRIAL  24000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 1.0
+	 CONVERGED AT TRIAL  1192.0
+Percentage of correct FIX responses during test:  [ 100.  100.    0.    0.    0.    0.    0.    0.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.    0.    0.    0.    0.    0.    0.    0.    0.] %
+SIMULATION  3
+TRIAL  1000 	 PL: 0.96   PR: 0.98   AL: 1.0   AR: 0.0
+TRIAL  2000 	 PL: 0.98   PR: 0.98   AL: 0.96   AR: 1.0
+TRIAL  3000 	 PL: 0.98   PR: 1.0   AL: 0.92   AR: 1.0
+TRIAL  4000 	 PL: 0.96   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  5000 	 PL: 0.96   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  6000 	 PL: 1.0   PR: 0.96   AL: 0.98   AR: 1.0
+TRIAL  7000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  8000 	 PL: 0.96   PR: 0.98   AL: 0.98   AR: 0.96
+TRIAL  9000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  10000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  11000 	 PL: 0.98   PR: 0.96   AL: 0.98   AR: 0.94
+TRIAL  12000 	 PL: 1.0   PR: 0.96   AL: 0.98   AR: 0.98
+TRIAL  13000 	 PL: 0.96   PR: 1.0   AL: 0.98   AR: 0.96
+TRIAL  14000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  15000 	 PL: 0.96   PR: 0.96   AL: 1.0   AR: 1.0
+TRIAL  16000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 0.98
+TRIAL  17000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.96
+TRIAL  18000 	 PL: 0.98   PR: 0.98   AL: 0.96   AR: 1.0
+TRIAL  19000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  20000 	 PL: 0.98   PR: 1.0   AL: 0.98   AR: 0.96
+TRIAL  21000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  22000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  23000 	 PL: 0.96   PR: 0.98   AL: 0.96   AR: 1.0
+TRIAL  24000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+	 CONVERGED AT TRIAL  1274.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.    0.    0.    0.    0.    0.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.    0.    0.    0.    0.    0.    0.    0.] %
+SIMULATION  4
+TRIAL  1000 	 PL: 1.0   PR: 0.28   AL: 0.04   AR: 0.94
+TRIAL  2000 	 PL: 0.98   PR: 0.98   AL: 0.96   AR: 0.96
+TRIAL  3000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  4000 	 PL: 0.98   PR: 1.0   AL: 0.94   AR: 1.0
+TRIAL  5000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.96
+TRIAL  6000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  7000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  8000 	 PL: 0.96   PR: 1.0   AL: 0.94   AR: 1.0
+TRIAL  9000 	 PL: 0.98   PR: 0.96   AL: 0.98   AR: 1.0
+TRIAL  10000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  11000 	 PL: 1.0   PR: 0.98   AL: 0.96   AR: 1.0
+TRIAL  12000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.96
+TRIAL  13000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  14000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  15000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.96
+TRIAL  16000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  17000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  18000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  19000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  20000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.94
+TRIAL  21000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 1.0
+TRIAL  22000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  23000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  24000 	 PL: 1.0   PR: 0.96   AL: 1.0   AR: 0.96
+	 CONVERGED AT TRIAL  1191.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.  100.    0.    0.    0.    0.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.  100.    0.    0.    0.    0.    0.    0.] %
+SIMULATION  5
+TRIAL  1000 	 PL: 0.76   PR: 0.12   AL: 0.52   AR: 0.88
+TRIAL  2000 	 PL: 1.0   PR: 0.98   AL: 0.94   AR: 0.96
+TRIAL  3000 	 PL: 1.0   PR: 0.96   AL: 1.0   AR: 0.98
+TRIAL  4000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  5000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  6000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  7000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  8000 	 PL: 0.96   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  9000 	 PL: 1.0   PR: 0.96   AL: 0.94   AR: 0.92
+TRIAL  10000 	 PL: 0.98   PR: 0.96   AL: 0.98   AR: 0.98
+TRIAL  11000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  12000 	 PL: 0.96   PR: 0.94   AL: 1.0   AR: 0.98
+TRIAL  13000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.96
+TRIAL  14000 	 PL: 0.94   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  15000 	 PL: 0.96   PR: 0.96   AL: 1.0   AR: 0.98
+TRIAL  16000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  17000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  18000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  19000 	 PL: 1.0   PR: 0.96   AL: 0.98   AR: 1.0
+TRIAL  20000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  21000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  22000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  23000 	 PL: 0.96   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  24000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 0.98
+	 CONVERGED AT TRIAL  1360.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.  100.  100.    0.    0.    0.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.  100.  100.    0.    0.    0.    0.    0.] %
+SIMULATION  6
+TRIAL  1000 	 PL: 0.12   PR: 0.76   AL: 0.76   AR: 0.18
+TRIAL  2000 	 PL: 0.88   PR: 0.52   AL: 0.6   AR: 0.36
+TRIAL  3000 	 PL: 0.8   PR: 1.0   AL: 0.8   AR: 0.0
+TRIAL  4000 	 PL: 0.9   PR: 1.0   AL: 0.92   AR: 0.0
+TRIAL  5000 	 PL: 0.92   PR: 0.96   AL: 0.96   AR: 1.0
+TRIAL  6000 	 PL: 0.96   PR: 0.96   AL: 0.96   AR: 0.96
+TRIAL  7000 	 PL: 0.98   PR: 0.96   AL: 1.0   AR: 1.0
+TRIAL  8000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.96
+TRIAL  9000 	 PL: 0.94   PR: 0.96   AL: 1.0   AR: 1.0
+TRIAL  10000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  11000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  12000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.96
+TRIAL  13000 	 PL: 0.96   PR: 0.94   AL: 0.98   AR: 1.0
+TRIAL  14000 	 PL: 0.94   PR: 0.96   AL: 0.96   AR: 0.96
+TRIAL  15000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  16000 	 PL: 0.98   PR: 0.98   AL: 0.96   AR: 0.98
+TRIAL  17000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  18000 	 PL: 1.0   PR: 0.94   AL: 0.98   AR: 1.0
+TRIAL  19000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  20000 	 PL: 0.98   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  21000 	 PL: 1.0   PR: 0.96   AL: 1.0   AR: 1.0
+TRIAL  22000 	 PL: 0.96   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  23000 	 PL: 0.98   PR: 0.96   AL: 1.0   AR: 0.98
+TRIAL  24000 	 PL: 1.0   PR: 0.96   AL: 0.98   AR: 0.98
+	 CONVERGED AT TRIAL  4851.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.  100.  100.  100.    0.    0.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.  100.  100.  100.    0.    0.    0.    0.] %
+SIMULATION  7
+TRIAL  1000 	 PL: 0.08   PR: 1.0   AL: 0.8   AR: 0.06
+TRIAL  2000 	 PL: 1.0   PR: 0.94   AL: 1.0   AR: 0.96
+TRIAL  3000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  4000 	 PL: 0.98   PR: 0.96   AL: 1.0   AR: 0.98
+TRIAL  5000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  6000 	 PL: 0.98   PR: 0.96   AL: 1.0   AR: 0.98
+TRIAL  7000 	 PL: 0.96   PR: 1.0   AL: 1.0   AR: 0.94
+TRIAL  8000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  9000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  10000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  11000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  12000 	 PL: 0.96   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  13000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.92
+TRIAL  14000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  15000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  16000 	 PL: 0.96   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  17000 	 PL: 0.96   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  18000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 0.94
+TRIAL  19000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.96
+TRIAL  20000 	 PL: 1.0   PR: 0.96   AL: 1.0   AR: 1.0
+TRIAL  21000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  22000 	 PL: 0.98   PR: 0.92   AL: 0.98   AR: 1.0
+TRIAL  23000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  24000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 0.98
+	 CONVERGED AT TRIAL  1746.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.  100.  100.  100.  100.    0.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.  100.  100.  100.  100.    0.    0.    0.] %
+SIMULATION  8
+TRIAL  1000 	 PL: 0.36   PR: 0.72   AL: 0.46   AR: 0.5
+TRIAL  2000 	 PL: 0.78   PR: 0.9   AL: 0.9   AR: 0.9
+TRIAL  3000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  4000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.96
+TRIAL  5000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  6000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  7000 	 PL: 1.0   PR: 0.94   AL: 1.0   AR: 1.0
+TRIAL  8000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  9000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  10000 	 PL: 1.0   PR: 0.96   AL: 1.0   AR: 0.96
+TRIAL  11000 	 PL: 1.0   PR: 0.92   AL: 0.94   AR: 0.94
+TRIAL  12000 	 PL: 0.96   PR: 0.96   AL: 1.0   AR: 0.96
+TRIAL  13000 	 PL: 0.96   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  14000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 0.96
+TRIAL  15000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 0.98
+TRIAL  16000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.98
+TRIAL  17000 	 PL: 0.98   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  18000 	 PL: 0.96   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  19000 	 PL: 0.98   PR: 1.0   AL: 0.94   AR: 1.0
+TRIAL  20000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  21000 	 PL: 1.0   PR: 0.96   AL: 0.98   AR: 0.98
+TRIAL  22000 	 PL: 0.96   PR: 1.0   AL: 0.92   AR: 1.0
+TRIAL  23000 	 PL: 1.0   PR: 0.94   AL: 0.98   AR: 0.98
+TRIAL  24000 	 PL: 0.98   PR: 0.98   AL: 0.94   AR: 0.98
+	 CONVERGED AT TRIAL  2345.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.  100.  100.  100.  100.  100.    0.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.  100.  100.  100.  100.  100.    0.    0.] %
+SIMULATION  9
+TRIAL  1000 	 PL: 0.5   PR: 0.66   AL: 0.18   AR: 0.7
+TRIAL  2000 	 PL: 0.96   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  3000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  4000 	 PL: 0.98   PR: 0.96   AL: 0.98   AR: 0.98
+TRIAL  5000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  6000 	 PL: 0.98   PR: 0.96   AL: 0.96   AR: 1.0
+TRIAL  7000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 1.0
+TRIAL  8000 	 PL: 0.98   PR: 1.0   AL: 0.98   AR: 0.92
+TRIAL  9000 	 PL: 0.98   PR: 0.94   AL: 1.0   AR: 0.96
+TRIAL  10000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 1.0
+TRIAL  11000 	 PL: 0.98   PR: 1.0   AL: 0.98   AR: 0.96
+TRIAL  12000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  13000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  14000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  15000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  16000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 0.96
+TRIAL  17000 	 PL: 0.94   PR: 0.96   AL: 0.96   AR: 0.98
+TRIAL  18000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  19000 	 PL: 0.96   PR: 0.98   AL: 0.96   AR: 0.98
+TRIAL  20000 	 PL: 0.98   PR: 0.98   AL: 0.92   AR: 0.94
+TRIAL  21000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  22000 	 PL: 1.0   PR: 0.96   AL: 0.94   AR: 0.98
+TRIAL  23000 	 PL: 0.94   PR: 0.98   AL: 1.0   AR: 0.96
+TRIAL  24000 	 PL: 1.0   PR: 0.96   AL: 1.0   AR: 0.94
+	 CONVERGED AT TRIAL  1305.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.  100.  100.  100.  100.  100.  100.    0.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.  100.  100.  100.  100.  100.  100.    0.] %
+SIMULATION  10
+TRIAL  1000 	 PL: 0.16   PR: 0.9   AL: 0.36   AR: 0.24
+TRIAL  2000 	 PL: 0.92   PR: 0.94   AL: 1.0   AR: 0.94
+TRIAL  3000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  4000 	 PL: 1.0   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  5000 	 PL: 0.96   PR: 0.98   AL: 0.94   AR: 0.96
+TRIAL  6000 	 PL: 1.0   PR: 1.0   AL: 0.96   AR: 1.0
+TRIAL  7000 	 PL: 1.0   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  8000 	 PL: 0.96   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  9000 	 PL: 0.98   PR: 0.96   AL: 1.0   AR: 1.0
+TRIAL  10000 	 PL: 0.98   PR: 0.96   AL: 0.98   AR: 1.0
+TRIAL  11000 	 PL: 1.0   PR: 0.98   AL: 0.96   AR: 1.0
+TRIAL  12000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 1.0
+TRIAL  13000 	 PL: 0.92   PR: 1.0   AL: 0.98   AR: 1.0
+TRIAL  14000 	 PL: 1.0   PR: 0.96   AL: 0.98   AR: 0.98
+TRIAL  15000 	 PL: 0.98   PR: 0.98   AL: 1.0   AR: 0.98
+TRIAL  16000 	 PL: 1.0   PR: 1.0   AL: 0.94   AR: 1.0
+TRIAL  17000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 0.98
+TRIAL  18000 	 PL: 0.96   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  19000 	 PL: 1.0   PR: 0.98   AL: 1.0   AR: 1.0
+TRIAL  20000 	 PL: 0.94   PR: 0.96   AL: 0.98   AR: 0.96
+TRIAL  21000 	 PL: 0.98   PR: 0.96   AL: 0.98   AR: 0.98
+TRIAL  22000 	 PL: 1.0   PR: 0.98   AL: 0.98   AR: 0.94
+TRIAL  23000 	 PL: 0.98   PR: 1.0   AL: 1.0   AR: 0.98
+TRIAL  24000 	 PL: 0.98   PR: 0.98   AL: 0.98   AR: 1.0
+	 CONVERGED AT TRIAL  1517.0
+Percentage of correct FIX responses during test:  [ 100.  100.  100.  100.  100.  100.  100.  100.  100.  100.] %
+Percentage of correct GO responses during test:  [ 100.  100.  100.  100.  100.  100.  100.  100.  100.  100.] %

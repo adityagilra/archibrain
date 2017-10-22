@@ -1,0 +1,58 @@
+nohup: input ignorato
+[[ 0.  1.  0.  0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  1.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.  0.  0.  1.]
+ [ 0.  0.  1.  0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.  1.  0.  0.]
+ [ 0.  0.  1.  0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.  1.  0.  0.]]
+['2' 'B' 'Z' 'A' 'X' 'A' 'X']
+['L' 'L' 'L' 'L' 'L' 'L' 'L']
+
+Deep_mode DM 	 H_R= 0 	 H_M= 10
+Decay= 0.5 	 learn_rate= 0.08 	 discount= 0.9
+Leak= 0.7 	 Expl_rate= 0.05  	 gain= 1
+REWARD:  BRL
+PROPAGATION:  RBP 
+
+
+SIMULATION N. 1
+SIMULATION MET CRITERION AT EPISODE [182071] 	 ( strong  criterion)
+SIMULATION N. 2
+SIMULATION MET CRITERION AT EPISODE [39648] 	 ( strong  criterion)
+SIMULATION N. 3
+SIMULATION MET CRITERION AT EPISODE [66391] 	 ( strong  criterion)
+SIMULATION N. 4
+SIMULATION MET CRITERION AT EPISODE [107417] 	 ( strong  criterion)
+SIMULATION N. 5
+SIMULATION MET CRITERION AT EPISODE [565472] 	 ( strong  criterion)
+SIMULATION N. 6
+SIMULATION MET CRITERION AT EPISODE [42154] 	 ( strong  criterion)
+SIMULATION N. 7
+SIMULATION MET CRITERION AT EPISODE [107155] 	 ( strong  criterion)
+SIMULATION N. 8
+SIMULATION MET CRITERION AT EPISODE [50050] 	 ( strong  criterion)
+SIMULATION N. 9
+SIMULATION MET CRITERION AT EPISODE [138026] 	 ( strong  criterion)
+SIMULATION N. 10
+SIMULATION MET CRITERION AT EPISODE [944492] 	 ( strong  criterion)
+SIMULATION N. 11
+SIMULATION MET CRITERION AT EPISODE [68754] 	 ( strong  criterion)
+SIMULATION N. 12
+SIMULATION MET CRITERION AT EPISODE [81423] 	 ( strong  criterion)
+SIMULATION N. 13
+SIMULATION MET CRITERION AT EPISODE [97007] 	 ( strong  criterion)
+SIMULATION N. 14
+SIMULATION MET CRITERION AT EPISODE [93830] 	 ( strong  criterion)
+SIMULATION N. 15
+SIMULATION MET CRITERION AT EPISODE [122238] 	 ( strong  criterion)
+SIMULATION N. 16
+SIMULATION MET CRITERION AT EPISODE [159468] 	 ( strong  criterion)
+SIMULATION N. 17
+SIMULATION MET CRITERION AT EPISODE [71151] 	 ( strong  criterion)
+SIMULATION N. 18
+SIMULATION MET CRITERION AT EPISODE [744619] 	 ( strong  criterion)
+SIMULATION N. 19
+SIMULATION MET CRITERION AT EPISODE [80970] 	 ( strong  criterion)
+SIMULATION N. 20
+SIMULATION MET CRITERION AT EPISODE [66385] 	 ( strong  criterion)

@@ -1,0 +1,72 @@
+nohup: input ignorato
+[[ 0.  1.  0.  0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  1.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.  0.  1.  0.]
+ [ 0.  0.  1.  0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.  0.  0.  1.]
+ [ 0.  0.  0.  1.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.  1.  0.  0.]]
+['2' 'B' 'Y' 'A' 'Z' 'B' 'X']
+['L' 'L' 'R' 'L' 'L' 'L' 'L']
+
+Deep_mode DCM 	 H_R= 10 	 H_M= 10
+Decay= 0.5 	 learn_rate= 0.08 	 discount= 0.9
+Leak= 0.7 	 Expl_rate= 0.05  	 gain= 1
+REWARD:  BRL
+PROPAGATION:  RBP 
+
+
+SIMULATION N. 1
+SIMULATION MET CRITERION AT EPISODE [57951] 	 ( strong  criterion)
+SIMULATION N. 2
+SIMULATION MET CRITERION AT EPISODE [107022] 	 ( strong  criterion)
+SIMULATION N. 3
+SIMULATION MET CRITERION AT EPISODE [80724] 	 ( strong  criterion)
+SIMULATION N. 4
+SIMULATION MET CRITERION AT EPISODE [112077] 	 ( strong  criterion)
+SIMULATION N. 5
+SIMULATION MET CRITERION AT EPISODE [74847] 	 ( strong  criterion)
+SIMULATION N. 6
+SIMULATION MET CRITERION AT EPISODE [59195] 	 ( strong  criterion)
+SIMULATION N. 7
+SIMULATION MET CRITERION AT EPISODE [188836] 	 ( strong  criterion)
+SIMULATION N. 8
+SIMULATION MET CRITERION AT EPISODE [79453] 	 ( strong  criterion)
+SIMULATION N. 9
+SIMULATION MET CRITERION AT EPISODE [47790] 	 ( strong  criterion)
+SIMULATION N. 10
+SIMULATION MET CRITERION AT EPISODE [85610] 	 ( strong  criterion)
+SIMULATION N. 11
+SIMULATION MET CRITERION AT EPISODE [140665] 	 ( strong  criterion)
+SIMULATION N. 12
+SIMULATION MET CRITERION AT EPISODE [70829] 	 ( strong  criterion)
+SIMULATION N. 13
+SIMULATION MET CRITERION AT EPISODE [63153] 	 ( strong  criterion)
+SIMULATION N. 14
+SIMULATION MET CRITERION AT EPISODE [73988] 	 ( strong  criterion)
+SIMULATION N. 15
+SIMULATION MET CRITERION AT EPISODE [102543] 	 ( strong  criterion)
+SIMULATION N. 16
+SIMULATION MET CRITERION AT EPISODE [91610] 	 ( strong  criterion)
+SIMULATION N. 17
+SIMULATION MET CRITERION AT EPISODE [30764] 	 ( strong  criterion)
+SIMULATION N. 18
+SIMULATION MET CRITERION AT EPISODE [72867] 	 ( strong  criterion)
+SIMULATION N. 19
+SIMULATION MET CRITERION AT EPISODE [104070] 	 ( strong  criterion)
+SIMULATION N. 20
+SIMULATION MET CRITERION AT EPISODE [332335] 	 ( strong  criterion)
+SIMULATION N. 21
+SIMULATION MET CRITERION AT EPISODE [74692] 	 ( strong  criterion)
+SIMULATION N. 22
+SIMULATION MET CRITERION AT EPISODE [38087] 	 ( strong  criterion)
+SIMULATION N. 23
+SIMULATION MET CRITERION AT EPISODE [94552] 	 ( strong  criterion)
+SIMULATION N. 24
+SIMULATION MET CRITERION AT EPISODE [106238] 	 ( strong  criterion)
+SIMULATION N. 25
+SIMULATION MET CRITERION AT EPISODE [0] 	 ( strong  criterion)
+/usr/local/lib/python3.5/dist-packages/matplotlib/axes/_base.py:2903: UserWarning: Attempting to set identical left==right results
+in singular transformations; automatically expanding.
+left=0, right=0.0
+  'left=%s, right=%s') % (left, right))

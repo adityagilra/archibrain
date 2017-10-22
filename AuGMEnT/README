@@ -1,0 +1,30 @@
+--------
+ README 
+--------
+
+Attention-Gated Memory Taggin Model (AuGMEnT)
+
+The codes are organized in the following way:
+
+- AuGMEnT_SAS.py is the main file that runs simulations and analysis of AuGMEnT on the SAS task (constrution of the dataset comes from task_saccades.py)
+
+- AuGMEnT_12AX.py is the main file that runs simulations and analysis of AuGMEnT on the 12AX task (constrution of the dataset comes from task_12AX.py)
+- AuGMEnT_12AX_S.py is the main file that runs simulations and analysis of AuGMEnT on the simplified 12AX-S task (constrution of the dataset comes from task_12AX_S.py)
+- AuGMEnT_AX.py is the main file that runs simulations and analysis of AuGMEnT on the simplified AX task (constrution of the dataset comes from task_AX.py)
+
+- AuGMEnT_tasks.py is used externally for the interface.py in the main folder
+
+- AuGMEnT_model.py (old) implements the AuGMEnT network and dynamics both for the training and the test (disjoint functions for SAS and 12AX tasks)
+
+- AuGMEnT_model_new.py is an updated way to run AuGMEnT simulations (USE THIS)
+
+N.B: The leaky variant of the AuGMEnT model can be simply obtained by setting the input leaky coefficient to a number smaller than 1 (e.g. leak=0.7)
+
+
+DEEP_AuGMEnT folder contains all the files for the deep variant of the AuGMEnT model where the architecture of the network is made deeper by adding an intermediate layer to either the controller branc (DC), the memory branch (DM) or to both of them (DMC). This is done to try to increase the level of abstraction of learning in the model.
+The model includes also alternative learning algorithms than the original propagation system of the error in AuGMEnT: Random BackPropagation (RBP), Skipped Random BackPropagation (SRBP) and Mixed Random BackPropagation (MRBP). These methods implement a simpler and more biologically-plausible way to propagate the output error throughout the network.
+
+
+HIERARCHICAL_AuGMEnT folder presents a further variant of the AuGMEnT model where the architecture of the memory is made hierarchical (like in HER) by stacking multiple memory levels on each other. Each level is addressed separately and can be associated to different learning and temporal dynamics to specialize its activity on the task.
+The folder contain many examples of hierarchical AuGMEnT models that differ for the gating mechanism employed (e.g. softmax, sigmoid, forget+input gates, GRU-type gating...) or the structure of the network (e.g. memory states fed to the controller, memory branch made deeper,...).
+N.B. The model can be improved by adding a read mechanism from the memory, perhaps using read/output gates as in LSTM.  
