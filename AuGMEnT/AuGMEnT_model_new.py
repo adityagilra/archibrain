@@ -179,6 +179,91 @@ class AuGMEnT():
 
 		return s_trans
 
+	
+######### TRAINING + TEST FOR SEQUENCE PREDICTION TASK
+
+	def training_seq_pred(self,N_trial,d,stop=True,verb=True):
+	
+		from task_seq_prediction import construct_trial, get_dictionary
+
+		zero = np.zeros((1,self.S))
+		
+		corr = 0
+		conv_tr = 0
+		E = np.zeros(N_trial)
+		dic_stim, dic_resp = get_dictionary(d)
+
+		for tr in np.arange(N_trial):
+
+			if verb:
+				print('TRIAL N.',tr+1,':\t', end="")
+
+			first = True
+
+			self.reset_memory()
+			self.reset_tags()
+
+			S, O = construct_trial(d,0.5)
+			o_print = dic_resp[np.argmax(O)]
+
+			s_old = zero
+			
+			for i in np.arange(np.shape(S)[0]):
+				 
+				s_inst = S[i:(i+1),:]
+				s_trans = self.define_transient(s_inst, s_old)
+				s_old = s_inst
+				s_print =  dic_stim[np.argmax(s_inst)]
+
+				y_r,y_m,Q = self.feedforward(s_inst, s_trans)
+				
+				resp_ind,P_vec = self.compute_response(Q)
+				q = Q[0,resp_ind]
+		
+				z = np.zeros(np.shape(Q))
+				z[0,resp_ind] = 1
+				r_print = self.dic_resp[resp_ind]
+
+				if verb:
+					# print(s_print,end="-")
+					print('\t\t',s_print,' - ',dic_resp[resp_ind])
+	
+				if first!=True:
+					RPE = (r + self.discount*q) - q_old  # Reward Prediction Error
+					self.update_weights(RPE)
+				else:
+					first = False
+				
+				self.update_tags(s_inst,s_trans,y_r,y_m,z,resp_ind)
+				q_old = q
+				
+				if i==np.shape(S)[0]-1:
+					if dic_resp[resp_ind]==o_print:
+						r = self.rew_pos
+						corr += 1
+					else:
+						r = self.rew_neg
+						E[tr] = 1
+						corr = 0
+				else:
+					r = 0
+			
+			RPE = r - q_old  # Reward Prediction Error
+			self.update_weights(RPE)
+			
+			if verb:
+				print(dic_resp[resp_ind],'\t(',corr,')')
+
+			if corr>=100:
+				conv_tr = tr
+				if stop==True:
+					break
+
+		if conv_tr!=0:
+			print('SIMULATION CONVERGED AT TRIAL ',conv_tr)		
+		
+		return E, conv_tr
+
 
 ######### TRAINING + TEST FOR SACCADE TASK 
 
@@ -466,3 +551,146 @@ class AuGMEnT():
 		perc_go = 100*float(corr_go)/float(N_go)
 		
 		return perc_fix, perc_go
+
+
+######### TRAINING + TEST FOR 12AX TASK 
+
+	def training_12AX(self,N_trial,p_target,criterion='strong',stop=True):
+
+		
+		from task_12AX import data_construction
+
+		zero = np.zeros((1,self.S))
+		s_old = zero
+
+		E = np.zeros(N_trial)
+
+		convergence = False
+		conv_iter = np.array([0])
+		corr = 0
+		corr_ep = 0
+		corr_ep_bool = True
+
+
+		for tr in np.arange(N_trial):
+
+			#print('TRIAL ', tr+1)
+
+			S_train, O_train = data_construction(1,p_target)
+
+			N_stimuli = np.shape(S_train)[0]
+
+			self.reset_memory()
+			self.reset_tags()
+		
+			first = True
+
+			for n in np.arange(N_stimuli):	
+
+				s = S_train[n:(n+1),:]
+				o = O_train[n:(n+1),:]
+				s_print = self.dic_stim[repr(s.astype(int))]
+				o_print = self.dic_resp[repr(o.astype(int))]
+				s_inst = s
+				s_trans = self.define_transient(s_inst, s_old)
+				s_old = s_inst
+
+				y_r,y_m,Q = self.feedforward(s_inst, s_trans)
+				
+				resp_ind,_ = self.compute_response(Q,tr)
+				q = Q[0,resp_ind]
+		
+				z = np.zeros(np.shape(Q))
+				z[0,resp_ind] = 1
+				r_print = self.dic_resp[str(resp_ind)]
+	
+				if first==False:
+					RPE = (r + self.discount*q) - q_old  # Reward Prediction Error
+					self.update_weights(RPE)
+				else:
+					first=False
+	
+				self.update_tags(s_inst,s_trans,y_r,y_m,z,resp_ind)
+	
+
+				if r_print==o_print:
+					r = self.rew_pos
+					corr += 1 		
+				else: 
+					r = self.rew_neg
+					corr = 0
+					corr_ep_bool = False
+					E[tr] += 1					
+
+				q_old = q
+				
+				#print('\t s:',s_print,'\t o:', o_print,'\t r:', r_print, '\t\t corr_acc:',corr)
+			
+			RPE = r - q_old
+			self.update_weights(RPE)
+	
+			if corr_ep_bool==True:
+				corr_ep += 1 
+				
+			if convergence==False and criterion=='strong' and corr>=1000:
+				convergence = True
+				conv_iter = np.array([tr])
+				if stop:
+					break
+
+			if convergence==False and criterion=='lenient' and corr_ep>=50:
+				convergence = True
+				conv_iter = np.array([tr])
+				if stop:
+					break
+
+		return E,conv_iter
+
+
+	def test(self,N_test,p_target):
+
+		zero = np.zeros((1,self.S))
+		s_old = zero
+	
+		corr_ep = 0
+
+		self.epsilon = 0
+
+		for tr in np.arange(N_test):
+
+			S_test, O_test = data_construction(1,p_target)
+
+			N_stimuli = np.shape(S_test)[0]
+
+			self.reset_memory()
+	
+			corr_ep_bool = True
+
+			for n in np.arange(N_stimuli):		
+			
+				s = S_test[n:(n+1),:]
+				o = O_test[n:(n+1),:]
+				s_print = self.dic_stim[repr(s.astype(int))]
+				o_print = self.dic_resp[repr(o.astype(int))]
+				s_inst = s
+				s_trans = self.define_transient(s_inst, s_old)
+				s_old = s_inst
+							
+				y_r,y_m,Q = self.feedforward(s_inst, s_trans)
+				
+				resp_ind,P_vec = self.compute_response(Q)
+				q = Q[0,resp_ind]
+		
+				z = np.zeros(np.shape(Q))
+				z[0,resp_ind] = 1
+			
+				r_print = self.dic_resp[repr(resp_ind)]
+		
+				if o_print!=r_print:
+					corr_ep_bool = False
+			if corr_ep_bool:
+				corr_ep += 1
+
+		perc = 100*float(corr_ep)/float(N_test)
+		
+		return perc
