@@ -12,14 +12,25 @@ As part of this project, we introduced an extension of [AuGMEnT](http://journals
 We utilize a modular architecture to:
 1) Specify the model such that we can 'plug and play' different modules -- controller, differentiable memories (multiple can be used at the same time). We should be able to interface both the abstract 'neurons' (LSTM, GRU, McCullough-Pitts, ReLU, ...) but also more biological spiking neurons.
 2) Specify Reinforcement Learning or other tasks -- 1-2AX, Raven progressive matrices, BABI tasks...
-
+  
+Currently, we have HER, AuGMEnT, and LSTM implementations that can be run on these tasks:  
+  '0':'task 1-2',  
+	'1':'task AX_CPT',  
+	'2':'task 12-AX_S',  
+	'3':'task 12-AX',  
+	'4':'saccade/anti-saccade task',  
+	'5':'sequence prediction task',  
+	'6':'copy task',  
+	'7':'repeat copy task'  
+using the script interface.py . We also cloned and modified the official DNC implementation (see README in DNC_analysis folder). We also replicated the One-shot NTM on the onmiglot task (also in DNC_analysis folder). 
+  
 We will also explore different memory interfacing schemes like content or list-based as in the DNC, or Plate's/Eliasmith's Holographic Reduced Representations/Semantic Pointer Architecture, address-value augmentation, etc.  
   
 A larger goal will be to see if the synthesized 'network' can build models of the 'world' which generalize across tasks.
   
 Currently, we have three contributors: [Marco Martinolli](https://github.com/martin592), [Vineet Jain](https://github.com/vineetjain96) and [Aditya Gilra](https://github.com/adityagilra). We are looking for more contributors!  
   
-Aditya explores ideas and architectures and ways to synthesize them.  
+Aditya initiated the project, with a review of ideas and architectures and some pointers to synthesize them.  
   
 Marco implemented the Hierarchical Error Representation (HER) model by Alexander and Brown (2015, 2016), incorporating hierarchical predictive coding and gated working memory structures, and the AuGMEnT model by Rombouts, Bohte and Roelfsema (2015), as well as the relevant tasks Saccade-AntiSaccade, 12AX, and sequence prediction tasks. See the extention of AuGMEnT,  [hybrid AuGMEnT]((https://github.com/martin592/hybrid_AuGMEnT)), developed by him as part of this project.  
   
