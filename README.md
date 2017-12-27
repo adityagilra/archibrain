@@ -13,16 +13,17 @@ We utilize a modular architecture to:
 1) Specify the model such that we can 'plug and play' different modules -- controller, differentiable memories (multiple can be used at the same time). We should be able to interface both the abstract 'neurons' (LSTM, GRU, McCullough-Pitts, ReLU, ...) but also more biological spiking neurons.
 2) Specify Reinforcement Learning or other tasks -- 1-2AX, Raven progressive matrices, BABI tasks...
 
-We will also explore different memory interfacing schemes like content or list-based as in the DNC, or Eliasmith's HHR, address-value augmentation, etc.  
+We will also explore different memory interfacing schemes like content or list-based as in the DNC, or Plate's/Eliasmith's Holographic Reduced Representations/Semantic Pointer Architecture, address-value augmentation, etc.  
   
 A larger goal will be to see if the synthesized 'network' can build models of the 'world' which generalize across tasks.
   
-Currently, we have three contributors: Marco Martinolli, Vineet Jain and Aditya Gilra. We are looking for more contributors!
+Currently, we have three contributors: [Marco Martinolli](https://github.com/martin592), [Vineet Jain](https://github.com/vineetjain96) and [Aditya Gilra](https://github.com/adityagilra). We are looking for more contributors!  
+  
 Aditya explores ideas and architectures and ways to synthesize them.  
   
-Marco has coded the the Hierarchical Error Representation (HER) model by Alexander and Brown (2015, 2016), incorporating hierarchical predictive coding and gated working memory structures, and the AuGMEnT model by Rombouts, Bohte and Roelfsema (2015), as well as the relevant tasks Saccade-AntiSaccade, 12AX, and sequence prediction tasks.
-
-Vineet developed a common API for models and tasks as well as implemented some tasks. He also tested various parts of the memory architectures of DNC and NTM whose code has been incorporated from their official repositories.  
+Marco implemented the Hierarchical Error Representation (HER) model by Alexander and Brown (2015, 2016), incorporating hierarchical predictive coding and gated working memory structures, and the AuGMEnT model by Rombouts, Bohte and Roelfsema (2015), as well as the relevant tasks Saccade-AntiSaccade, 12AX, and sequence prediction tasks. See the extention of AuGMEnT,  [hybrid AuGMEnT]((https://github.com/martin592/hybrid_AuGMEnT)), developed by him as part of this project.  
+  
+Vineet developed a common API for models and tasks as well as implemented some tasks. He also tested various parts of the memory architectures of DNC and NTM whose code has been incorporated from their official repositories. See his [one shot learning implementation](https://github.com/vineetjain96/one-shot-mann), an offshoot of this project.  
   
 See also:  
 [Overview of architectures (work in progress)](https://github.com/adityagilra/archibrain/wiki/Brain-models---ML-architectures)  
