@@ -7,7 +7,7 @@ At the same time, models based closely on brain architecture, that perform exper
   
 From the neuroscience perspective, we want to figure out how the brain performs cognitive tasks, by synthesizing current models and tasks, constrained by known architecture and learning rules. From the machine learning perspective, we will explore whether brain-inspired architecture(s) can improve artificial intelligence (cf. copying bird flight didn't help build airplanes, but copying neurons helped machine learning).  
   
-As part of this project, we introduced an extension of [AuGMEnT](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004060), called hybrid AuGMEnT, that incorporates multiple timescales of memory dynamics, enabling it to solve tasks like 12AX which the original AuGMEnT could not. A paper is being written up by Marco Martinolli, Wulfram Gerstner and Aditya Gilra, for which the code is available at [https://github.com/martin592/hybrid_AuGMEnT](https://github.com/martin592/hybrid_AuGMEnT).
+As part of this project, we introduced an extension of [AuGMEnT](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004060), called hybrid AuGMEnT, that incorporates multiple timescales of memory dynamics, enabling it to solve tasks like 12AX which the original AuGMEnT could not. See the [arXiv preprint](https://arxiv.org/abs/1712.10062) for this by Marco Martinolli, Wulfram Gerstner and Aditya Gilra, for which the code is available at [https://github.com/martin592/hybrid_AuGMEnT](https://github.com/martin592/hybrid_AuGMEnT).
   
 We utilize a modular architecture to:
 1) Specify the model such that we can 'plug and play' different modules -- controller, differentiable memories (multiple can be used at the same time). We should be able to interface both the abstract 'neurons' (LSTM, GRU, McCullough-Pitts, ReLU, ...) but also more biological spiking neurons.
@@ -30,7 +30,7 @@ A larger goal will be to see if the synthesized 'network' can build models of th
   
 Currently, we have three contributors: [Marco Martinolli](https://github.com/martin592), [Vineet Jain](https://github.com/vineetjain96) and [Aditya Gilra](https://github.com/adityagilra). We are looking for more contributors!  
   
-Aditya initiated the project, with a review of ideas and architectures and some pointers to synthesize them.  
+Aditya initiated and supervises the project, with reviews of ideas and architectures and pointers to synthesize them.  
   
 Marco implemented the Hierarchical Error Representation (HER) model by Alexander and Brown (2015, 2016), incorporating hierarchical predictive coding and gated working memory structures, and the AuGMEnT model by Rombouts, Bohte and Roelfsema (2015), as well as the relevant tasks Saccade-AntiSaccade, 12AX, and sequence prediction tasks. See the extention of AuGMEnT,  [hybrid AuGMEnT]((https://github.com/martin592/hybrid_AuGMEnT)), developed by him as part of this project.  
   
