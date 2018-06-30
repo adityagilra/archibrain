@@ -1,0 +1,406 @@
+<?xml version="1.0"?>
+<!DOCTYPE ipe SYSTEM "ipe.dtd">
+<ipe version="70206" creator="Ipe 7.2.7">
+<info created="D:20171214232831" modified="D:20180111130337"/>
+<ipestyle name="basic">
+<symbol name="arrow/arc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/farc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/ptarc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fptarc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="mark/circle(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</symbol>
+<symbol name="mark/disk(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+</path>
+</symbol>
+<symbol name="mark/fdisk(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+0.5 0 0 0.5 0 0 e
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</group>
+</symbol>
+<symbol name="mark/box(sx)" transformations="translations">
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</symbol>
+<symbol name="mark/square(sx)" transformations="translations">
+<path fill="sym-stroke">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+</path>
+</symbol>
+<symbol name="mark/fsquare(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+-0.5 -0.5 m
+0.5 -0.5 l
+0.5 0.5 l
+-0.5 0.5 l
+h
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="mark/cross(sx)" transformations="translations">
+<group>
+<path fill="sym-stroke">
+-0.43 -0.57 m
+0.57 0.43 l
+0.43 0.57 l
+-0.57 -0.43 l
+h
+</path>
+<path fill="sym-stroke">
+-0.43 0.57 m
+0.57 -0.43 l
+0.43 -0.57 l
+-0.57 0.43 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="arrow/fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/linear(spx)">
+<path stroke="sym-stroke" pen="sym-pen">
+-1 0.333 m
+0 0 l
+-1 -0.333 l
+</path>
+</symbol>
+<symbol name="arrow/fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<pen name="heavier" value="0.8"/>
+<pen name="fat" value="1.2"/>
+<pen name="ultrafat" value="2"/>
+<symbolsize name="large" value="5"/>
+<symbolsize name="small" value="2"/>
+<symbolsize name="tiny" value="1.1"/>
+<arrowsize name="large" value="10"/>
+<arrowsize name="small" value="5"/>
+<arrowsize name="tiny" value="3"/>
+<color name="red" value="1 0 0"/>
+<color name="green" value="0 1 0"/>
+<color name="blue" value="0 0 1"/>
+<color name="yellow" value="1 1 0"/>
+<color name="orange" value="1 0.647 0"/>
+<color name="gold" value="1 0.843 0"/>
+<color name="purple" value="0.627 0.125 0.941"/>
+<color name="gray" value="0.745"/>
+<color name="brown" value="0.647 0.165 0.165"/>
+<color name="navy" value="0 0 0.502"/>
+<color name="pink" value="1 0.753 0.796"/>
+<color name="seagreen" value="0.18 0.545 0.341"/>
+<color name="turquoise" value="0.251 0.878 0.816"/>
+<color name="violet" value="0.933 0.51 0.933"/>
+<color name="darkblue" value="0 0 0.545"/>
+<color name="darkcyan" value="0 0.545 0.545"/>
+<color name="darkgray" value="0.663"/>
+<color name="darkgreen" value="0 0.392 0"/>
+<color name="darkmagenta" value="0.545 0 0.545"/>
+<color name="darkorange" value="1 0.549 0"/>
+<color name="darkred" value="0.545 0 0"/>
+<color name="lightblue" value="0.678 0.847 0.902"/>
+<color name="lightcyan" value="0.878 1 1"/>
+<color name="lightgray" value="0.827"/>
+<color name="lightgreen" value="0.565 0.933 0.565"/>
+<color name="lightyellow" value="1 1 0.878"/>
+<dashstyle name="dashed" value="[4] 0"/>
+<dashstyle name="dotted" value="[1 3] 0"/>
+<dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
+<dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
+<textsize name="large" value="\large"/>
+<textsize name="Large" value="\Large"/>
+<textsize name="LARGE" value="\LARGE"/>
+<textsize name="huge" value="\huge"/>
+<textsize name="Huge" value="\Huge"/>
+<textsize name="small" value="\small"/>
+<textsize name="footnote" value="\footnotesize"/>
+<textsize name="tiny" value="\tiny"/>
+<textstyle name="center" begin="\begin{center}" end="\end{center}"/>
+<textstyle name="itemize" begin="\begin{itemize}" end="\end{itemize}"/>
+<textstyle name="item" begin="\begin{itemize}\item{}" end="\end{itemize}"/>
+<gridsize name="4 pts" value="4"/>
+<gridsize name="8 pts (~3 mm)" value="8"/>
+<gridsize name="16 pts (~6 mm)" value="16"/>
+<gridsize name="32 pts (~12 mm)" value="32"/>
+<gridsize name="10 pts (~3.5 mm)" value="10"/>
+<gridsize name="20 pts (~7 mm)" value="20"/>
+<gridsize name="14 pts (~5 mm)" value="14"/>
+<gridsize name="28 pts (~10 mm)" value="28"/>
+<gridsize name="56 pts (~20 mm)" value="56"/>
+<anglesize name="90 deg" value="90"/>
+<anglesize name="60 deg" value="60"/>
+<anglesize name="45 deg" value="45"/>
+<anglesize name="30 deg" value="30"/>
+<anglesize name="22.5 deg" value="22.5"/>
+<opacity name="10%" value="0.1"/>
+<opacity name="30%" value="0.3"/>
+<opacity name="50%" value="0.5"/>
+<opacity name="75%" value="0.75"/>
+<tiling name="falling" angle="-60" step="4" width="1"/>
+<tiling name="rising" angle="30" step="4" width="1"/>
+</ipestyle>
+<page>
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" matrix="1.0779 0 0 1.08528 53.913 -99.5464" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 102.203 -120.384" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 150.493 -141.221" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 198.783 -162.059" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 247.072 -182.896" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 295.362 -203.733" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 343.652 -224.571" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 391.942 -245.408" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 440.232 -266.245" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<path matrix="1.0779 0 0 1.08528 488.522 -287.083" stroke="black" fill="white" pen="fat">
+32 608 m
+32 544 l
+96 544 l
+96 608 l
+h
+</path>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="40 560" stroke="black" type="label" width="13.943" height="15.974" depth="0" valign="baseline" size="Huge">\textbf{1}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="96 536" stroke="black" type="label" width="19.824" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{B}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="152 512" stroke="black" type="label" width="21.755" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{Y}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="208 488" stroke="black" type="label" width="20.139" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{C}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="264 464" stroke="black" type="label" width="21.058" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{X}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="320 440" stroke="black" type="label" width="21.058" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{A}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="376 416" stroke="black" type="label" width="21.058" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{X}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="432 392" stroke="black" type="label" width="13.943" height="15.974" depth="0" valign="baseline" size="Huge">\textbf{2}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="488 368" stroke="black" type="label" width="19.824" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{B}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="544 344" stroke="black" type="label" width="21.755" height="17.007" depth="0" valign="baseline" size="Huge">\textbf{Y}</text>
+<path matrix="0.877942 -0.00145633 0.00140657 0.92149 88.7946 -67.1166" stroke="black" pen="fat" arrow="normal/normal">
+8 528 m
+528 304 l
+</path>
+<text matrix="0.786769 -0.355151 0.352977 0.792259 189.386 -8.6175" pos="192 376" stroke="black" type="label" width="63.101" height="17.213" depth="0" valign="baseline" size="Huge">\textbf{Time}</text>
+<text matrix="0.862319 0 0 0.868223 81.5072 32.4235" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 133.246 11.5861" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 181.536 -9.25122" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 229.826 -30.0886" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 278.116 -50.9259" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 326.406 -71.7633" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 374.696 -92.6007" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{R}}</text>
+<text matrix="0.862319 0 0 0.868223 422.986 -113.438" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 471.275 -134.275" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{L}}</text>
+<text matrix="0.862319 0 0 0.868223 519.565 -155.113" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{darkorange}\textbf{\texttt{R}}</text>
+<path matrix="0.85567 0 0 0.857143 89.1959 79.4286" stroke="black" pen="fat">
+36 672 m
+36 696 l
+424 528 l
+424 508 l
+424 508 l
+</path>
+<text matrix="0.788764 -0.332268 0.331697 0.790121 -1.4585 344.863" pos="192 376" stroke="black" type="label" width="59.182" height="17.213" depth="4.82" valign="baseline" size="Huge">\textbf{pairs}</text>
+<text matrix="0.788374 -0.333195 0.332622 0.789731 -28.5563 401.252" pos="192 376" stroke="black" type="label" width="134.88" height="17.213" depth="4.82" valign="baseline" size="Huge">\textbf{outer loop
+}</text>
+<text matrix="0.788374 -0.333195 0.332622 0.789731 -252.556 397.252" pos="192 376" stroke="black" type="label" width="85.076" height="15.738" depth="0" valign="baseline" size="Huge">\textbf{correct}</text>
+<text matrix="0.788374 -0.333195 0.332622 0.789731 -264.556 329.252" pos="192 376" stroke="black" type="label" width="58.967" height="15.738" depth="0" valign="baseline" size="Huge">\textbf{state}</text>
+<text matrix="0.788374 -0.333195 0.332622 0.789731 -264.556 277.252" pos="192 376" stroke="black" type="label" width="82.107" height="15.737" depth="4.82" valign="baseline" size="Huge">\textbf{output}</text>
+<text matrix="0.788374 -0.333195 0.332622 0.789731 -268.556 241.252" pos="192 376" stroke="black" type="label" width="83.915" height="17.213" depth="0" valign="baseline" size="Huge">\textbf{reward}</text>
+<text matrix="0.852917 0 0 0.799887 81.8833 -72.0385" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\color{darkgreen}\textbf{\texttt{+}}</text>
+<text matrix="0.852917 0 0 0.799887 133.058 -95.236" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\color{darkgreen}\textbf{\texttt{+}}</text>
+<text matrix="0.852917 0 0 0.799887 180.822 -114.433" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\textbf{\texttt{-}}</text>
+<text matrix="0.852917 0 0 0.799887 228.585 -137.63" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\color{darkgreen}\textbf{\texttt{+}}</text>
+<text matrix="0.852917 0 0 0.799887 276.348 -156.828" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\color{darkgreen}\textbf{\texttt{+}}</text>
+<text matrix="0.852917 0 0 0.799887 320.112 -176.025" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\color{darkgreen}\textbf{\texttt{+}}</text>
+<text matrix="0.852917 0 0 0.799887 371.875 -199.222" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\textbf{\texttt{-}}</text>
+<text matrix="0.852917 0 0 0.799887 419.638 -218.42" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\color{darkgreen}\textbf{\texttt{+}}</text>
+<text matrix="0.852917 0 0 0.799887 467.402 -241.617" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\textbf{\texttt{-}}</text>
+<text matrix="0.852917 0 0 0.799887 515.165 -260.814" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="13.04" depth="0" valign="baseline" size="Huge">\color{darkgreen}\textbf{\texttt{+}}</text>
+<text matrix="0.852917 0 0 0.799887 81.8833 -36.0385" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{L}}</text>
+<text matrix="0.852917 0 0 0.799887 133.058 -59.2357" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{L}}</text>
+<text matrix="0.852917 0 0 0.799887 180.822 -78.433" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{R}}</text>
+<text matrix="0.852917 0 0 0.799887 228.585 -101.63" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{L}}</text>
+<text matrix="0.852917 0 0 0.799887 276.348 -120.828" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{L}}</text>
+<text matrix="0.852917 0 0 0.799887 324.112 -140.025" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{L}}</text>
+<text matrix="0.852917 0 0 0.799887 371.875 -163.222" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{L}}</text>
+<text matrix="0.852917 0 0 0.799887 419.638 -182.419" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{L}}</text>
+<text matrix="0.852917 0 0 0.799887 467.402 -205.617" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{R}}</text>
+<text matrix="0.852917 0 0 0.799887 515.165 -224.814" transformations="translations" pos="40 624" stroke="red" type="label" width="12.755" height="15.148" depth="0" valign="baseline" size="Huge">\color{blue}\textbf{\texttt{R}}</text>
+<text matrix="0.788374 -0.333195 0.332622 0.789731 -268.556 381.252" pos="192 376" stroke="black" type="label" width="104.536" height="11.016" depth="4.82" valign="baseline" size="Huge">\textbf{response}</text>
+<path matrix="1 0 0 1 0 -4" stroke="black" pen="fat">
+172 588 m
+172 608 l
+224 588 l
+224 568 l
+</path>
+<path matrix="1 0 0 1 100 -44" stroke="black" pen="fat">
+172 588 m
+172 608 l
+224 588 l
+224 568 l
+</path>
+<path matrix="1 0 0 1 192 -80" stroke="black" pen="fat">
+172 588 m
+172 608 l
+224 588 l
+224 568 l
+</path>
+</page>
+</ipe>
