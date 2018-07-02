@@ -7,7 +7,13 @@ At the same time, models based closely on brain architecture, that perform exper
   
 From the neuroscience perspective, we want to figure out how the brain performs cognitive tasks, by synthesizing current models and tasks, constrained by known architecture and learning rules. From the machine learning perspective, we will explore whether brain-inspired architecture(s) can improve artificial intelligence (cf. copying bird flight didn't help build airplanes, but copying neurons helped machine learning).  
   
-As part of this project, we introduced an extension of [AuGMEnT](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004060), called hybrid AuGMEnT, that incorporates multiple timescales of memory dynamics, enabling it to solve tasks like 12AX which the original AuGMEnT could not. See the [arXiv preprint](https://arxiv.org/abs/1712.10062) for this by Marco Martinolli, Wulfram Gerstner and Aditya Gilra, for which the code is available at [https://github.com/martin592/hybrid_AuGMEnT](https://github.com/martin592/hybrid_AuGMEnT).
+As part of this project, we introduced an extension of [AuGMEnT](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004060), called hybrid AuGMEnT, that incorporates multiple timescales of memory dynamics, enabling it to solve tasks like 12AX which the original AuGMEnT could not. See our article:  
+Multi-timescale memory dynamics extend task repertoire in a reinforcement learning network with attention-gated memory  
+Marco Martinolli, Wulfram Gerstner, Aditya Gilra  
+Front. Comput. Neurosci. 2018 | [doi: 10.3389/fncom.2018.00050](https://www.frontiersin.org/articles/10.3389/fncom.2018.00050)  
+preprint at:  
+[arXiv:1712.10062 \[q-bio.NC\]](https://arxiv.org/abs/1712.10062).  
+Code for this article is available at [https://github.com/martin592/hybrid_AuGMEnT](https://github.com/martin592/hybrid_AuGMEnT).  
   
 We utilize a modular architecture to:
 1) Specify the model such that we can 'plug and play' different modules -- controller, differentiable memories (multiple can be used at the same time). We should be able to interface both the abstract 'neurons' (LSTM, GRU, McCullough-Pitts, ReLU, ...) but also more biological spiking neurons.
